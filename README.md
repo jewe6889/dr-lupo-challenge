@@ -15,6 +15,9 @@ The Dr Lupo Challenge requires a player to:
 - Calculates accuracy score (proportion of best engine moves)
 - Tracks maximum consecutive best moves played
 - Returns the FEN position after the queen sacrifice for further analysis
+- Provides detailed move analysis with rank and evaluation differences
+- Shows alternative best moves and top engine choices
+- Color-coded output in CLI and web interface
 - Configurable engine depth and margin of error for move assessment
 
 ## Prerequisites
@@ -54,14 +57,21 @@ Make sure the stockfish executable is in your system PATH or provide the path us
 
 ### Command Line Interface
 
+Basic usage:
 ```bash
 python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo
+```
+
+For detailed move analysis:
+```bash
+python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo --verbose
 ```
 
 Optional parameters:
 - `--engine`: Path to the Stockfish engine (auto-detected by default)
 - `--depth`: Engine analysis depth (default: 16)
-- `--margin`: Margin of error in centipawns (default: 0.05)
+- `--margin`: Margin of error in centipawns (default: 5)
+- `--verbose`: Show detailed move analysis with rankings and top moves
 
 ### Web Interface
 
@@ -73,26 +83,33 @@ python app.py
 
 Then open your browser and navigate to http://localhost:5000
 
-## Example Analysis
+## Example
 
 Analyzing a game with a queen sacrifice:
 
 ```
 Analyzing game: https://lichess.org/Fqxk7kf8gtAo
 Engine depth: 16
-Margin of error: 0.05 centipawns
+Margin of error: 5 centipawns
 This may take several minutes. Please wait...
 
 Analysis Results:
-Game: DrLupo vs RandomOpponent
-Queen sacrificed: Yes (Move 8)
-Position FEN: rnb1kb1r/pppp1ppp/5n2/4p3/2B1P3/2N5/PPP2PPP/R1BqK2R w KQkq - 0 7
-Player: DrLupo (white)
+Game: lichess AI level 3 vs jewe
+Queen sacrificed: Yes (Move 9)
+Position FEN: r1b1kb1r/1pp2ppp/p1n2n2/4p3/4P3/2PQ1P2/P1PP2PP/R1B1KB1R b KQkq - 0 9
+Player: lichess AI level 3 (white)
 Challenge completed: No
-Accuracy: 75.00%
-Best moves: 18/24
-Max consecutive best moves: 10
+Accuracy: 34.62%
+Best moves: 9/26
+Max consecutive best moves: 2
+Analysis time: 25.89 seconds
 ```
+
+With the `--verbose` flag, you'll see additional information for each move:
+- Move rank (compared to best moves)
+- Evaluation difference (how far the move is from the best move in centipawns)
+- Top alternative moves
+- Color-coded output (green for best moves, red for non-best moves)
 
 ## Troubleshooting
 
@@ -106,6 +123,12 @@ python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo --engine /path/t
 You can reduce the engine depth for faster (but less accurate) analysis:
 ```bash
 python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo --depth 8
+```
+
+### Colorama Not Found
+If you want colored CLI output but get an error about colorama, install it:
+```bash
+pip install colorama
 ```
 
 ## License

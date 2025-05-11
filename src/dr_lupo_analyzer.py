@@ -12,7 +12,7 @@ import re
 import sys
 import time
 from pathlib import Path
-from io import StringIO  # Import StringIO from the io module
+from io import StringIO
 
 import chess
 import chess.engine
@@ -23,18 +23,18 @@ import requests
 class DrLupoAnalyzer:
     """Analyzer for the Dr Lupo Challenge."""
 
-    def __init__(self, engine_path=None, engine_depth=16, margin_cp=0.05):
+    def __init__(self, engine_path=None, engine_depth=16, margin_cp=5):
         """
         Initialize the analyzer.
         
         Args:
             engine_path: Path to Stockfish engine. If None, will try to find it.
             engine_depth: Engine analysis depth.
-            margin_cp: Margin of error in centipawns (0.05 = 5 centipawns).
+            margin_cp: Margin of error in centipawns (default: 5).
         """
         self.engine_path = engine_path or self._find_stockfish()
         self.engine_depth = engine_depth
-        self.margin_cp = margin_cp * 100  # Convert to centipawns
+        self.margin_cp = margin_cp  # Already in centipawns
         self.engine = None
     
     def _find_stockfish(self):
@@ -137,29 +137,38 @@ class DrLupoAnalyzer:
             played_move: The move that was played
             
         Returns:
-            tuple: (is_best, best_move, score_diff)
+            tuple: (is_best, best_move, score_diff, played_move_rank, all_top_moves)
         """
-        # Get the top move from the engine
+        # Get the top moves from the engine
         result = self.engine.analyse(
             board, 
             chess.engine.Limit(depth=self.engine_depth),
-            multipv=2  # Get top 2 moves for comparison
+            multipv=5  # Get top 5 moves for better context
         )
         
         # Get the best move and its score
         best_move = result[0]["pv"][0]
         best_score = result[0]["score"].relative.score(mate_score=10000)
         
-        # If the played move is the best move, it's a match
-        if played_move == best_move:
-            return True, best_move, 0
-        
-        # Find the evaluation of the played move
+        # Find the evaluation and rank of the played move
         played_score = None
-        for analysis in result:
-            if len(analysis["pv"]) > 0 and analysis["pv"][0] == played_move:
-                played_score = analysis["score"].relative.score(mate_score=10000)
-                break
+        played_move_rank = None
+        all_top_moves = []
+        
+        for i, analysis in enumerate(result):
+            move = analysis["pv"][0]
+            score = analysis["score"].relative.score(mate_score=10000)
+            move_san = board.san(move)
+            
+            all_top_moves.append({
+                "move": move_san,
+                "score": score,
+                "rank": i + 1
+            })
+            
+            if move == played_move:
+                played_score = score
+                played_move_rank = i + 1
         
         # If we couldn't find the played move in the top moves, analyze it directly
         if played_score is None:
@@ -170,14 +179,22 @@ class DrLupoAnalyzer:
                 chess.engine.Limit(depth=self.engine_depth)
             )
             played_score = -played_result["score"].relative.score(mate_score=10000)
+            played_move_rank = len(result) + 1  # Rank it below the analyzed top moves
+            
+            # Add the played move to the list
+            all_top_moves.append({
+                "move": board.san(played_move),
+                "score": played_score,
+                "rank": played_move_rank
+            })
         
         # Calculate the difference in centipawns
-        score_diff = abs(best_score - played_score) if played_score is not None else float('inf')
+        score_diff = best_score - played_score if played_score is not None else float('inf')
         
         # Check if the move is within margin of error
-        is_best = score_diff <= self.margin_cp
+        is_best = abs(score_diff) <= self.margin_cp
         
-        return is_best, best_move, score_diff
+        return is_best, best_move, score_diff, played_move_rank, all_top_moves
     
     def analyze_moves_after_sacrifice(self, game, player_color, start_move):
         """
@@ -228,9 +245,9 @@ class DrLupoAnalyzer:
                     sacrifice_reached = True
                     continue
                 
-                # Only analyze moves by the player after the sacrifice
-                if sacrifice_reached and board.turn != player_color:
-                    # Before the player's move, check if we should analyze it
+                # Only analyze moves BY the player who sacrificed the queen, not against them
+                if sacrifice_reached and board.turn == player_color:
+                    # Before the player's next move, check if we should analyze their previous move
                     if move_count < moves_to_analyze:
                         # Get the position before the player's move
                         prev_board = board.copy()
@@ -239,7 +256,7 @@ class DrLupoAnalyzer:
                         # Find the move the player made and analyze it
                         for legal_move in prev_board.legal_moves:
                             if legal_move == move:
-                                is_best, best_move, score_diff = self._analyze_move(prev_board, move)
+                                is_best, best_move, score_diff, move_rank, top_moves = self._analyze_move(prev_board, move)
                                 
                                 # Track stats
                                 if is_best:
@@ -249,13 +266,15 @@ class DrLupoAnalyzer:
                                 else:
                                     current_streak = 0
                                 
-                                # Save analysis
+                                # Save analysis with detailed move info
                                 analysis_results.append({
                                     "move_number": prev_board.fullmove_number,
                                     "move": prev_board.san(move),
                                     "is_best": is_best,
                                     "best_move": prev_board.san(best_move) if best_move else None,
-                                    "score_diff": score_diff
+                                    "score_diff": score_diff,
+                                    "move_rank": move_rank,
+                                    "top_moves": top_moves
                                 })
                                 
                                 move_count += 1
@@ -359,8 +378,9 @@ def main():
     parser.add_argument("url", help="URL to a Lichess game")
     parser.add_argument("--engine", help="Path to Stockfish engine")
     parser.add_argument("--depth", type=int, default=16, help="Engine analysis depth (default: 16)")
-    parser.add_argument("--margin", type=float, default=0.05, 
-                      help="Margin of error in centipawns (default: 0.05)")
+    parser.add_argument("--margin", type=float, default=5, 
+                      help="Margin of error in centipawns (default: 5)")
+    parser.add_argument("--verbose", "-v", action="store_true", help="Show detailed move analysis")
     
     args = parser.parse_args()
     
@@ -393,19 +413,59 @@ def main():
     print(f"Queen sacrificed: Yes (Move {results['sacrifice_move']})")
     print(f"Position FEN: {results['sacrifice_position_fen']}")
     print(f"Player: {results['player']} ({results['player_color']})")
-    print(f"Challenge completed: {results['challenge_completed']}")
+    print(f"Challenge completed: {'Yes' if results['challenge_completed'] else 'No'}")
     print(f"Accuracy: {results['accuracy']:.2f}%")
     print(f"Best moves: {results['best_moves']}/{results['total_moves_analyzed']}")
     print(f"Max consecutive best moves: {results['max_consecutive_best']}")
     print(f"Analysis time: {elapsed_time:.2f} seconds")
     
-    # Print detailed move analysis
-    if "--verbose" in sys.argv:
+    # Print detailed move analysis if requested
+    if args.verbose:
+        # Check if terminal supports colors
+        try:
+            from colorama import init, Fore, Style
+            init()
+            has_colors = True
+        except ImportError:
+            has_colors = False
+        
         print("\nDetailed Move Analysis:")
+        
         for move in results["move_analysis"]:
-            status = "✓" if move["is_best"] else "✗"
-            print(f"{move['move_number']}. {move['move']} {status} "
-                  f"(Best: {move['best_move']}, Diff: {move['score_diff']:.2f}cp)")
+            move_str = f"{move['move_number']}. {move['move']}"
+            rank_info = f"(Rank: {move['move_rank']}, "
+            
+            if move['score_diff'] > 0:
+                eval_info = f"Eval diff: -{abs(move['score_diff']):.2f}cp)"
+            else:
+                eval_info = f"Eval diff: +{abs(move['score_diff']):.2f}cp)"
+            
+            if has_colors:
+                if move["is_best"]:
+                    status = f"{Fore.GREEN}BEST{Style.RESET_ALL}"
+                    move_info = f"{Fore.GREEN}{move_str} {status} {rank_info}{eval_info}{Style.RESET_ALL}"
+                else:
+                    status = f"{Fore.RED}NOT BEST{Style.RESET_ALL}"
+                    move_info = f"{Fore.RED}{move_str} {status} {rank_info}{eval_info}{Style.RESET_ALL}"
+                    best_move_info = f"\n  {Fore.GREEN}Best: {move['best_move']}{Style.RESET_ALL}"
+                    move_info += best_move_info
+            else:
+                status = "✓" if move["is_best"] else "✗"
+                move_info = f"{move_str} {status} {rank_info}{eval_info}"
+                if not move["is_best"]:
+                    move_info += f"\n  Best: {move['best_move']}"
+            
+            print(move_info)
+            
+            # Show top moves
+            if not move["is_best"] and args.verbose:
+                print("  Top moves:")
+                for top_move in move["top_moves"][:3]:  # Show top 3 moves
+                    if has_colors:
+                        rank_color = Fore.GREEN if top_move["rank"] == 1 else Fore.YELLOW
+                        print(f"  {rank_color}{top_move['rank']}. {top_move['move']} ({top_move['score']}cp){Style.RESET_ALL}")
+                    else:
+                        print(f"  {top_move['rank']}. {top_move['move']} ({top_move['score']}cp)")
     
     return 0
 

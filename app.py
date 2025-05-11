@@ -19,7 +19,7 @@ def analyze():
     """Analyze a Lichess game for the Dr Lupo Challenge."""
     lichess_url = request.form.get('url')
     engine_depth = int(request.form.get('depth', 16))
-    margin_cp = float(request.form.get('margin', 0.05))
+    margin_cp = float(request.form.get('margin', 5))  # Changed default to 5cp
     
     if not lichess_url:
         return jsonify({"error": "No URL provided"}), 400

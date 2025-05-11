@@ -110,6 +110,54 @@
             border-radius: 4px;
             margin-top: 10px;
         }
+        .move-list {
+            margin-top: 20px;
+        }
+        .move-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+        .best-move {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .not-best-move {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .move-header {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .move-details {
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .move-rank {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            background-color: #e9ecef;
+        }
+        .rank-1 {
+            background-color: #28a745;
+            color: white;
+        }
+        .eval-diff {
+            font-style: italic;
+        }
+        .top-moves {
+            margin-top: 8px;
+            font-size: 0.9em;
+            padding-left: 15px;
+        }
+        .best-alternative {
+            font-weight: bold;
+            color: #28a745;
+        }
     </style>
 </head>
 <body>
@@ -139,8 +187,8 @@
         
         <div>
             <label for="margin">Margin of Error (centipawns):</label>
-            <input type="number" id="margin" name="margin" value="0.05" min="0" max="1" step="0.01">
-            <small>Tolerance for accepting moves as "best" (default: 0.05cp)</small>
+            <input type="number" id="margin" name="margin" value="5" min="0" max="100" step="1">
+            <small>Tolerance for accepting moves as "best" (default: 5cp)</small>
         </div>
         
         <button type="submit" id="analyzeButton">Analyze Game</button>
@@ -178,6 +226,12 @@
             <p><strong>Accuracy:</strong> <span id="accuracy"></span>%</p>
             <p><strong>Best moves:</strong> <span id="bestMoves"></span>/<span id="totalMoves"></span></p>
             <p><strong>Max consecutive best moves:</strong> <span id="maxConsecutive"></span></p>
+        </div>
+        
+        <div id="moveAnalysis">
+            <h3>Move Analysis</h3>
+            <p>Analysis of the 26 moves after the queen sacrifice:</p>
+            <div id="moveList" class="move-list"></div>
         </div>
     </div>
     
@@ -237,6 +291,7 @@
                 document.getElementById('sacrificeDetails').style.display = 'block';
                 document.getElementById('fenContainer').style.display = 'block';
                 document.getElementById('challengeResults').style.display = 'block';
+                document.getElementById('moveAnalysis').style.display = 'block';
                 
                 document.getElementById('player').textContent = data.player;
                 document.getElementById('playerColor').textContent = data.player_color;
@@ -257,16 +312,105 @@
                 document.getElementById('bestMoves').textContent = data.best_moves;
                 document.getElementById('totalMoves').textContent = data.total_moves_analyzed;
                 document.getElementById('maxConsecutive').textContent = data.max_consecutive_best;
+                
+                // Display move analysis
+                displayMoveAnalysis(data.move_analysis);
             } else {
                 document.getElementById('queenSacrificed').textContent = 'No queen sacrifice found within the first 10 moves';
                 document.getElementById('queenSacrificed').className = 'failure';
                 document.getElementById('sacrificeDetails').style.display = 'none';
                 document.getElementById('fenContainer').style.display = 'none';
                 document.getElementById('challengeResults').style.display = 'none';
+                document.getElementById('moveAnalysis').style.display = 'none';
             }
             
             // Show results
             document.getElementById('results').style.display = 'block';
+        }
+        
+        function displayMoveAnalysis(moves) {
+            const moveList = document.getElementById('moveList');
+            moveList.innerHTML = '';
+            
+            moves.forEach(move => {
+                const moveItem = document.createElement('div');
+                moveItem.className = move.is_best ? 'move-item best-move' : 'move-item not-best-move';
+                
+                // Move header
+                const moveHeader = document.createElement('div');
+                moveHeader.className = 'move-header';
+                
+                const moveNumber = document.createElement('span');
+                moveNumber.textContent = `${move.move_number}. ${move.move}`;
+                
+                const moveStatus = document.createElement('span');
+                moveStatus.textContent = move.is_best ? 'BEST MOVE' : 'NOT BEST';
+                moveStatus.className = move.is_best ? 'success' : 'failure';
+                
+                moveHeader.appendChild(moveNumber);
+                moveHeader.appendChild(moveStatus);
+                moveItem.appendChild(moveHeader);
+                
+                // Move details
+                const moveDetails = document.createElement('div');
+                moveDetails.className = 'move-details';
+                
+                const rankLabel = document.createElement('span');
+                rankLabel.textContent = 'Rank: ';
+                
+                const rankValue = document.createElement('span');
+                rankValue.className = `move-rank ${move.move_rank === 1 ? 'rank-1' : ''}`;
+                rankValue.textContent = move.move_rank;
+                
+                moveDetails.appendChild(rankLabel);
+                moveDetails.appendChild(rankValue);
+                
+                // Evaluation difference
+                const evalDiff = document.createElement('div');
+                evalDiff.className = 'eval-diff';
+                
+                if (move.score_diff > 0) {
+                    evalDiff.textContent = `Evaluation difference: -${Math.abs(move.score_diff).toFixed(2)}cp`;
+                } else {
+                    evalDiff.textContent = `Evaluation difference: +${Math.abs(move.score_diff).toFixed(2)}cp`;
+                }
+                
+                moveDetails.appendChild(evalDiff);
+                
+                // Best move info if this wasn't the best move
+                if (!move.is_best) {
+                    const bestMove = document.createElement('div');
+                    bestMove.className = 'best-alternative';
+                    bestMove.textContent = `Best move: ${move.best_move}`;
+                    moveDetails.appendChild(bestMove);
+                    
+                    // Add top moves if available
+                    if (move.top_moves && move.top_moves.length > 0) {
+                        const topMoves = document.createElement('div');
+                        topMoves.className = 'top-moves';
+                        topMoves.innerHTML = '<strong>Top moves:</strong>';
+                        
+                        const moveList = document.createElement('ol');
+                        
+                        // Show top 3 moves
+                        move.top_moves.slice(0, 3).forEach(topMove => {
+                            const moveItem = document.createElement('li');
+                            moveItem.textContent = `${topMove.move} (${topMove.score}cp)`;
+                            if (topMove.rank === 1) {
+                                moveItem.style.color = '#28a745';
+                                moveItem.style.fontWeight = 'bold';
+                            }
+                            moveList.appendChild(moveItem);
+                        });
+                        
+                        topMoves.appendChild(moveList);
+                        moveDetails.appendChild(topMoves);
+                    }
+                }
+                
+                moveItem.appendChild(moveDetails);
+                moveList.appendChild(moveItem);
+            });
         }
         
         function showError(message) {
