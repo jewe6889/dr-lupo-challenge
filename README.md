@@ -19,6 +19,9 @@ The Dr Lupo Challenge requires a player to:
 - Shows alternative best moves and top engine choices
 - Color-coded output in CLI and web interface
 - Configurable engine depth and margin of error for move assessment
+- Interactive web UI with collapsible move details
+- "Copy to Clipboard" sharing feature to share results with friends
+- Visual grid representation of moves (similar to Wordle)
 
 ## Prerequisites
 
@@ -82,6 +85,39 @@ python app.py
 ```
 
 Then open your browser and navigate to http://localhost:5000
+
+## Sharing Feature
+
+The web interface includes a "Copy to Clipboard" feature that allows you to share your Dr Lupo Challenge results with friends. The share format includes:
+
+- Challenge title with emoji
+- Queen sacrifice details (move number and player color)
+- Engine analysis depth
+- Accuracy percentage
+- Max consecutive best moves
+- A link to the Lichess position (in FEN format) for friends to try from the same position
+- Visual grid representation of your moves (Wordle-style):
+  - 🟨 = Queen sacrifice (with move number)
+  - 🟩 = Best move
+  - 🟥 = Non-best move
+
+Example share text:
+```
+🎮 Dr Lupo Challenge 👑
+
+Queen sacrifice at move 9 (white) (vs Lichess AI level 3)
+Depth: 16
+Accuracy: 34.62% (9/26)
+Max consecutive best moves: 2
+
+Try to beat me from this position against Lichess AI level 3:
+https://lichess.org/editor/r1b1kb1r/1pp2ppp/p1n2n2/4p3/4P3/2PQ1P2/P1PP2PP/R1B1KB1R_b_KQkq_-_0_9?color=black
+
+Dr Lupo Challenge: 9Q
+🟨🟩🟩🟥🟥🟩🟥🟩🟩
+🟥🟩🟥🟩🟩🟥🟩🟥
+🟩🟥🟩🟥🟩🟥🟥🟩
+```
 
 ## Example
 

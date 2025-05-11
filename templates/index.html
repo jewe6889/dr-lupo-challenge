@@ -89,19 +89,6 @@
             margin-top: 10px;
             display: none;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
         .fen-position {
             word-break: break-all;
             font-family: monospace;
@@ -110,53 +97,195 @@
             border-radius: 4px;
             margin-top: 10px;
         }
+        
+        /* Updated move analysis styling */
         .move-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
             margin-top: 20px;
         }
         .move-item {
-            padding: 10px;
+            flex: 0 0 calc(25% - 8px); /* Increased to 4 per row */
+            padding: 12px;
             margin-bottom: 5px;
             border-radius: 4px;
+            background-color: #fff;
+            border: 1px solid #eee;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .best-move {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
+        @media (max-width: 768px) {
+            .move-item {
+                flex: 0 0 calc(33.333% - 8px);
+            }
         }
-        .not-best-move {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
+        @media (max-width: 480px) {
+            .move-item {
+                flex: 0 0 calc(50% - 8px);
+            }
+        }
+        .move-item:hover {
+            border-color: #bbb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         .move-header {
-            font-weight: bold;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            justify-content: flex-start; /* Left align all moves */
         }
-        .move-details {
-            margin-top: 5px;
-            font-size: 0.9em;
+        .best-move-header {
+            justify-content: flex-start; /* Left align for best moves */
+        }
+        .move-number {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 4px;
+        }
+        .move-text {
+            font-weight: bold;
+        }
+        .best-move {
+            color: #27ae60;
+        }
+        .not-best-move {
+            color: inherit;
         }
         .move-rank {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 6px;
         }
-        .rank-1 {
-            background-color: #28a745;
+        .rank-best {
+            display: none; /* Hide rank for best moves */
+        }
+        .rank-not-best {
+            background-color: #e74c3c;
             color: white;
+        }
+        .dropdown-arrow {
+            margin-left: 5px;
+            color: #aaa;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+        .expanded .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        .move-details {
+            margin-top: 10px;
+            font-size: 0.9em;
+            display: none;
+            padding-top: 8px;
+            border-top: 1px dotted #eee;
+        }
+        .expanded .move-details {
+            display: block;
         }
         .eval-diff {
             font-style: italic;
-        }
-        .top-moves {
-            margin-top: 8px;
             font-size: 0.9em;
-            padding-left: 15px;
+            color: #666;
+            margin-bottom: 6px;
         }
         .best-alternative {
             font-weight: bold;
-            color: #28a745;
+            color: #27ae60;
+            margin-bottom: 6px;
+        }
+        .top-moves {
+            margin-top: 6px;
+        }
+        .top-moves-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 4px;
+        }
+        .top-move-item {
+            margin-bottom: 3px;
+        }
+        
+        /* Styling for the share section */
+        #shareSection {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .share-button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .share-button:hover {
+            background-color: #27ae60;
+        }
+        
+        .share-button i {
+            font-size: 18px;
+        }
+        
+        .share-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .copy-success {
+            color: #27ae60;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        /* Grid for move visualization */
+        .moves-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .move-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .best-move-dot {
+            background-color: #2ecc71;
+        }
+        
+        .not-best-move-dot {
+            background-color: #e74c3c;
+        }
+        
+        .queen-sacrifice {
+            background-color: #f1c40f;
         }
     </style>
 </head>
@@ -232,6 +361,17 @@
             <h3>Move Analysis</h3>
             <p>Analysis of the 26 moves after the queen sacrifice:</p>
             <div id="moveList" class="move-list"></div>
+        </div>
+        
+        <!-- Share Section -->
+        <div id="shareSection">
+            <h3>Share Your Results</h3>
+            <button id="copyToClipboard" class="share-button">
+                <i>📋</i> Copy to Clipboard
+            </button>
+            <div class="copy-success" id="copySuccess">Copied to clipboard!</div>
+            <div class="share-preview" id="sharePreview"></div>
+            <div id="movesVisualization" class="moves-grid"></div>
         </div>
     </div>
     
@@ -315,6 +455,10 @@
                 
                 // Display move analysis
                 displayMoveAnalysis(data.move_analysis);
+                
+                // Generate and display share content
+                generateShareContent(data);
+                document.getElementById('shareSection').style.display = 'block';
             } else {
                 document.getElementById('queenSacrificed').textContent = 'No queen sacrifice found within the first 10 moves';
                 document.getElementById('queenSacrificed').className = 'failure';
@@ -322,6 +466,7 @@
                 document.getElementById('fenContainer').style.display = 'none';
                 document.getElementById('challengeResults').style.display = 'none';
                 document.getElementById('moveAnalysis').style.display = 'none';
+                document.getElementById('shareSection').style.display = 'none';
             }
             
             // Show results
@@ -334,83 +479,240 @@
             
             moves.forEach(move => {
                 const moveItem = document.createElement('div');
-                moveItem.className = move.is_best ? 'move-item best-move' : 'move-item not-best-move';
+                moveItem.className = 'move-item';
                 
-                // Move header
+                // Move number and text - in header section
                 const moveHeader = document.createElement('div');
-                moveHeader.className = 'move-header';
+                moveHeader.className = move.is_best ? 'move-header best-move-header' : 'move-header';
                 
                 const moveNumber = document.createElement('span');
-                moveNumber.textContent = `${move.move_number}. ${move.move}`;
+                moveNumber.className = 'move-number';
+                moveNumber.textContent = `${move.move_number}.`;
                 
-                const moveStatus = document.createElement('span');
-                moveStatus.textContent = move.is_best ? 'BEST MOVE' : 'NOT BEST';
-                moveStatus.className = move.is_best ? 'success' : 'failure';
+                const moveText = document.createElement('span');
+                moveText.className = move.is_best ? 'move-text best-move' : 'move-text not-best-move';
+                moveText.textContent = move.move;
                 
                 moveHeader.appendChild(moveNumber);
-                moveHeader.appendChild(moveStatus);
-                moveItem.appendChild(moveHeader);
+                moveHeader.appendChild(moveText);
                 
-                // Move details
-                const moveDetails = document.createElement('div');
-                moveDetails.className = 'move-details';
+                // Add rank badge - different styling based on best move status
+                const rankBadge = document.createElement('span');
+                rankBadge.className = move.is_best ? 'move-rank rank-best' : 'move-rank rank-not-best';
+                rankBadge.textContent = move.move_rank;
+                moveHeader.appendChild(rankBadge);
                 
-                const rankLabel = document.createElement('span');
-                rankLabel.textContent = 'Rank: ';
-                
-                const rankValue = document.createElement('span');
-                rankValue.className = `move-rank ${move.move_rank === 1 ? 'rank-1' : ''}`;
-                rankValue.textContent = move.move_rank;
-                
-                moveDetails.appendChild(rankLabel);
-                moveDetails.appendChild(rankValue);
-                
-                // Evaluation difference
-                const evalDiff = document.createElement('div');
-                evalDiff.className = 'eval-diff';
-                
-                if (move.score_diff > 0) {
-                    evalDiff.textContent = `Evaluation difference: -${Math.abs(move.score_diff).toFixed(2)}cp`;
-                } else {
-                    evalDiff.textContent = `Evaluation difference: +${Math.abs(move.score_diff).toFixed(2)}cp`;
+                // Add dropdown arrow indicator for non-best moves only
+                if (!move.is_best) {
+                    const arrowIndicator = document.createElement('span');
+                    arrowIndicator.className = 'dropdown-arrow';
+                    arrowIndicator.textContent = '▼';
+                    moveHeader.appendChild(arrowIndicator);
                 }
                 
-                moveDetails.appendChild(evalDiff);
+                moveItem.appendChild(moveHeader);
                 
-                // Best move info if this wasn't the best move
+                // Move details - only for non-best moves, initially hidden
                 if (!move.is_best) {
+                    const moveDetails = document.createElement('div');
+                    moveDetails.className = 'move-details';
+                    
+                    // Evaluation difference
+                    if (Math.abs(move.score_diff) > 0.01) {
+                        const evalDiff = document.createElement('div');
+                        evalDiff.className = 'eval-diff';
+                        
+                        if (move.score_diff > 0) {
+                            evalDiff.textContent = `${Math.abs(move.score_diff).toFixed(2)}cp worse than best`;
+                        } else if (move.score_diff < 0) {
+                            evalDiff.textContent = `${Math.abs(move.score_diff).toFixed(2)}cp better than standard best`;
+                        }
+                        
+                        moveDetails.appendChild(evalDiff);
+                    }
+                    
+                    // Best move info
                     const bestMove = document.createElement('div');
                     bestMove.className = 'best-alternative';
-                    bestMove.textContent = `Best move: ${move.best_move}`;
+                    bestMove.textContent = `Best: ${move.best_move}`;
                     moveDetails.appendChild(bestMove);
                     
                     // Add top moves if available
                     if (move.top_moves && move.top_moves.length > 0) {
                         const topMoves = document.createElement('div');
                         topMoves.className = 'top-moves';
-                        topMoves.innerHTML = '<strong>Top moves:</strong>';
+                        topMoves.textContent = 'Top moves:';
                         
-                        const moveList = document.createElement('ol');
+                        const topMovesList = document.createElement('ul');
+                        topMovesList.className = 'top-moves-list';
                         
                         // Show top 3 moves
                         move.top_moves.slice(0, 3).forEach(topMove => {
                             const moveItem = document.createElement('li');
-                            moveItem.textContent = `${topMove.move} (${topMove.score}cp)`;
+                            moveItem.className = 'top-move-item';
+                            
                             if (topMove.rank === 1) {
-                                moveItem.style.color = '#28a745';
-                                moveItem.style.fontWeight = 'bold';
+                                moveItem.innerHTML = `<span style="color:#27ae60;font-weight:bold;">${topMove.move}</span> (${topMove.score}cp)`;
+                            } else {
+                                moveItem.textContent = `${topMove.move} (${topMove.score}cp)`;
                             }
-                            moveList.appendChild(moveItem);
+                            
+                            topMovesList.appendChild(moveItem);
                         });
                         
-                        topMoves.appendChild(moveList);
+                        topMoves.appendChild(topMovesList);
                         moveDetails.appendChild(topMoves);
                     }
+                    
+                    moveItem.appendChild(moveDetails);
+                    
+                    // Add click handler to toggle details
+                    moveItem.addEventListener('click', function() {
+                        this.classList.toggle('expanded');
+                    });
                 }
                 
-                moveItem.appendChild(moveDetails);
                 moveList.appendChild(moveItem);
             });
+        }
+        
+        // New function to generate share content
+        function generateShareContent(data) {
+            const sacrificeMove = data.sacrifice_move;
+            const playerColor = data.player_color;
+            const accuracy = data.accuracy.toFixed(2);
+            const bestMoves = data.best_moves;
+            const totalMoves = data.total_moves_analyzed;
+            const maxConsecutive = data.max_consecutive_best;
+            const gameUrl = data.game_url;
+            const fenPosition = data.sacrifice_position_fen;
+            const opponent = playerColor === 'white' ? data.black : data.white;
+            const depth = document.getElementById('depth').value || 16;
+            
+            // Extract bot level if it's a Lichess AI
+            let botLevel = '';
+            let opponentInfo = '';
+            if (opponent && opponent.includes('lichess AI level')) {
+                const levelMatch = opponent.match(/level (\d+)/);
+                if (levelMatch && levelMatch[1]) {
+                    botLevel = ` (vs Lichess AI level ${levelMatch[1]})`;
+                    opponentInfo = ` against Lichess AI level ${levelMatch[1]}`;
+                }
+            }
+            
+            // Create the editor link from FEN
+            // Format: https://lichess.org/editor/FEN?color=side
+            const editorColor = playerColor === 'white' ? 'black' : 'white';
+            const editorLink = `https://lichess.org/editor/${fenPosition.replace(/ /g, '_')}?color=${editorColor}`;
+            
+            // Create the sharing text
+            let shareText = `🎮 Dr Lupo Challenge 👑\n\n`;
+            shareText += `Queen sacrifice at move ${sacrificeMove} (${playerColor})${botLevel}\n`;
+            shareText += `Depth: ${depth}\n`;
+            shareText += `Accuracy: ${accuracy}% (${bestMoves}/${totalMoves})\n`;
+            shareText += `Max consecutive best moves: ${maxConsecutive}\n\n`;
+            
+            // Add link to the position
+            shareText += `Try to beat me from this position${opponentInfo}:\n`;
+            shareText += `${editorLink}\n\n`;
+            
+            // Preview the text
+            document.getElementById('sharePreview').textContent = shareText;
+            
+            // Create visual grid representation
+            createMovesGrid(data.move_analysis, sacrificeMove);
+            
+            // Set up copy to clipboard functionality
+            const copyButton = document.getElementById('copyToClipboard');
+            copyButton.addEventListener('click', () => {
+                // Copy visualization grid as text emojis and add it to share text
+                const gridText = generateGridText(data.move_analysis, sacrificeMove);
+                const fullShareText = shareText + gridText;
+                
+                navigator.clipboard.writeText(fullShareText).then(() => {
+                    document.getElementById('copySuccess').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('copySuccess').style.display = 'none';
+                    }, 2000);
+                });
+            });
+        }
+        
+        // Function to create visual grid representation
+        function createMovesGrid(moves, sacrificeMove) {
+            const gridContainer = document.getElementById('movesVisualization');
+            gridContainer.innerHTML = '';
+            
+            // Create the queen sacrifice dot first (gold)
+            const sacrificeDot = document.createElement('div');
+            sacrificeDot.className = 'move-dot queen-sacrifice';
+            sacrificeDot.textContent = sacrificeMove;
+            gridContainer.appendChild(sacrificeDot);
+            
+            // Create dots for each analyzed move (up to 26)
+            const movesToShow = moves.slice(0, 26);
+            
+            movesToShow.forEach(move => {
+                const dot = document.createElement('div');
+                dot.className = `move-dot ${move.is_best ? 'best-move-dot' : 'not-best-move-dot'}`;
+                
+                // Only show ranks for non-best moves
+                if (!move.is_best) {
+                    dot.textContent = move.move_rank;
+                }
+                
+                gridContainer.appendChild(dot);
+            });
+            
+            // Fill any remaining spaces with empty dots (to complete the 9x3 grid)
+            const totalDots = 27; // 1 sacrifice + 26 moves
+            const currentDots = movesToShow.length + 1; // +1 for sacrifice dot
+            
+            for (let i = currentDots; i < totalDots; i++) {
+                const emptyDot = document.createElement('div');
+                emptyDot.className = 'move-dot';
+                emptyDot.style.backgroundColor = '#ccc'; // Gray for empty dots
+                gridContainer.appendChild(emptyDot);
+            }
+        }
+        
+        // Function to generate grid text for sharing
+        function generateGridText(moves, sacrificeMove) {
+            let gridText = `Dr Lupo Challenge: ${sacrificeMove}Q`;
+            
+            // First row (including sacrifice)
+            gridText += '\n';
+            gridText += '🟨'; // Gold for queen sacrifice
+            
+            for (let i = 0; i < 8; i++) {
+                if (i < moves.length) {
+                    gridText += moves[i].is_best ? '🟩' : '🟥';
+                } else {
+                    gridText += '⬜';
+                }
+            }
+            
+            // Second row
+            gridText += '\n';
+            for (let i = 8; i < 17; i++) {
+                if (i < moves.length) {
+                    gridText += moves[i].is_best ? '🟩' : '🟥';
+                } else {
+                    gridText += '⬜';
+                }
+            }
+            
+            // Third row
+            gridText += '\n';
+            for (let i = 17; i < 26; i++) {
+                if (i < moves.length) {
+                    gridText += moves[i].is_best ? '🟩' : '🟥';
+                } else {
+                    gridText += '⬜';
+                }
+            }
+            
+            return gridText;
         }
         
         function showError(message) {
