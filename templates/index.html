@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr Lupo Challenge Analyzer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .description {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        #results {
+            display: none;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .failure {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .highlight {
+            background-color: #f1c40f;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .error {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .fen-position {
+            word-break: break-all;
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dr Lupo Challenge Analyzer</h1>
+    
+    <div class="description">
+        <h2>The Challenge</h2>
+        <p>The Dr Lupo Challenge requires you to:</p>
+        <ol>
+            <li>Sacrifice your queen within the first 10 moves of the game</li>
+            <li>Follow up with 26 BEST engine moves in a row</li>
+        </ol>
+        <p>Enter a Lichess game URL below to analyze your attempt at the challenge.</p>
+    </div>
+    
+    <form id="analyzeForm">
+        <div>
+            <label for="url">Lichess Game URL:</label>
+            <input type="text" id="url" name="url" placeholder="https://lichess.org/Fqxk7kf8gtAo" required>
+        </div>
+        
+        <div>
+            <label for="depth">Engine Depth:</label>
+            <input type="number" id="depth" name="depth" value="16" min="1" max="30">
+            <small>Higher values are more accurate but slower. Default: 16</small>
+        </div>
+        
+        <div>
+            <label for="margin">Margin of Error (centipawns):</label>
+            <input type="number" id="margin" name="margin" value="0.05" min="0" max="1" step="0.01">
+            <small>Tolerance for accepting moves as "best" (default: 0.05cp)</small>
+        </div>
+        
+        <button type="submit" id="analyzeButton">Analyze Game</button>
+    </form>
+    
+    <div id="loading">
+        <p>Analyzing game... This may take several minutes.</p>
+        <p>The engine is analyzing the game at depth <span id="depthDisplay"></span> with a margin of <span id="marginDisplay"></span>cp.</p>
+    </div>
+    
+    <div id="error" class="error"></div>
+    
+    <div id="results">
+        <h2>Analysis Results</h2>
+        
+        <div id="gameInfo">
+            <p><strong>Game:</strong> <span id="playerWhite"></span> vs <span id="playerBlack"></span></p>
+        </div>
+        
+        <div id="sacrificeInfo">
+            <p><strong>Queen sacrificed:</strong> <span id="queenSacrificed"></span></p>
+            <p id="sacrificeDetails">
+                <strong>Player:</strong> <span id="player"></span> (<span id="playerColor"></span>)<br>
+                <strong>Sacrifice at move:</strong> <span id="sacrificeMove"></span>
+            </p>
+            <div id="fenContainer">
+                <p><strong>Position after sacrifice (FEN):</strong></p>
+                <div class="fen-position" id="sacrificePosition"></div>
+            </div>
+        </div>
+        
+        <div id="challengeResults">
+            <h3>Challenge Results</h3>
+            <p><strong>Challenge completed:</strong> <span id="challengeCompleted"></span></p>
+            <p><strong>Accuracy:</strong> <span id="accuracy"></span>%</p>
+            <p><strong>Best moves:</strong> <span id="bestMoves"></span>/<span id="totalMoves"></span></p>
+            <p><strong>Max consecutive best moves:</strong> <span id="maxConsecutive"></span></p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('analyzeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading, hide results and error
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            
+            // Disable the button
+            const button = document.getElementById('analyzeButton');
+            button.disabled = true;
+            button.textContent = 'Analyzing...';
+            
+            // Display analysis parameters
+            document.getElementById('depthDisplay').textContent = document.getElementById('depth').value;
+            document.getElementById('marginDisplay').textContent = document.getElementById('margin').value;
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayResults(data);
+                } else {
+                    showError(data.error || 'An error occurred during analysis');
+                }
+            } catch (error) {
+                showError('Network error or server unavailable');
+                console.error(error);
+            } finally {
+                // Hide loading, enable button
+                document.getElementById('loading').style.display = 'none';
+                button.disabled = false;
+                button.textContent = 'Analyze Game';
+            }
+        });
+        
+        function displayResults(data) {
+            // Basic game info
+            document.getElementById('playerWhite').textContent = data.white;
+            document.getElementById('playerBlack').textContent = data.black;
+            
+            // Queen sacrifice info
+            if (data.queen_sacrificed) {
+                document.getElementById('queenSacrificed').textContent = 'Yes';
+                document.getElementById('sacrificeDetails').style.display = 'block';
+                document.getElementById('fenContainer').style.display = 'block';
+                document.getElementById('challengeResults').style.display = 'block';
+                
+                document.getElementById('player').textContent = data.player;
+                document.getElementById('playerColor').textContent = data.player_color;
+                document.getElementById('sacrificeMove').textContent = data.sacrifice_move;
+                document.getElementById('sacrificePosition').textContent = data.sacrifice_position_fen;
+                
+                // Challenge results
+                const challengeElement = document.getElementById('challengeCompleted');
+                if (data.challenge_completed) {
+                    challengeElement.textContent = 'Yes! Congratulations!';
+                    challengeElement.className = 'success';
+                } else {
+                    challengeElement.textContent = 'No';
+                    challengeElement.className = 'failure';
+                }
+                
+                document.getElementById('accuracy').textContent = data.accuracy.toFixed(2);
+                document.getElementById('bestMoves').textContent = data.best_moves;
+                document.getElementById('totalMoves').textContent = data.total_moves_analyzed;
+                document.getElementById('maxConsecutive').textContent = data.max_consecutive_best;
+            } else {
+                document.getElementById('queenSacrificed').textContent = 'No queen sacrifice found within the first 10 moves';
+                document.getElementById('queenSacrificed').className = 'failure';
+                document.getElementById('sacrificeDetails').style.display = 'none';
+                document.getElementById('fenContainer').style.display = 'none';
+                document.getElementById('challengeResults').style.display = 'none';
+            }
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        function showError(message) {
+            const errorElement = document.getElementById('error');
+            errorElement.textContent = 'Error: ' + message;
+            errorElement.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
