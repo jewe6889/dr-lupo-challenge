@@ -1,4 +1,4 @@
-# Dr Lupo Challenge Analyzer
+# Dr Lupo Challenge Analyzer v2
 
 A tool to analyze chess games and determine if a player has completed the "Dr Lupo Challenge."
 
@@ -6,166 +6,114 @@ A tool to analyze chess games and determine if a player has completed the "Dr Lu
 
 The Dr Lupo Challenge requires a player to:
 1. Sacrifice their queen within the first 10 moves of the game
-2. Follow up with 26 consecutive "best" engine moves
+2. Follow up with 26 consecutive "best" engine moves (within a configurable centipawn tolerance)
+
+### The Lupo Ladder
+
+| Tier | Required Streak | Badge |
+|------|----------------|-------|
+| Baby Lupo | 3 consecutive | 🍼 |
+| Padawan Lupo | 5 consecutive | 🔵 |
+| Prodigy Lupo | 7 consecutive | 🟢 |
+| Half Lupo | 13 consecutive | 🟡 |
+| Master Lupo | 20 consecutive | 🟠 |
+| Dr Lupo | 26 consecutive | 👑 |
 
 ## Features
 
-- Detects queen sacrifices within the first 10 moves of a chess game
-- Analyzes game moves after the sacrifice using Stockfish engine
-- Calculates accuracy score (proportion of best engine moves)
-- Tracks maximum consecutive best moves played
-- Returns the FEN position after the queen sacrifice for further analysis
-- Provides detailed move analysis with rank and evaluation differences
-- Shows alternative best moves and top engine choices
-- Color-coded output in CLI and web interface
-- Configurable engine depth and margin of error for move assessment
-- Interactive web UI with collapsible move details
-- "Copy to Clipboard" sharing feature to share results with friends
-- Visual grid representation of moves (similar to Wordle)
+- Detects queen sacrifices within the first 10 moves
+- Analyzes post-sacrifice moves using Stockfish engine
+- Badge system based on consecutive best-move streaks
+- Visual analysis graph (move ranks + eval diffs with tolerance zone)
+- Wordle-style move grid and Lichess share link for friends to try the same position
+- Color-coded CLI output with detailed move-by-move analysis
+- Configurable engine depth, tolerance (centipawns), and move count
 
 ## Prerequisites
 
 - Python 3.7+
-- Stockfish chess engine installed on your system
+- [Stockfish](https://stockfishchess.org/download/) chess engine
 
 ## Installation
-
-### 1. Clone the repository
 
 ```bash
 git clone https://github.com/yourusername/dr-lupo-challenge.git
 cd dr-lupo-challenge
-```
-
-### 2. Create a virtual environment
-
-```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### 3. Install dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
-### 4. Install Stockfish
-
-The analyzer requires Stockfish to be installed on your system. You can download it from [the official website](https://stockfishchess.org/download/).
-
-Make sure the stockfish executable is in your system PATH or provide the path using the `--engine` flag.
-
 ## Usage
 
-### Command Line Interface
+### Command Line
 
-Basic usage:
 ```bash
-python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo
+# Basic analysis
+python -m src.dr_lupo_analyzer https://lichess.org/XXXXXXXX
+
+# With Stockfish path and verbose output
+python -m src.dr_lupo_analyzer https://lichess.org/XXXXXXXX --engine /path/to/stockfish --verbose
+
+# Custom settings
+python -m src.dr_lupo_analyzer https://lichess.org/XXXXXXXX --depth 20 --margin 10
 ```
 
-For detailed move analysis:
-```bash
-python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo --verbose
-```
-
-Optional parameters:
-- `--engine`: Path to the Stockfish engine (auto-detected by default)
+Options:
+- `--engine`: Path to Stockfish (auto-detected by default)
 - `--depth`: Engine analysis depth (default: 16)
-- `--margin`: Margin of error in centipawns (default: 5)
-- `--verbose`: Show detailed move analysis with rankings and top moves
+- `--margin`: Tolerance in centipawns (default: 25)
+- `--verbose` / `-v`: Show move-by-move analysis with top engine choices
+- `--no-graph`: Skip graph generation
+- `--output` / `-o`: Graph output path (default: `dr_lupo_analysis.png`)
 
 ### Web Interface
-
-Run the Flask application:
 
 ```bash
 python app.py
 ```
 
-Then open your browser and navigate to http://localhost:5000
+Then open http://localhost:5000
 
-## Sharing Feature
-
-The web interface includes a "Copy to Clipboard" feature that allows you to share your Dr Lupo Challenge results with friends. The share format includes:
-
-- Challenge title with emoji
-- Queen sacrifice details (move number and player color)
-- Engine analysis depth
-- Accuracy percentage
-- Max consecutive best moves
-- A link to the Lichess position (in FEN format) for friends to try from the same position
-- Visual grid representation of your moves (Wordle-style):
-  - 🟨 = Queen sacrifice (with move number)
-  - 🟩 = Best move
-  - 🟥 = Non-best move
-
-Example share text:
-```
-🎮 Dr Lupo Challenge 👑
-
-Queen sacrifice at move 9 (white) (vs Lichess AI level 3)
-Depth: 16
-Accuracy: 34.62% (9/26)
-Max consecutive best moves: 2
-
-Try to beat me from this position against Lichess AI level 3:
-https://lichess.org/editor/r1b1kb1r/1pp2ppp/p1n2n2/4p3/4P3/2PQ1P2/P1PP2PP/R1B1KB1R_b_KQkq_-_0_9?color=black
-
-Dr Lupo Challenge: 9Q
-🟨🟩🟩🟥🟥🟩🟥🟩🟩
-🟥🟩🟥🟩🟩🟥🟩🟥
-🟩🟥🟩🟥🟩🟥🟥🟩
-```
-
-## Example
-
-Analyzing a game with a queen sacrifice:
+## Example Output
 
 ```
-Analyzing game: https://lichess.org/Fqxk7kf8gtAo
-Engine depth: 16
-Margin of error: 5 centipawns
-This may take several minutes. Please wait...
+🎮  DR LUPO CHALLENGE v2  👑
+──────────────────────────────────────────────────────────────
+  Game:    jewe6889 vs lichess AI level 5
+  Player:  jewe6889 (white)
+──────────────────────────────────────────────────────────────
+  👑 QUEEN SACRIFICE
+  Move 9 · White gave up the queen (gxf6)
+──────────────────────────────────────────────────────────────
+  📊 CHALLENGE RESULTS
+  Accuracy:     50.0% (13/26 best moves)
+  Best streak:  3 consecutive best moves
+  Tolerance:    25cp
+  Completed:    ❌ NO
 
-Analysis Results:
-Game: lichess AI level 3 vs jewe
-Queen sacrificed: Yes (Move 9)
-Position FEN: r1b1kb1r/1pp2ppp/p1n2n2/4p3/4P3/2PQ1P2/P1PP2PP/R1B1KB1R b KQkq - 0 9
-Player: lichess AI level 3 (white)
-Challenge completed: No
-Accuracy: 34.62%
-Best moves: 9/26
-Max consecutive best moves: 2
-Analysis time: 25.89 seconds
+  🏆 BADGE: 🍼  Baby Lupo  (streak ≥ 3)
+
+  Move grid:
+  🟨🟥🟩🟩🟥🟥🟩🟩🟥
+  🟥🟥🟥🟩🟩🟥🟥🟩🟥
+  🟥🟥🟩🟩🟩🟥🟩🟩🟩
+──────────────────────────────────────────────────────────────
+  🔗 CHALLENGE A FRIEND
+  Play from this position as white:
+  https://lichess.org/editor/...?color=white
+──────────────────────────────────────────────────────────────
 ```
 
-With the `--verbose` flag, you'll see additional information for each move:
-- Move rank (compared to best moves)
-- Evaluation difference (how far the move is from the best move in centipawns)
-- Top alternative moves
-- Color-coded output (green for best moves, red for non-best moves)
+The `--verbose` flag adds per-move details: rank, eval diff, and top engine alternatives.
+
+A graph (`dr_lupo_analysis.png`) is generated automatically showing move ranks as colored bars and eval diffs as a line, with the tolerance zone highlighted in green.
 
 ## Troubleshooting
 
-### Stockfish Not Found
-If you get an error that Stockfish is not found, you can specify the path directly:
-```bash
-python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo --engine /path/to/stockfish
-```
-
-### Analysis Takes Too Long
-You can reduce the engine depth for faster (but less accurate) analysis:
-```bash
-python -m src.dr_lupo_analyzer https://lichess.org/Fqxk7kf8gtAo --depth 8
-```
-
-### Colorama Not Found
-If you want colored CLI output but get an error about colorama, install it:
-```bash
-pip install colorama
-```
+- **Stockfish not found**: specify the path with `--engine /path/to/stockfish`
+- **Too slow**: reduce depth with `--depth 8`
+- **No colors**: install colorama with `pip install colorama`
 
 ## License
 
