@@ -1,0 +1,5422 @@
+{
+  "game_id": "mfJW36UO",
+  "game_url": "https://lichess.org/mfJW36UO",
+  "white": "Arsen_Chess",
+  "black": "VovanDeMort3000",
+  "start_ply": 14,
+  "player_color": "white",
+  "num_moves": 26,
+  "engine_depth": 18,
+  "margin_cp": 49,
+  "positions": [
+    {
+      "move_number": 1,
+      "fen": "rn1qk2r/pp2ppbp/2p1bnp1/8/Q1p5/N4NP1/PP1PPPBP/R1B2RK1 w kq - 0 8",
+      "game_move_san": "Ng5",
+      "game_move_uci": "f3g5",
+      "best_moves": [
+        {
+          "uci": "f3g5",
+          "san": "Ng5",
+          "eval_cp": 2
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "f3g5",
+          "san": "Ng5",
+          "eval_cp": 2
+        },
+        {
+          "uci": "a4c2",
+          "san": "Qc2",
+          "eval_cp": -132
+        },
+        {
+          "uci": "f1e1",
+          "san": "Re1",
+          "eval_cp": -134
+        },
+        {
+          "uci": "a4d1",
+          "san": "Qd1",
+          "eval_cp": -141
+        },
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": -147
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -158
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -164
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": -166
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -172
+        },
+        {
+          "uci": "a4b4",
+          "san": "Qb4",
+          "eval_cp": -173
+        },
+        {
+          "uci": "f3e1",
+          "san": "Ne1",
+          "eval_cp": -185
+        },
+        {
+          "uci": "d2d4",
+          "san": "d4",
+          "eval_cp": -186
+        },
+        {
+          "uci": "d2d3",
+          "san": "d3",
+          "eval_cp": -203
+        },
+        {
+          "uci": "f3e5",
+          "san": "Ne5",
+          "eval_cp": -217
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": -222
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -223
+        },
+        {
+          "uci": "f3h4",
+          "san": "Nh4",
+          "eval_cp": -231
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -245
+        },
+        {
+          "uci": "e2e3",
+          "san": "e3",
+          "eval_cp": -253
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -296
+        },
+        {
+          "uci": "e2e4",
+          "san": "e4",
+          "eval_cp": -318
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": -337
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -354
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nxc4",
+          "eval_cp": -453
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -728
+        },
+        {
+          "uci": "f3d4",
+          "san": "Nd4",
+          "eval_cp": -810
+        },
+        {
+          "uci": "a4c4",
+          "san": "Qxc4",
+          "eval_cp": -835
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -921
+        },
+        {
+          "uci": "a4a7",
+          "san": "Qxa7",
+          "eval_cp": -1194
+        },
+        {
+          "uci": "a4b5",
+          "san": "Qb5",
+          "eval_cp": -1200
+        },
+        {
+          "uci": "a4c6",
+          "san": "Qxc6+",
+          "eval_cp": -1208
+        },
+        {
+          "uci": "a4b3",
+          "san": "Qb3",
+          "eval_cp": -1236
+        },
+        {
+          "uci": "a4a6",
+          "san": "Qa6",
+          "eval_cp": -1262
+        },
+        {
+          "uci": "a4a5",
+          "san": "Qa5",
+          "eval_cp": -1272
+        }
+      ],
+      "opponent_reply_uci": "e8g8",
+      "opponent_reply_san": "O-O",
+      "fen_after_opponent": "rn1q1rk1/pp2ppbp/2p1bnp1/6N1/Q1p5/N5P1/PP1PPPBP/R1B2RK1 w - - 2 9"
+    },
+    {
+      "move_number": 2,
+      "fen": "rn1q1rk1/pp2ppbp/2p1bnp1/6N1/Q1p5/N5P1/PP1PPPBP/R1B2RK1 w - - 2 9",
+      "game_move_san": "Nxe6",
+      "game_move_uci": "g5e6",
+      "best_moves": [
+        {
+          "uci": "g5e6",
+          "san": "Nxe6",
+          "eval_cp": 193
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "g5e6",
+          "san": "Nxe6",
+          "eval_cp": 193
+        },
+        {
+          "uci": "d2d4",
+          "san": "d4",
+          "eval_cp": -50
+        },
+        {
+          "uci": "a4c2",
+          "san": "Qc2",
+          "eval_cp": -74
+        },
+        {
+          "uci": "a4b4",
+          "san": "Qb4",
+          "eval_cp": -77
+        },
+        {
+          "uci": "f1e1",
+          "san": "Re1",
+          "eval_cp": -82
+        },
+        {
+          "uci": "d2d3",
+          "san": "d3",
+          "eval_cp": -84
+        },
+        {
+          "uci": "a4d1",
+          "san": "Qd1",
+          "eval_cp": -91
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -100
+        },
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": -109
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -122
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -129
+        },
+        {
+          "uci": "e2e4",
+          "san": "e4",
+          "eval_cp": -130
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -162
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": -170
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -216
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -222
+        },
+        {
+          "uci": "g5f3",
+          "san": "Nf3",
+          "eval_cp": -244
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nxc4",
+          "eval_cp": -250
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": -260
+        },
+        {
+          "uci": "e2e3",
+          "san": "e3",
+          "eval_cp": -289
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -320
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": -325
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -355
+        },
+        {
+          "uci": "g5h3",
+          "san": "Nh3",
+          "eval_cp": -357
+        },
+        {
+          "uci": "g5e4",
+          "san": "Ne4",
+          "eval_cp": -367
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": -421
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -449
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -479
+        },
+        {
+          "uci": "g2e4",
+          "san": "Be4",
+          "eval_cp": -522
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -723
+        },
+        {
+          "uci": "g5f7",
+          "san": "Nxf7",
+          "eval_cp": -746
+        },
+        {
+          "uci": "g2c6",
+          "san": "Bxc6",
+          "eval_cp": -760
+        },
+        {
+          "uci": "g5h7",
+          "san": "Nxh7",
+          "eval_cp": -774
+        },
+        {
+          "uci": "a4c4",
+          "san": "Qxc4",
+          "eval_cp": -896
+        },
+        {
+          "uci": "a4a7",
+          "san": "Qxa7",
+          "eval_cp": -1051
+        },
+        {
+          "uci": "a4c6",
+          "san": "Qxc6",
+          "eval_cp": -1051
+        },
+        {
+          "uci": "g2d5",
+          "san": "Bd5",
+          "eval_cp": -1051
+        },
+        {
+          "uci": "a4a6",
+          "san": "Qa6",
+          "eval_cp": -1080
+        },
+        {
+          "uci": "a4b5",
+          "san": "Qb5",
+          "eval_cp": -1101
+        },
+        {
+          "uci": "a4b3",
+          "san": "Qb3",
+          "eval_cp": -1123
+        },
+        {
+          "uci": "a4a5",
+          "san": "Qa5",
+          "eval_cp": -1158
+        }
+      ],
+      "opponent_reply_uci": "f7e6",
+      "opponent_reply_san": "fxe6",
+      "fen_after_opponent": "rn1q1rk1/pp2p1bp/2p1pnp1/8/Q1p5/N5P1/PP1PPPBP/R1B2RK1 w - - 0 10"
+    },
+    {
+      "move_number": 3,
+      "fen": "rn1q1rk1/pp2p1bp/2p1pnp1/8/Q1p5/N5P1/PP1PPPBP/R1B2RK1 w - - 0 10",
+      "game_move_san": "Qxc4",
+      "game_move_uci": "a4c4",
+      "best_moves": [
+        {
+          "uci": "a4c4",
+          "san": "Qxc4",
+          "eval_cp": 214
+        },
+        {
+          "uci": "a4c2",
+          "san": "Qc2",
+          "eval_cp": 175
+        }
+      ],
+      "best_move_count": 2,
+      "all_moves": [
+        {
+          "uci": "a4c4",
+          "san": "Qxc4",
+          "eval_cp": 214
+        },
+        {
+          "uci": "a4c2",
+          "san": "Qc2",
+          "eval_cp": 175
+        },
+        {
+          "uci": "a4d1",
+          "san": "Qd1",
+          "eval_cp": 111
+        },
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": 41
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": 6
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -11
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": -12
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -15
+        },
+        {
+          "uci": "d2d4",
+          "san": "d4",
+          "eval_cp": -28
+        },
+        {
+          "uci": "e2e3",
+          "san": "e3",
+          "eval_cp": -29
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -33
+        },
+        {
+          "uci": "d2d3",
+          "san": "d3",
+          "eval_cp": -36
+        },
+        {
+          "uci": "a4b4",
+          "san": "Qb4",
+          "eval_cp": -47
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -66
+        },
+        {
+          "uci": "f1e1",
+          "san": "Re1",
+          "eval_cp": -67
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -75
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -79
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": -108
+        },
+        {
+          "uci": "e2e4",
+          "san": "e4",
+          "eval_cp": -112
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": -130
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -165
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": -172
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -209
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nxc4",
+          "eval_cp": -250
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -252
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -515
+        },
+        {
+          "uci": "g2c6",
+          "san": "Bxc6",
+          "eval_cp": -759
+        },
+        {
+          "uci": "g2e4",
+          "san": "Be4",
+          "eval_cp": -785
+        },
+        {
+          "uci": "g2d5",
+          "san": "Bd5",
+          "eval_cp": -960
+        },
+        {
+          "uci": "a4c6",
+          "san": "Qxc6",
+          "eval_cp": -1047
+        },
+        {
+          "uci": "a4a7",
+          "san": "Qxa7",
+          "eval_cp": -1051
+        },
+        {
+          "uci": "a4a6",
+          "san": "Qa6",
+          "eval_cp": -1088
+        },
+        {
+          "uci": "a4b5",
+          "san": "Qb5",
+          "eval_cp": -1108
+        },
+        {
+          "uci": "a4b3",
+          "san": "Qb3",
+          "eval_cp": -1130
+        },
+        {
+          "uci": "a4a5",
+          "san": "Qa5",
+          "eval_cp": -1140
+        }
+      ],
+      "opponent_reply_uci": "f6d5",
+      "opponent_reply_san": "Nd5",
+      "fen_after_opponent": "rn1q1rk1/pp2p1bp/2p1p1p1/3n4/2Q5/N5P1/PP1PPPBP/R1B2RK1 w - - 1 11"
+    },
+    {
+      "move_number": 4,
+      "fen": "rn1q1rk1/pp2p1bp/2p1p1p1/3n4/2Q5/N5P1/PP1PPPBP/R1B2RK1 w - - 1 11",
+      "game_move_san": "e4",
+      "game_move_uci": "e2e4",
+      "best_moves": [
+        {
+          "uci": "d2d4",
+          "san": "d4",
+          "eval_cp": 211
+        },
+        {
+          "uci": "d2d3",
+          "san": "d3",
+          "eval_cp": 202
+        },
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": 200
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": 190
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": 187
+        },
+        {
+          "uci": "c4e4",
+          "san": "Qe4",
+          "eval_cp": 178
+        },
+        {
+          "uci": "c4g4",
+          "san": "Qg4",
+          "eval_cp": 177
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 171
+        },
+        {
+          "uci": "e2e3",
+          "san": "e3",
+          "eval_cp": 171
+        },
+        {
+          "uci": "e2e4",
+          "san": "e4",
+          "eval_cp": 167
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": 162
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "d2d4",
+          "san": "d4",
+          "eval_cp": 211
+        },
+        {
+          "uci": "d2d3",
+          "san": "d3",
+          "eval_cp": 202
+        },
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": 200
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": 190
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": 187
+        },
+        {
+          "uci": "c4e4",
+          "san": "Qe4",
+          "eval_cp": 178
+        },
+        {
+          "uci": "c4g4",
+          "san": "Qg4",
+          "eval_cp": 177
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 171
+        },
+        {
+          "uci": "e2e3",
+          "san": "e3",
+          "eval_cp": 171
+        },
+        {
+          "uci": "e2e4",
+          "san": "e4",
+          "eval_cp": 167
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": 162
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 157
+        },
+        {
+          "uci": "c4c2",
+          "san": "Qc2",
+          "eval_cp": 150
+        },
+        {
+          "uci": "c4b3",
+          "san": "Qb3",
+          "eval_cp": 148
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 146
+        },
+        {
+          "uci": "f1e1",
+          "san": "Re1",
+          "eval_cp": 140
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 122
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": 120
+        },
+        {
+          "uci": "c4c5",
+          "san": "Qc5",
+          "eval_cp": 119
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 114
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 113
+        },
+        {
+          "uci": "c4h4",
+          "san": "Qh4",
+          "eval_cp": 106
+        },
+        {
+          "uci": "c4d3",
+          "san": "Qd3",
+          "eval_cp": 106
+        },
+        {
+          "uci": "c4a4",
+          "san": "Qa4",
+          "eval_cp": 105
+        },
+        {
+          "uci": "g2e4",
+          "san": "Be4",
+          "eval_cp": 91
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": 47
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -92
+        },
+        {
+          "uci": "g2d5",
+          "san": "Bxd5",
+          "eval_cp": -125
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -388
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": -504
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -521
+        },
+        {
+          "uci": "c4c3",
+          "san": "Qc3",
+          "eval_cp": -765
+        },
+        {
+          "uci": "c4f4",
+          "san": "Qf4",
+          "eval_cp": -908
+        },
+        {
+          "uci": "c4d5",
+          "san": "Qxd5",
+          "eval_cp": -926
+        },
+        {
+          "uci": "c4c6",
+          "san": "Qxc6",
+          "eval_cp": -1062
+        },
+        {
+          "uci": "c4b5",
+          "san": "Qb5",
+          "eval_cp": -1075
+        },
+        {
+          "uci": "c4d4",
+          "san": "Qd4",
+          "eval_cp": -1087
+        },
+        {
+          "uci": "c4a6",
+          "san": "Qa6",
+          "eval_cp": -1102
+        },
+        {
+          "uci": "c4b4",
+          "san": "Qb4",
+          "eval_cp": -1130
+        }
+      ],
+      "opponent_reply_uci": "d5c7",
+      "opponent_reply_san": "Nc7",
+      "fen_after_opponent": "rn1q1rk1/ppn1p1bp/2p1p1p1/8/2Q1P3/N5P1/PP1P1PBP/R1B2RK1 w - - 1 12"
+    },
+    {
+      "move_number": 5,
+      "fen": "rn1q1rk1/ppn1p1bp/2p1p1p1/8/2Q1P3/N5P1/PP1P1PBP/R1B2RK1 w - - 1 12",
+      "game_move_san": "Qb3",
+      "game_move_uci": "c4b3",
+      "best_moves": [
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": 196
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": 196
+        },
+        {
+          "uci": "c4b4",
+          "san": "Qb4",
+          "eval_cp": 99
+        },
+        {
+          "uci": "c4b3",
+          "san": "Qb3",
+          "eval_cp": 89
+        },
+        {
+          "uci": "d2d3",
+          "san": "d3",
+          "eval_cp": 86
+        },
+        {
+          "uci": "c4e2",
+          "san": "Qe2",
+          "eval_cp": 76
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 76
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": 72
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": 66
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 63
+        },
+        {
+          "uci": "d2d4",
+          "san": "d4",
+          "eval_cp": 62
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 54
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 50
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 49
+        },
+        {
+          "uci": "c4c2",
+          "san": "Qc2",
+          "eval_cp": 23
+        },
+        {
+          "uci": "f1e1",
+          "san": "Re1",
+          "eval_cp": 17
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": 17
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 15
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": 0
+        },
+        {
+          "uci": "c4c5",
+          "san": "Qc5",
+          "eval_cp": -14
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -25
+        },
+        {
+          "uci": "c4a4",
+          "san": "Qa4",
+          "eval_cp": -32
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -74
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -638
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": -658
+        },
+        {
+          "uci": "c4c3",
+          "san": "Qc3",
+          "eval_cp": -661
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -681
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -685
+        },
+        {
+          "uci": "c4e6",
+          "san": "Qxe6+",
+          "eval_cp": -1130
+        },
+        {
+          "uci": "c4d5",
+          "san": "Qd5",
+          "eval_cp": -1144
+        },
+        {
+          "uci": "c4d4",
+          "san": "Qd4",
+          "eval_cp": -1151
+        },
+        {
+          "uci": "c4c6",
+          "san": "Qxc6",
+          "eval_cp": -1158
+        },
+        {
+          "uci": "c4b5",
+          "san": "Qb5",
+          "eval_cp": -1165
+        },
+        {
+          "uci": "c4a6",
+          "san": "Qa6",
+          "eval_cp": -1179
+        },
+        {
+          "uci": "c4d3",
+          "san": "Qd3",
+          "eval_cp": -1307
+        }
+      ],
+      "opponent_reply_uci": "b7b6",
+      "opponent_reply_san": "b6",
+      "fen_after_opponent": "rn1q1rk1/p1n1p1bp/1pp1p1p1/8/4P3/NQ4P1/PP1P1PBP/R1B2RK1 w - - 0 13"
+    },
+    {
+      "move_number": 6,
+      "fen": "rn1q1rk1/p1n1p1bp/1pp1p1p1/8/4P3/NQ4P1/PP1P1PBP/R1B2RK1 w - - 0 13",
+      "game_move_san": "d3",
+      "game_move_uci": "d2d3",
+      "best_moves": [
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": 217
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": 217
+        },
+        {
+          "uci": "d2d4",
+          "san": "d4",
+          "eval_cp": 133
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": 102
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 102
+        },
+        {
+          "uci": "d2d3",
+          "san": "d3",
+          "eval_cp": 79
+        },
+        {
+          "uci": "b3c4",
+          "san": "Qc4",
+          "eval_cp": 73
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 65
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 44
+        },
+        {
+          "uci": "b3d1",
+          "san": "Qd1",
+          "eval_cp": 36
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 33
+        },
+        {
+          "uci": "b3e3",
+          "san": "Qe3",
+          "eval_cp": 32
+        },
+        {
+          "uci": "b3c2",
+          "san": "Qc2",
+          "eval_cp": 24
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nc4",
+          "eval_cp": 15
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 8
+        },
+        {
+          "uci": "b3a4",
+          "san": "Qa4",
+          "eval_cp": 2
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 0
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": -13
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -28
+        },
+        {
+          "uci": "f1e1",
+          "san": "Re1",
+          "eval_cp": -35
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -43
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -51
+        },
+        {
+          "uci": "b3b4",
+          "san": "Qb4",
+          "eval_cp": -57
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -85
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -97
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -582
+        },
+        {
+          "uci": "b3c3",
+          "san": "Qc3",
+          "eval_cp": -615
+        },
+        {
+          "uci": "b3f3",
+          "san": "Qf3",
+          "eval_cp": -796
+        },
+        {
+          "uci": "b3b6",
+          "san": "Qxb6",
+          "eval_cp": -1066
+        },
+        {
+          "uci": "b3b5",
+          "san": "Qb5",
+          "eval_cp": -1111
+        },
+        {
+          "uci": "b3d5",
+          "san": "Qd5",
+          "eval_cp": -1131
+        },
+        {
+          "uci": "b3e6",
+          "san": "Qxe6+",
+          "eval_cp": -1137
+        },
+        {
+          "uci": "b3d3",
+          "san": "Qd3",
+          "eval_cp": -1287
+        }
+      ],
+      "opponent_reply_uci": "b8d7",
+      "opponent_reply_san": "Nd7",
+      "fen_after_opponent": "r2q1rk1/p1nnp1bp/1pp1p1p1/8/4P3/NQ1P2P1/PP3PBP/R1B2RK1 w - - 1 14"
+    },
+    {
+      "move_number": 7,
+      "fen": "r2q1rk1/p1nnp1bp/1pp1p1p1/8/4P3/NQ1P2P1/PP3PBP/R1B2RK1 w - - 1 14",
+      "game_move_san": "Bf4",
+      "game_move_uci": "c1f4",
+      "best_moves": [
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": 121
+        },
+        {
+          "uci": "d3d4",
+          "san": "d4",
+          "eval_cp": 99
+        },
+        {
+          "uci": "c1e3",
+          "san": "Be3",
+          "eval_cp": 84
+        },
+        {
+          "uci": "c1f4",
+          "san": "Bf4",
+          "eval_cp": 80
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "f1d1",
+          "san": "Rd1",
+          "eval_cp": 121
+        },
+        {
+          "uci": "d3d4",
+          "san": "d4",
+          "eval_cp": 99
+        },
+        {
+          "uci": "c1e3",
+          "san": "Be3",
+          "eval_cp": 84
+        },
+        {
+          "uci": "c1f4",
+          "san": "Bf4",
+          "eval_cp": 80
+        },
+        {
+          "uci": "b3c2",
+          "san": "Qc2",
+          "eval_cp": 52
+        },
+        {
+          "uci": "c1g5",
+          "san": "Bg5",
+          "eval_cp": 47
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 32
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rb1",
+          "eval_cp": 26
+        },
+        {
+          "uci": "b3d1",
+          "san": "Qd1",
+          "eval_cp": 21
+        },
+        {
+          "uci": "b3b4",
+          "san": "Qb4",
+          "eval_cp": -17
+        },
+        {
+          "uci": "f1e1",
+          "san": "Re1",
+          "eval_cp": -29
+        },
+        {
+          "uci": "b3c4",
+          "san": "Qc4",
+          "eval_cp": -32
+        },
+        {
+          "uci": "b3a4",
+          "san": "Qa4",
+          "eval_cp": -37
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -40
+        },
+        {
+          "uci": "c1d2",
+          "san": "Bd2",
+          "eval_cp": -42
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": -61
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -62
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nc4",
+          "eval_cp": -96
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -99
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -122
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -123
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -124
+        },
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": -130
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -134
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -138
+        },
+        {
+          "uci": "c1h6",
+          "san": "Bh6",
+          "eval_cp": -448
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -638
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -651
+        },
+        {
+          "uci": "b3c3",
+          "san": "Qc3",
+          "eval_cp": -802
+        },
+        {
+          "uci": "b3b6",
+          "san": "Qxb6",
+          "eval_cp": -1059
+        },
+        {
+          "uci": "b3b5",
+          "san": "Qb5",
+          "eval_cp": -1101
+        },
+        {
+          "uci": "b3d5",
+          "san": "Qd5",
+          "eval_cp": -1151
+        },
+        {
+          "uci": "b3e6",
+          "san": "Qxe6+",
+          "eval_cp": -1171
+        }
+      ],
+      "opponent_reply_uci": "d7c5",
+      "opponent_reply_san": "Nc5",
+      "fen_after_opponent": "r2q1rk1/p1n1p1bp/1pp1p1p1/2n5/4PB2/NQ1P2P1/PP3PBP/R4RK1 w - - 3 15"
+    },
+    {
+      "move_number": 8,
+      "fen": "r2q1rk1/p1n1p1bp/1pp1p1p1/2n5/4PB2/NQ1P2P1/PP3PBP/R4RK1 w - - 3 15",
+      "game_move_san": "Qc2",
+      "game_move_uci": "b3c2",
+      "best_moves": [
+        {
+          "uci": "b3c2",
+          "san": "Qc2",
+          "eval_cp": 67
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "b3c2",
+          "san": "Qc2",
+          "eval_cp": 67
+        },
+        {
+          "uci": "b3c4",
+          "san": "Qc4",
+          "eval_cp": -56
+        },
+        {
+          "uci": "f4c7",
+          "san": "Bxc7",
+          "eval_cp": -65
+        },
+        {
+          "uci": "b3d1",
+          "san": "Qd1",
+          "eval_cp": -215
+        },
+        {
+          "uci": "b3b4",
+          "san": "Qb4",
+          "eval_cp": -267
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nc4",
+          "eval_cp": -831
+        },
+        {
+          "uci": "d3d4",
+          "san": "d4",
+          "eval_cp": -838
+        },
+        {
+          "uci": "f4h6",
+          "san": "Bh6",
+          "eval_cp": -841
+        },
+        {
+          "uci": "f4e5",
+          "san": "Be5",
+          "eval_cp": -845
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -866
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -879
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -886
+        },
+        {
+          "uci": "f4e3",
+          "san": "Be3",
+          "eval_cp": -888
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -902
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -907
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -909
+        },
+        {
+          "uci": "f4d2",
+          "san": "Bd2",
+          "eval_cp": -912
+        },
+        {
+          "uci": "a3c2",
+          "san": "Nc2",
+          "eval_cp": -912
+        },
+        {
+          "uci": "f4g5",
+          "san": "Bg5",
+          "eval_cp": -916
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -916
+        },
+        {
+          "uci": "f4c1",
+          "san": "Bc1",
+          "eval_cp": -919
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": -919
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -920
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -925
+        },
+        {
+          "uci": "b3c3",
+          "san": "Qc3",
+          "eval_cp": -937
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -945
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -951
+        },
+        {
+          "uci": "f4d6",
+          "san": "Bd6",
+          "eval_cp": -952
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -952
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -952
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -961
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -975
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -1016
+        },
+        {
+          "uci": "b3b6",
+          "san": "Qxb6",
+          "eval_cp": -1088
+        },
+        {
+          "uci": "b3b5",
+          "san": "Qb5",
+          "eval_cp": -1104
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -1126
+        },
+        {
+          "uci": "b3a4",
+          "san": "Qa4",
+          "eval_cp": -1146
+        },
+        {
+          "uci": "b3d5",
+          "san": "Qd5",
+          "eval_cp": -1151
+        },
+        {
+          "uci": "b3e6",
+          "san": "Qxe6+",
+          "eval_cp": -1272
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -1357
+        }
+      ],
+      "opponent_reply_uci": "e6e5",
+      "opponent_reply_san": "e5",
+      "fen_after_opponent": "r2q1rk1/p1n1p1bp/1pp3p1/2n1p3/4PB2/N2P2P1/PPQ2PBP/R4RK1 w - - 0 16"
+    },
+    {
+      "move_number": 9,
+      "fen": "r2q1rk1/p1n1p1bp/1pp3p1/2n1p3/4PB2/N2P2P1/PPQ2PBP/R4RK1 w - - 0 16",
+      "game_move_san": "Bg5",
+      "game_move_uci": "f4g5",
+      "best_moves": [
+        {
+          "uci": "f4e3",
+          "san": "Be3",
+          "eval_cp": 98
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "f4e3",
+          "san": "Be3",
+          "eval_cp": 98
+        },
+        {
+          "uci": "d3d4",
+          "san": "d4",
+          "eval_cp": -7
+        },
+        {
+          "uci": "f4g5",
+          "san": "Bg5",
+          "eval_cp": -34
+        },
+        {
+          "uci": "f4c1",
+          "san": "Bc1",
+          "eval_cp": -45
+        },
+        {
+          "uci": "f4d2",
+          "san": "Bd2",
+          "eval_cp": -49
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4+",
+          "eval_cp": -54
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": -384
+        },
+        {
+          "uci": "f4e5",
+          "san": "Bxe5",
+          "eval_cp": -486
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -611
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -626
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -657
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -687
+        },
+        {
+          "uci": "f4h6",
+          "san": "Bh6",
+          "eval_cp": -707
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -736
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -737
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -751
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -764
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": -769
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -771
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": -779
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -783
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nc4",
+          "eval_cp": -789
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -789
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": -806
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qxc5",
+          "eval_cp": -808
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -818
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -825
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -825
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -831
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": -841
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -842
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -842
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": -843
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -849
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -865
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -884
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -1229
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3+",
+          "eval_cp": -1343
+        }
+      ],
+      "opponent_reply_uci": "c7e6",
+      "opponent_reply_san": "N7e6",
+      "fen_after_opponent": "r2q1rk1/p3p1bp/1pp1n1p1/2n1p1B1/4P3/N2P2P1/PPQ2PBP/R4RK1 w - - 2 17"
+    },
+    {
+      "move_number": 10,
+      "fen": "r2q1rk1/p3p1bp/1pp1n1p1/2n1p1B1/4P3/N2P2P1/PPQ2PBP/R4RK1 w - - 2 17",
+      "game_move_san": "Be3",
+      "game_move_uci": "g5e3",
+      "best_moves": [
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": 0
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4",
+          "eval_cp": -33
+        },
+        {
+          "uci": "g5e3",
+          "san": "Be3",
+          "eval_cp": -36
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": 0
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4",
+          "eval_cp": -33
+        },
+        {
+          "uci": "g5e3",
+          "san": "Be3",
+          "eval_cp": -36
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -69
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": -118
+        },
+        {
+          "uci": "g5d2",
+          "san": "Bd2",
+          "eval_cp": -124
+        },
+        {
+          "uci": "g5c1",
+          "san": "Bc1",
+          "eval_cp": -125
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": -141
+        },
+        {
+          "uci": "d3d4",
+          "san": "d4",
+          "eval_cp": -232
+        },
+        {
+          "uci": "g5h4",
+          "san": "Bh4",
+          "eval_cp": -267
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -386
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": -537
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -615
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": -636
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -684
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -686
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -694
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -709
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nc4",
+          "eval_cp": -726
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -731
+        },
+        {
+          "uci": "g5h6",
+          "san": "Bh6",
+          "eval_cp": -743
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -750
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": -752
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -754
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": -759
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -765
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -771
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -771
+        },
+        {
+          "uci": "g5e7",
+          "san": "Bxe7",
+          "eval_cp": -774
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -791
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -794
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -808
+        },
+        {
+          "uci": "g5f6",
+          "san": "Bf6",
+          "eval_cp": -819
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -834
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -835
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qxc5",
+          "eval_cp": -853
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -858
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -911
+        },
+        {
+          "uci": "g5f4",
+          "san": "Bf4",
+          "eval_cp": -912
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -1272
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": -1281
+        }
+      ],
+      "opponent_reply_uci": "e6d4",
+      "opponent_reply_san": "Nd4",
+      "fen_after_opponent": "r2q1rk1/p3p1bp/1pp3p1/2n1p3/3nP3/N2PB1P1/PPQ2PBP/R4RK1 w - - 4 18"
+    },
+    {
+      "move_number": 11,
+      "fen": "r2q1rk1/p3p1bp/1pp3p1/2n1p3/3nP3/N2PB1P1/PPQ2PBP/R4RK1 w - - 4 18",
+      "game_move_san": "Bxd4",
+      "game_move_uci": "e3d4",
+      "best_moves": [
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 24
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4+",
+          "eval_cp": 0
+        },
+        {
+          "uci": "e3d4",
+          "san": "Bxd4",
+          "eval_cp": -23
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 24
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4+",
+          "eval_cp": 0
+        },
+        {
+          "uci": "e3d4",
+          "san": "Bxd4",
+          "eval_cp": -23
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": -33
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": -54
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qxc5",
+          "eval_cp": -830
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -832
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -837
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -837
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -837
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -839
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -841
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -846
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": -846
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -851
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -856
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": -858
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": -860
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -866
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -871
+        },
+        {
+          "uci": "e3g5",
+          "san": "Bg5",
+          "eval_cp": -874
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -877
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -891
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -894
+        },
+        {
+          "uci": "e3h6",
+          "san": "Bh6",
+          "eval_cp": -931
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -931
+        },
+        {
+          "uci": "e3c1",
+          "san": "Bc1",
+          "eval_cp": -939
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -955
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3+",
+          "eval_cp": -973
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": -1016
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -1112
+        },
+        {
+          "uci": "e3d2",
+          "san": "Bd2",
+          "eval_cp": -1187
+        },
+        {
+          "uci": "e3f4",
+          "san": "Bf4",
+          "eval_cp": -1222
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -1239
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": -1265
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nc4",
+          "eval_cp": -1287
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -1407
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": -1421
+        }
+      ],
+      "opponent_reply_uci": "e5d4",
+      "opponent_reply_san": "exd4",
+      "fen_after_opponent": "r2q1rk1/p3p1bp/1pp3p1/2n5/3pP3/N2P2P1/PPQ2PBP/R4RK1 w - - 0 19"
+    },
+    {
+      "move_number": 12,
+      "fen": "r2q1rk1/p3p1bp/1pp3p1/2n5/3pP3/N2P2P1/PPQ2PBP/R4RK1 w - - 0 19",
+      "game_move_san": "Nc4",
+      "game_move_uci": "a3c4",
+      "best_moves": [
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": 243
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 221
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 216
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": 243
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 221
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 216
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 178
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 140
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 138
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 136
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4+",
+          "eval_cp": 134
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 114
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 108
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 104
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 103
+        },
+        {
+          "uci": "a3c4",
+          "san": "Nc4",
+          "eval_cp": 99
+        },
+        {
+          "uci": "a3b1",
+          "san": "Nb1",
+          "eval_cp": 96
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 93
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": 93
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 91
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": 74
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 65
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 62
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 50
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 49
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": 36
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": 8
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": 0
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": -25
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -185
+        },
+        {
+          "uci": "a3b5",
+          "san": "Nb5",
+          "eval_cp": -496
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -685
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qxc5",
+          "eval_cp": -738
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3+",
+          "eval_cp": -895
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -1187
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1307
+        }
+      ],
+      "opponent_reply_uci": "e7e5",
+      "opponent_reply_san": "e5",
+      "fen_after_opponent": "r2q1rk1/p5bp/1pp3p1/2n1p3/2NpP3/3P2P1/PPQ2PBP/R4RK1 w - - 0 20"
+    },
+    {
+      "move_number": 13,
+      "fen": "r2q1rk1/p5bp/1pp3p1/2n1p3/2NpP3/3P2P1/PPQ2PBP/R4RK1 w - - 0 20",
+      "game_move_san": "b4",
+      "game_move_uci": "b2b4",
+      "best_moves": [
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 91
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 72
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 66
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 58
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": 53
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 51
+        },
+        {
+          "uci": "a2a3",
+          "san": "a3",
+          "eval_cp": 49
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 43
+        },
+        {
+          "uci": "a2a4",
+          "san": "a4",
+          "eval_cp": 43
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 91
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 72
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 66
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 58
+        },
+        {
+          "uci": "b2b4",
+          "san": "b4",
+          "eval_cp": 53
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 51
+        },
+        {
+          "uci": "a2a3",
+          "san": "a3",
+          "eval_cp": 49
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 43
+        },
+        {
+          "uci": "a2a4",
+          "san": "a4",
+          "eval_cp": 43
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 36
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 35
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 27
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 25
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 25
+        },
+        {
+          "uci": "b2b3",
+          "san": "b3",
+          "eval_cp": 16
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 15
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 15
+        },
+        {
+          "uci": "c4a5",
+          "san": "Na5",
+          "eval_cp": 9
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 6
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -6
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": -11
+        },
+        {
+          "uci": "c4d2",
+          "san": "Nd2",
+          "eval_cp": -14
+        },
+        {
+          "uci": "c4a3",
+          "san": "Na3",
+          "eval_cp": -27
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": -27
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": -34
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": -37
+        },
+        {
+          "uci": "c4e5",
+          "san": "Nxe5",
+          "eval_cp": -68
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": -90
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -274
+        },
+        {
+          "uci": "c4b6",
+          "san": "Nxb6",
+          "eval_cp": -475
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -573
+        },
+        {
+          "uci": "c4d6",
+          "san": "Nd6",
+          "eval_cp": -605
+        },
+        {
+          "uci": "c4e3",
+          "san": "Ne3",
+          "eval_cp": -777
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": -879
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -1252
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1322
+        }
+      ],
+      "opponent_reply_uci": "c5a6",
+      "opponent_reply_san": "Na6",
+      "fen_after_opponent": "r2q1rk1/p5bp/npp3p1/4p3/1PNpP3/3P2P1/P1Q2PBP/R4RK1 w - - 1 21"
+    },
+    {
+      "move_number": 14,
+      "fen": "r2q1rk1/p5bp/npp3p1/4p3/1PNpP3/3P2P1/P1Q2PBP/R4RK1 w - - 1 21",
+      "game_move_san": "a3",
+      "game_move_uci": "a2a3",
+      "best_moves": [
+        {
+          "uci": "c4e5",
+          "san": "Nxe5",
+          "eval_cp": 350
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "c4e5",
+          "san": "Nxe5",
+          "eval_cp": 350
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 102
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 79
+        },
+        {
+          "uci": "c4d2",
+          "san": "Nd2",
+          "eval_cp": 73
+        },
+        {
+          "uci": "a2a3",
+          "san": "a3",
+          "eval_cp": 68
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 65
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 61
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 49
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": 48
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 48
+        },
+        {
+          "uci": "a2a4",
+          "san": "a4",
+          "eval_cp": 48
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 47
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 46
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": 45
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": 42
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": 41
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 41
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 41
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": 38
+        },
+        {
+          "uci": "c4b2",
+          "san": "Nb2",
+          "eval_cp": 37
+        },
+        {
+          "uci": "c4a5",
+          "san": "Na5",
+          "eval_cp": 30
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 30
+        },
+        {
+          "uci": "b4b5",
+          "san": "b5",
+          "eval_cp": 24
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 21
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": 18
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 13
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 10
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 0
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": 0
+        },
+        {
+          "uci": "c4a3",
+          "san": "Na3",
+          "eval_cp": -2
+        },
+        {
+          "uci": "c4d6",
+          "san": "Nd6",
+          "eval_cp": -57
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -112
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": -114
+        },
+        {
+          "uci": "c4b6",
+          "san": "Nxb6",
+          "eval_cp": -412
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -485
+        },
+        {
+          "uci": "c4e3",
+          "san": "Ne3",
+          "eval_cp": -557
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1380
+        }
+      ],
+      "opponent_reply_uci": "a8c8",
+      "opponent_reply_san": "Rc8",
+      "fen_after_opponent": "2rq1rk1/p5bp/npp3p1/4p3/1PNpP3/P2P2P1/2Q2PBP/R4RK1 w - - 1 22"
+    },
+    {
+      "move_number": 15,
+      "fen": "2rq1rk1/p5bp/npp3p1/4p3/1PNpP3/P2P2P1/2Q2PBP/R4RK1 w - - 1 22",
+      "game_move_san": "Nxe5",
+      "game_move_uci": "c4e5",
+      "best_moves": [
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 300
+        },
+        {
+          "uci": "c4e5",
+          "san": "Nxe5",
+          "eval_cp": 289
+        }
+      ],
+      "best_move_count": 2,
+      "all_moves": [
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 300
+        },
+        {
+          "uci": "c4e5",
+          "san": "Nxe5",
+          "eval_cp": 289
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": 175
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 167
+        },
+        {
+          "uci": "c4d2",
+          "san": "Nd2",
+          "eval_cp": 113
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": 108
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 99
+        },
+        {
+          "uci": "c4a5",
+          "san": "Na5",
+          "eval_cp": 90
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": 82
+        },
+        {
+          "uci": "c2a2",
+          "san": "Qa2",
+          "eval_cp": 82
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 75
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": 65
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 55
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 55
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": 52
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": 48
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 47
+        },
+        {
+          "uci": "c4b2",
+          "san": "Nb2",
+          "eval_cp": 44
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 44
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 34
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": 28
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 27
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": 27
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 14
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": 13
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 12
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 12
+        },
+        {
+          "uci": "c4d6",
+          "san": "Nd6",
+          "eval_cp": 0
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 0
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -3
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -49
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -104
+        },
+        {
+          "uci": "c4b6",
+          "san": "Nxb6",
+          "eval_cp": -332
+        },
+        {
+          "uci": "c4e3",
+          "san": "Ne3",
+          "eval_cp": -405
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -523
+        },
+        {
+          "uci": "b4b5",
+          "san": "b5",
+          "eval_cp": -701
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1231
+        }
+      ],
+      "opponent_reply_uci": "g7e5",
+      "opponent_reply_san": "Bxe5",
+      "fen_after_opponent": "2rq1rk1/p6p/npp3p1/4b3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 w - - 0 23"
+    },
+    {
+      "move_number": 16,
+      "fen": "2rq1rk1/p6p/npp3p1/4b3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 w - - 0 23",
+      "game_move_san": "Qc4+",
+      "game_move_uci": "c2c4",
+      "best_moves": [
+        {
+          "uci": "c2c4",
+          "san": "Qc4+",
+          "eval_cp": 321
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "c2c4",
+          "san": "Qc4+",
+          "eval_cp": 321
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 225
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 25
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -73
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3+",
+          "eval_cp": -146
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -148
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -162
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -179
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -187
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -200
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": -207
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -210
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -219
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -219
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -222
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": -225
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -226
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": -233
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": -239
+        },
+        {
+          "uci": "c2a2",
+          "san": "Qa2+",
+          "eval_cp": -245
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": -258
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": -266
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -271
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": -274
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -278
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -300
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": -331
+        },
+        {
+          "uci": "b4b5",
+          "san": "b5",
+          "eval_cp": -493
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -506
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -666
+        },
+        {
+          "uci": "c2c6",
+          "san": "Qxc6",
+          "eval_cp": -1200
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qc5",
+          "eval_cp": -1350
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1552
+        }
+      ],
+      "opponent_reply_uci": "g8g7",
+      "opponent_reply_san": "Kg7",
+      "fen_after_opponent": "2rq1r2/p5kp/npp3p1/4b3/1PQpP3/P2P2P1/5PBP/R4RK1 w - - 2 24"
+    },
+    {
+      "move_number": 17,
+      "fen": "2rq1r2/p5kp/npp3p1/4b3/1PQpP3/P2P2P1/5PBP/R4RK1 w - - 2 24",
+      "game_move_san": "Qxa6",
+      "game_move_uci": "c4a6",
+      "best_moves": [
+        {
+          "uci": "c4a6",
+          "san": "Qxa6",
+          "eval_cp": 355
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "c4a6",
+          "san": "Qxa6",
+          "eval_cp": 355
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": -76
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -134
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -160
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": -180
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -194
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -197
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -216
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -223
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -228
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": -250
+        },
+        {
+          "uci": "c4b3",
+          "san": "Qb3",
+          "eval_cp": -251
+        },
+        {
+          "uci": "c4c2",
+          "san": "Qc2",
+          "eval_cp": -256
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -256
+        },
+        {
+          "uci": "c4a2",
+          "san": "Qa2",
+          "eval_cp": -257
+        },
+        {
+          "uci": "c4e6",
+          "san": "Qe6",
+          "eval_cp": -260
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -262
+        },
+        {
+          "uci": "c4c1",
+          "san": "Qc1",
+          "eval_cp": -269
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -274
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -277
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -278
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -293
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -307
+        },
+        {
+          "uci": "b4b5",
+          "san": "b5",
+          "eval_cp": -408
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -583
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -718
+        },
+        {
+          "uci": "c4c6",
+          "san": "Qxc6",
+          "eval_cp": -1200
+        },
+        {
+          "uci": "c4c5",
+          "san": "Qc5",
+          "eval_cp": -1337
+        },
+        {
+          "uci": "c4f7",
+          "san": "Qf7+",
+          "eval_cp": -1343
+        },
+        {
+          "uci": "c4g8",
+          "san": "Qg8+",
+          "eval_cp": -1378
+        },
+        {
+          "uci": "c4d5",
+          "san": "Qd5",
+          "eval_cp": -1421
+        },
+        {
+          "uci": "c4b5",
+          "san": "Qb5",
+          "eval_cp": -1435
+        },
+        {
+          "uci": "c4d4",
+          "san": "Qxd4",
+          "eval_cp": -1485
+        },
+        {
+          "uci": "c4c3",
+          "san": "Qc3",
+          "eval_cp": -1606
+        }
+      ],
+      "opponent_reply_uci": "d8e7",
+      "opponent_reply_san": "Qe7",
+      "fen_after_opponent": "2r2r2/p3q1kp/Qpp3p1/4b3/1P1pP3/P2P2P1/5PBP/R4RK1 w - - 1 25"
+    },
+    {
+      "move_number": 18,
+      "fen": "2r2r2/p3q1kp/Qpp3p1/4b3/1P1pP3/P2P2P1/5PBP/R4RK1 w - - 1 25",
+      "game_move_san": "Qc4",
+      "game_move_uci": "a6c4",
+      "best_moves": [
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 427
+        },
+        {
+          "uci": "a6a4",
+          "san": "Qa4",
+          "eval_cp": 391
+        }
+      ],
+      "best_move_count": 2,
+      "all_moves": [
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 427
+        },
+        {
+          "uci": "a6a4",
+          "san": "Qa4",
+          "eval_cp": 391
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 364
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 354
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": 338
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 326
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 324
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 320
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 316
+        },
+        {
+          "uci": "a6c4",
+          "san": "Qc4",
+          "eval_cp": 310
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 310
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 298
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 285
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": 271
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 263
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": 252
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 246
+        },
+        {
+          "uci": "b4b5",
+          "san": "b5",
+          "eval_cp": 243
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 221
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 193
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": 190
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -361
+        },
+        {
+          "uci": "a6c8",
+          "san": "Qxc8",
+          "eval_cp": -533
+        },
+        {
+          "uci": "a6a7",
+          "san": "Qxa7",
+          "eval_cp": -937
+        },
+        {
+          "uci": "a6b6",
+          "san": "Qxb6",
+          "eval_cp": -955
+        },
+        {
+          "uci": "a6b7",
+          "san": "Qb7",
+          "eval_cp": -1016
+        },
+        {
+          "uci": "a6a5",
+          "san": "Qa5",
+          "eval_cp": -1021
+        },
+        {
+          "uci": "a6b5",
+          "san": "Qb5",
+          "eval_cp": -1044
+        }
+      ],
+      "opponent_reply_uci": "b6b5",
+      "opponent_reply_san": "b5",
+      "fen_after_opponent": "2r2r2/p3q1kp/2p3p1/1p2b3/1PQpP3/P2P2P1/5PBP/R4RK1 w - - 0 26"
+    },
+    {
+      "move_number": 19,
+      "fen": "2r2r2/p3q1kp/2p3p1/1p2b3/1PQpP3/P2P2P1/5PBP/R4RK1 w - - 0 26",
+      "game_move_san": "Qc2",
+      "game_move_uci": "c4c2",
+      "best_moves": [
+        {
+          "uci": "c4a2",
+          "san": "Qa2",
+          "eval_cp": 344
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "c4a2",
+          "san": "Qa2",
+          "eval_cp": 344
+        },
+        {
+          "uci": "c4b3",
+          "san": "Qb3",
+          "eval_cp": 267
+        },
+        {
+          "uci": "c4c2",
+          "san": "Qc2",
+          "eval_cp": 236
+        },
+        {
+          "uci": "c4c1",
+          "san": "Qc1",
+          "eval_cp": 220
+        },
+        {
+          "uci": "c4c5",
+          "san": "Qc5",
+          "eval_cp": 167
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -874
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -919
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -924
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": -964
+        },
+        {
+          "uci": "c4b5",
+          "san": "Qxb5",
+          "eval_cp": -980
+        },
+        {
+          "uci": "c4c6",
+          "san": "Qxc6",
+          "eval_cp": -994
+        },
+        {
+          "uci": "c4g8",
+          "san": "Qg8+",
+          "eval_cp": -997
+        },
+        {
+          "uci": "c4d5",
+          "san": "Qd5",
+          "eval_cp": -997
+        },
+        {
+          "uci": "c4f7",
+          "san": "Qf7+",
+          "eval_cp": -1018
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": -1048
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": -1051
+        },
+        {
+          "uci": "c4e6",
+          "san": "Qe6",
+          "eval_cp": -1055
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -1066
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -1066
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -1070
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -1076
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -1080
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -1082
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -1088
+        },
+        {
+          "uci": "c4d4",
+          "san": "Qxd4",
+          "eval_cp": -1137
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -1137
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -1152
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -1158
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": -1162
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -1165
+        },
+        {
+          "uci": "c4c3",
+          "san": "Qc3",
+          "eval_cp": -1336
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -1442
+        }
+      ],
+      "opponent_reply_uci": "c6c5",
+      "opponent_reply_san": "c5",
+      "fen_after_opponent": "2r2r2/p3q1kp/6p1/1pp1b3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 w - - 0 27"
+    },
+    {
+      "move_number": 20,
+      "fen": "2r2r2/p3q1kp/6p1/1pp1b3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 w - - 0 27",
+      "game_move_san": "f4",
+      "game_move_uci": "f2f4",
+      "best_moves": [
+        {
+          "uci": "b4c5",
+          "san": "bxc5",
+          "eval_cp": 205
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 195
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": 190
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 181
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": 177
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 161
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "b4c5",
+          "san": "bxc5",
+          "eval_cp": 205
+        },
+        {
+          "uci": "f2f4",
+          "san": "f4",
+          "eval_cp": 195
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": 190
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 181
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": 177
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 161
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": 150
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": 148
+        },
+        {
+          "uci": "c2a2",
+          "san": "Qa2",
+          "eval_cp": 144
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": 115
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": 89
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 86
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 82
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": 79
+        },
+        {
+          "uci": "f2f3",
+          "san": "f3",
+          "eval_cp": 76
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 65
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 43
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 40
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 32
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 28
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 26
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": 23
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 0
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -18
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -29
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -55
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -412
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -496
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qxc5",
+          "eval_cp": -563
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -1067
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4",
+          "eval_cp": -1144
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1492
+        }
+      ],
+      "opponent_reply_uci": "e5f6",
+      "opponent_reply_san": "Bf6",
+      "fen_after_opponent": "2r2r2/p3q1kp/5bp1/1pp5/1P1pPP2/P2P2P1/2Q3BP/R4RK1 w - - 1 28"
+    },
+    {
+      "move_number": 21,
+      "fen": "2r2r2/p3q1kp/5bp1/1pp5/1P1pPP2/P2P2P1/2Q3BP/R4RK1 w - - 1 28",
+      "game_move_san": "bxc5",
+      "game_move_uci": "b4c5",
+      "best_moves": [
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 592
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 592
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 435
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": 296
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": 288
+        },
+        {
+          "uci": "b4c5",
+          "san": "bxc5",
+          "eval_cp": 281
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": 274
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": 259
+        },
+        {
+          "uci": "c2a2",
+          "san": "Qa2",
+          "eval_cp": 252
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": 249
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": 245
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 228
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 219
+        },
+        {
+          "uci": "f1f2",
+          "san": "Rf2",
+          "eval_cp": 216
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 213
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 209
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 206
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 199
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 198
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": 194
+        },
+        {
+          "uci": "c2f2",
+          "san": "Qf2",
+          "eval_cp": 186
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": 186
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 186
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 175
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 172
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 160
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": 159
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": 147
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 135
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 125
+        },
+        {
+          "uci": "f1f3",
+          "san": "Rf3",
+          "eval_cp": 88
+        },
+        {
+          "uci": "g1f2",
+          "san": "Kf2",
+          "eval_cp": 33
+        },
+        {
+          "uci": "f4f5",
+          "san": "f5",
+          "eval_cp": -43
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qxc5",
+          "eval_cp": -529
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -875
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4",
+          "eval_cp": -1011
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1343
+        }
+      ],
+      "opponent_reply_uci": "e7c5",
+      "opponent_reply_san": "Qxc5",
+      "fen_after_opponent": "2r2r2/p5kp/5bp1/1pq5/3pPP2/P2P2P1/2Q3BP/R4RK1 w - - 0 29"
+    },
+    {
+      "move_number": 22,
+      "fen": "2r2r2/p5kp/5bp1/1pq5/3pPP2/P2P2P1/2Q3BP/R4RK1 w - - 0 29",
+      "game_move_san": "Qb2",
+      "game_move_uci": "c2b2",
+      "best_moves": [
+        {
+          "uci": "c2a2",
+          "san": "Qa2",
+          "eval_cp": 285
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 281
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": 276
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": 268
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "c2a2",
+          "san": "Qa2",
+          "eval_cp": 285
+        },
+        {
+          "uci": "c2d1",
+          "san": "Qd1",
+          "eval_cp": 281
+        },
+        {
+          "uci": "c2b3",
+          "san": "Qb3",
+          "eval_cp": 276
+        },
+        {
+          "uci": "c2b2",
+          "san": "Qb2",
+          "eval_cp": 268
+        },
+        {
+          "uci": "c2b1",
+          "san": "Qb1",
+          "eval_cp": 229
+        },
+        {
+          "uci": "c2f2",
+          "san": "Qf2",
+          "eval_cp": 197
+        },
+        {
+          "uci": "c2e2",
+          "san": "Qe2",
+          "eval_cp": 176
+        },
+        {
+          "uci": "c2c5",
+          "san": "Qxc5",
+          "eval_cp": 160
+        },
+        {
+          "uci": "c2d2",
+          "san": "Qd2",
+          "eval_cp": 149
+        },
+        {
+          "uci": "c2c1",
+          "san": "Qc1",
+          "eval_cp": 80
+        },
+        {
+          "uci": "f1f2",
+          "san": "Rf2",
+          "eval_cp": -765
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": -770
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": -786
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": -787
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": -876
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -1030
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": -1088
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -1101
+        },
+        {
+          "uci": "c2a4",
+          "san": "Qa4",
+          "eval_cp": -1115
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -1124
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -1138
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -1151
+        },
+        {
+          "uci": "c2c4",
+          "san": "Qc4",
+          "eval_cp": -1172
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -1172
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -1172
+        },
+        {
+          "uci": "f1f3",
+          "san": "Rf3",
+          "eval_cp": -1175
+        },
+        {
+          "uci": "f4f5",
+          "san": "f5",
+          "eval_cp": -1176
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": -1179
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": -1188
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": -1208
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -1215
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": -1266
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -1279
+        },
+        {
+          "uci": "g1f2",
+          "san": "Kf2",
+          "eval_cp": -1378
+        },
+        {
+          "uci": "c2c3",
+          "san": "Qc3",
+          "eval_cp": -1535
+        }
+      ],
+      "opponent_reply_uci": "c5b6",
+      "opponent_reply_san": "Qb6",
+      "fen_after_opponent": "2r2r2/p5kp/1q3bp1/1p6/3pPP2/P2P2P1/1Q4BP/R4RK1 w - - 2 30"
+    },
+    {
+      "move_number": 23,
+      "fen": "2r2r2/p5kp/1q3bp1/1p6/3pPP2/P2P2P1/1Q4BP/R4RK1 w - - 2 30",
+      "game_move_san": "e5",
+      "game_move_uci": "e4e5",
+      "best_moves": [
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 305
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 305
+        },
+        {
+          "uci": "b2e2",
+          "san": "Qe2",
+          "eval_cp": 248
+        },
+        {
+          "uci": "e4e5",
+          "san": "e5",
+          "eval_cp": 236
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 233
+        },
+        {
+          "uci": "b2f2",
+          "san": "Qf2",
+          "eval_cp": 212
+        },
+        {
+          "uci": "b2d2",
+          "san": "Qd2",
+          "eval_cp": 204
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": 203
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 203
+        },
+        {
+          "uci": "b2a2",
+          "san": "Qa2",
+          "eval_cp": 197
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 189
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 186
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": 171
+        },
+        {
+          "uci": "b2b3",
+          "san": "Qb3",
+          "eval_cp": 168
+        },
+        {
+          "uci": "b2b1",
+          "san": "Qb1",
+          "eval_cp": 166
+        },
+        {
+          "uci": "f1f2",
+          "san": "Rf2",
+          "eval_cp": 166
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 165
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": 161
+        },
+        {
+          "uci": "b2b4",
+          "san": "Qb4",
+          "eval_cp": 158
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 158
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 156
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 137
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 133
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 131
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": 128
+        },
+        {
+          "uci": "f1f3",
+          "san": "Rf3",
+          "eval_cp": 125
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 125
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 120
+        },
+        {
+          "uci": "g1f2",
+          "san": "Kf2",
+          "eval_cp": 119
+        },
+        {
+          "uci": "f4f5",
+          "san": "f5",
+          "eval_cp": 71
+        },
+        {
+          "uci": "b2c1",
+          "san": "Qc1",
+          "eval_cp": -581
+        },
+        {
+          "uci": "b2b5",
+          "san": "Qxb5",
+          "eval_cp": -997
+        },
+        {
+          "uci": "b2c2",
+          "san": "Qc2",
+          "eval_cp": -1194
+        },
+        {
+          "uci": "b2c3",
+          "san": "Qc3",
+          "eval_cp": -1542
+        },
+        {
+          "uci": "b2d4",
+          "san": "Qxd4",
+          "eval_cp": -2274
+        }
+      ],
+      "opponent_reply_uci": "f6e7",
+      "opponent_reply_san": "Be7",
+      "fen_after_opponent": "2r2r2/p3b1kp/1q4p1/1p2P3/3p1P2/P2P2P1/1Q4BP/R4RK1 w - - 1 31"
+    },
+    {
+      "move_number": 24,
+      "fen": "2r2r2/p3b1kp/1q4p1/1p2P3/3p1P2/P2P2P1/1Q4BP/R4RK1 w - - 1 31",
+      "game_move_san": "Rac1",
+      "game_move_uci": "a1c1",
+      "best_moves": [
+        {
+          "uci": "g2e4",
+          "san": "Be4",
+          "eval_cp": 223
+        },
+        {
+          "uci": "g2d5",
+          "san": "Bd5",
+          "eval_cp": 217
+        },
+        {
+          "uci": "b2e2",
+          "san": "Qe2",
+          "eval_cp": 209
+        },
+        {
+          "uci": "b2d2",
+          "san": "Qd2",
+          "eval_cp": 208
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 203
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 200
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 198
+        },
+        {
+          "uci": "b2a2",
+          "san": "Qa2",
+          "eval_cp": 196
+        },
+        {
+          "uci": "b2f2",
+          "san": "Qf2",
+          "eval_cp": 187
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 186
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 181
+        },
+        {
+          "uci": "b2b3",
+          "san": "Qb3",
+          "eval_cp": 176
+        },
+        {
+          "uci": "b2b1",
+          "san": "Qb1",
+          "eval_cp": 175
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 174
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "g2e4",
+          "san": "Be4",
+          "eval_cp": 223
+        },
+        {
+          "uci": "g2d5",
+          "san": "Bd5",
+          "eval_cp": 217
+        },
+        {
+          "uci": "b2e2",
+          "san": "Qe2",
+          "eval_cp": 209
+        },
+        {
+          "uci": "b2d2",
+          "san": "Qd2",
+          "eval_cp": 208
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 203
+        },
+        {
+          "uci": "a1e1",
+          "san": "Rae1",
+          "eval_cp": 200
+        },
+        {
+          "uci": "a1b1",
+          "san": "Rab1",
+          "eval_cp": 198
+        },
+        {
+          "uci": "b2a2",
+          "san": "Qa2",
+          "eval_cp": 196
+        },
+        {
+          "uci": "b2f2",
+          "san": "Qf2",
+          "eval_cp": 187
+        },
+        {
+          "uci": "a1d1",
+          "san": "Rad1",
+          "eval_cp": 186
+        },
+        {
+          "uci": "f1b1",
+          "san": "Rfb1",
+          "eval_cp": 181
+        },
+        {
+          "uci": "b2b3",
+          "san": "Qb3",
+          "eval_cp": 176
+        },
+        {
+          "uci": "b2b1",
+          "san": "Qb1",
+          "eval_cp": 175
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": 174
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": 169
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 165
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": 164
+        },
+        {
+          "uci": "f1f2",
+          "san": "Rf2",
+          "eval_cp": 162
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": 158
+        },
+        {
+          "uci": "a1c1",
+          "san": "Rac1",
+          "eval_cp": 157
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": 153
+        },
+        {
+          "uci": "g1f2",
+          "san": "Kf2",
+          "eval_cp": 147
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": 145
+        },
+        {
+          "uci": "a1a2",
+          "san": "Ra2",
+          "eval_cp": 140
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": 131
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": 130
+        },
+        {
+          "uci": "f1c1",
+          "san": "Rfc1",
+          "eval_cp": 129
+        },
+        {
+          "uci": "f1f3",
+          "san": "Rf3",
+          "eval_cp": 121
+        },
+        {
+          "uci": "e5e6",
+          "san": "e6",
+          "eval_cp": 85
+        },
+        {
+          "uci": "f4f5",
+          "san": "f5",
+          "eval_cp": 42
+        },
+        {
+          "uci": "g2a8",
+          "san": "Ba8",
+          "eval_cp": -514
+        },
+        {
+          "uci": "b2c1",
+          "san": "Qc1",
+          "eval_cp": -514
+        },
+        {
+          "uci": "g2c6",
+          "san": "Bc6",
+          "eval_cp": -556
+        },
+        {
+          "uci": "g2b7",
+          "san": "Bb7",
+          "eval_cp": -570
+        },
+        {
+          "uci": "b2b4",
+          "san": "Qb4",
+          "eval_cp": -686
+        },
+        {
+          "uci": "b2b5",
+          "san": "Qxb5",
+          "eval_cp": -916
+        },
+        {
+          "uci": "b2c2",
+          "san": "Qc2",
+          "eval_cp": -1194
+        },
+        {
+          "uci": "b2d4",
+          "san": "Qxd4",
+          "eval_cp": -1196
+        },
+        {
+          "uci": "b2c3",
+          "san": "Qc3",
+          "eval_cp": -1513
+        }
+      ],
+      "opponent_reply_uci": "c8c3",
+      "opponent_reply_san": "Rc3",
+      "fen_after_opponent": "5r2/p3b1kp/1q4p1/1p2P3/3p1P2/P1rP2P1/1Q4BP/2R2RK1 w - - 3 32"
+    },
+    {
+      "move_number": 25,
+      "fen": "5r2/p3b1kp/1q4p1/1p2P3/3p1P2/P1rP2P1/1Q4BP/2R2RK1 w - - 3 32",
+      "game_move_san": "Be4",
+      "game_move_uci": "g2e4",
+      "best_moves": [
+        {
+          "uci": "b2e2",
+          "san": "Qe2",
+          "eval_cp": 147
+        }
+      ],
+      "best_move_count": 1,
+      "all_moves": [
+        {
+          "uci": "b2e2",
+          "san": "Qe2",
+          "eval_cp": 147
+        },
+        {
+          "uci": "c1d1",
+          "san": "Rcd1",
+          "eval_cp": 95
+        },
+        {
+          "uci": "c1b1",
+          "san": "Rb1",
+          "eval_cp": 85
+        },
+        {
+          "uci": "b2d2",
+          "san": "Qd2",
+          "eval_cp": 61
+        },
+        {
+          "uci": "b2a2",
+          "san": "Qa2",
+          "eval_cp": 27
+        },
+        {
+          "uci": "c1e1",
+          "san": "Rce1",
+          "eval_cp": -8
+        },
+        {
+          "uci": "b2f2",
+          "san": "Qf2",
+          "eval_cp": -27
+        },
+        {
+          "uci": "c1c2",
+          "san": "Rc2",
+          "eval_cp": -30
+        },
+        {
+          "uci": "e5e6",
+          "san": "e6",
+          "eval_cp": -46
+        },
+        {
+          "uci": "b2b1",
+          "san": "Qb1",
+          "eval_cp": -49
+        },
+        {
+          "uci": "b2a1",
+          "san": "Qa1",
+          "eval_cp": -50
+        },
+        {
+          "uci": "f4f5",
+          "san": "f5",
+          "eval_cp": -58
+        },
+        {
+          "uci": "c1a1",
+          "san": "Ra1",
+          "eval_cp": -65
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": -378
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": -396
+        },
+        {
+          "uci": "g2e4",
+          "san": "Be4",
+          "eval_cp": -412
+        },
+        {
+          "uci": "g2f3",
+          "san": "Bf3",
+          "eval_cp": -440
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -467
+        },
+        {
+          "uci": "g2h3",
+          "san": "Bh3",
+          "eval_cp": -484
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": -492
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -502
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -511
+        },
+        {
+          "uci": "f1f2",
+          "san": "Rf2",
+          "eval_cp": -514
+        },
+        {
+          "uci": "g2h1",
+          "san": "Bh1",
+          "eval_cp": -520
+        },
+        {
+          "uci": "b2c2",
+          "san": "Qc2",
+          "eval_cp": -525
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -575
+        },
+        {
+          "uci": "g1f2",
+          "san": "Kf2",
+          "eval_cp": -584
+        },
+        {
+          "uci": "g2d5",
+          "san": "Bd5",
+          "eval_cp": -666
+        },
+        {
+          "uci": "g2a8",
+          "san": "Ba8",
+          "eval_cp": -710
+        },
+        {
+          "uci": "g2b7",
+          "san": "Bb7",
+          "eval_cp": -743
+        },
+        {
+          "uci": "g2c6",
+          "san": "Bc6",
+          "eval_cp": -744
+        },
+        {
+          "uci": "b2b4",
+          "san": "Qb4",
+          "eval_cp": -757
+        },
+        {
+          "uci": "f1f3",
+          "san": "Rf3",
+          "eval_cp": -760
+        },
+        {
+          "uci": "b2c3",
+          "san": "Qxc3",
+          "eval_cp": -896
+        },
+        {
+          "uci": "b2b5",
+          "san": "Qxb5",
+          "eval_cp": -1003
+        },
+        {
+          "uci": "c1c3",
+          "san": "Rxc3",
+          "eval_cp": -1102
+        },
+        {
+          "uci": "b2b3",
+          "san": "Qb3",
+          "eval_cp": -1196
+        }
+      ],
+      "opponent_reply_uci": "f8c8",
+      "opponent_reply_san": "Rfc8",
+      "fen_after_opponent": "2r5/p3b1kp/1q4p1/1p2P3/3pBP2/P1rP2P1/1Q5P/2R2RK1 w - - 5 33"
+    },
+    {
+      "move_number": 26,
+      "fen": "2r5/p3b1kp/1q4p1/1p2P3/3pBP2/P1rP2P1/1Q5P/2R2RK1 w - - 5 33",
+      "game_move_san": "Kg2",
+      "game_move_uci": "g1g2",
+      "best_moves": [
+        {
+          "uci": "c1b1",
+          "san": "Rb1",
+          "eval_cp": 221
+        },
+        {
+          "uci": "c1e1",
+          "san": "Rce1",
+          "eval_cp": 220
+        },
+        {
+          "uci": "c1a1",
+          "san": "Ra1",
+          "eval_cp": 216
+        },
+        {
+          "uci": "c1d1",
+          "san": "Rcd1",
+          "eval_cp": 191
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 188
+        }
+      ],
+      "best_move_count": 3,
+      "all_moves": [
+        {
+          "uci": "c1b1",
+          "san": "Rb1",
+          "eval_cp": 221
+        },
+        {
+          "uci": "c1e1",
+          "san": "Rce1",
+          "eval_cp": 220
+        },
+        {
+          "uci": "c1a1",
+          "san": "Ra1",
+          "eval_cp": 216
+        },
+        {
+          "uci": "c1d1",
+          "san": "Rcd1",
+          "eval_cp": 191
+        },
+        {
+          "uci": "g1h1",
+          "san": "Kh1",
+          "eval_cp": 188
+        },
+        {
+          "uci": "b2d2",
+          "san": "Qd2",
+          "eval_cp": 156
+        },
+        {
+          "uci": "b2b1",
+          "san": "Qb1",
+          "eval_cp": 144
+        },
+        {
+          "uci": "b2a1",
+          "san": "Qa1",
+          "eval_cp": 113
+        },
+        {
+          "uci": "g1g2",
+          "san": "Kg2",
+          "eval_cp": 38
+        },
+        {
+          "uci": "a3a4",
+          "san": "a4",
+          "eval_cp": 10
+        },
+        {
+          "uci": "e5e6",
+          "san": "e6",
+          "eval_cp": 0
+        },
+        {
+          "uci": "h2h4",
+          "san": "h4",
+          "eval_cp": 0
+        },
+        {
+          "uci": "f4f5",
+          "san": "f5",
+          "eval_cp": -62
+        },
+        {
+          "uci": "h2h3",
+          "san": "h3",
+          "eval_cp": -70
+        },
+        {
+          "uci": "g3g4",
+          "san": "g4",
+          "eval_cp": -117
+        },
+        {
+          "uci": "f1d1",
+          "san": "Rfd1",
+          "eval_cp": -152
+        },
+        {
+          "uci": "f1e1",
+          "san": "Rfe1",
+          "eval_cp": -170
+        },
+        {
+          "uci": "e4g2",
+          "san": "Bg2",
+          "eval_cp": -178
+        },
+        {
+          "uci": "e4h1",
+          "san": "Bh1",
+          "eval_cp": -220
+        },
+        {
+          "uci": "e4f3",
+          "san": "Bf3",
+          "eval_cp": -238
+        },
+        {
+          "uci": "e4g6",
+          "san": "Bxg6",
+          "eval_cp": -502
+        },
+        {
+          "uci": "e4d5",
+          "san": "Bd5",
+          "eval_cp": -516
+        },
+        {
+          "uci": "g1f2",
+          "san": "Kf2",
+          "eval_cp": -518
+        },
+        {
+          "uci": "e4a8",
+          "san": "Ba8",
+          "eval_cp": -591
+        },
+        {
+          "uci": "b2e2",
+          "san": "Qe2",
+          "eval_cp": -722
+        },
+        {
+          "uci": "e4b7",
+          "san": "Bb7",
+          "eval_cp": -728
+        },
+        {
+          "uci": "b2b3",
+          "san": "Qb3",
+          "eval_cp": -745
+        },
+        {
+          "uci": "e4f5",
+          "san": "Bf5",
+          "eval_cp": -747
+        },
+        {
+          "uci": "c1c2",
+          "san": "Rc2",
+          "eval_cp": -747
+        },
+        {
+          "uci": "f1f2",
+          "san": "Rf2",
+          "eval_cp": -762
+        },
+        {
+          "uci": "b2g2",
+          "san": "Qg2",
+          "eval_cp": -763
+        },
+        {
+          "uci": "b2a2",
+          "san": "Qa2",
+          "eval_cp": -773
+        },
+        {
+          "uci": "b2f2",
+          "san": "Qf2",
+          "eval_cp": -775
+        },
+        {
+          "uci": "f1f3",
+          "san": "Rf3",
+          "eval_cp": -814
+        },
+        {
+          "uci": "b2b5",
+          "san": "Qxb5",
+          "eval_cp": -895
+        },
+        {
+          "uci": "e4c6",
+          "san": "Bc6",
+          "eval_cp": -930
+        },
+        {
+          "uci": "b2c3",
+          "san": "Qxc3",
+          "eval_cp": -976
+        },
+        {
+          "uci": "c1c3",
+          "san": "Rxc3",
+          "eval_cp": -1075
+        },
+        {
+          "uci": "b2c2",
+          "san": "Qc2",
+          "eval_cp": -1130
+        },
+        {
+          "uci": "b2b4",
+          "san": "Qb4",
+          "eval_cp": -1138
+        }
+      ],
+      "opponent_reply_uci": "e7a3",
+      "opponent_reply_san": "Bxa3",
+      "fen_after_opponent": "2r5/p5kp/1q4p1/1p2P3/3pBP2/b1rP2P1/1Q4KP/2R2R2 w - - 0 34"
+    }
+  ]
+}
