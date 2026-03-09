@@ -25,6 +25,11 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 .header h1{font-size:1.3rem;font-weight:700;letter-spacing:1px}
 .header h1 span{color:var(--gold)}
 .header .subtitle{font-size:0.78rem;color:var(--text-dim);margin-top:2px}
+.header .game-meta{font-size:0.72rem;color:var(--text-dim);margin-top:2px}
+.header .game-meta .title-badge{
+  display:inline-block;background:var(--gold);color:#000;font-weight:700;
+  padding:0 4px;border-radius:3px;font-size:0.65rem;margin-right:2px;vertical-align:middle;
+}
 
 /* ---- Score bar ---- */
 .score-bar{
@@ -50,11 +55,22 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 .info-banner.bonus{background:rgba(255,214,0,0.15);color:var(--gold);border:1px solid rgba(255,214,0,0.3)}
 .info-banner.result-good{background:rgba(0,200,83,0.2);color:var(--green);border:1px solid rgba(0,200,83,0.4)}
 .info-banner.result-bad{background:rgba(255,23,68,0.15);color:var(--red);border:1px solid rgba(255,23,68,0.3)}
+.info-banner.result-game{background:rgba(68,138,255,0.15);color:var(--blue);border:1px solid rgba(68,138,255,0.3)}
 .info-banner.idle{background:rgba(255,255,255,0.04);color:var(--text-dim);border:1px solid rgba(255,255,255,0.08)}
+
+/* Retry button inside banner */
+.info-banner .retry-btn{
+  display:inline-block;margin-left:10px;padding:4px 12px;border:none;border-radius:4px;
+  background:var(--blue);color:#fff;font-weight:600;font-size:0.8rem;cursor:pointer;
+}
+.info-banner .retry-btn:hover{opacity:0.85}
 
 /* ---- Board container ---- */
 .board-zone{margin-top:14px;position:relative}
 .cg-wrap{width:min(88vw,420px);height:min(88vw,420px)}
+
+/* Yellow last-move highlight for departure square */
+cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
 
 /* ---- Move history strip ---- */
 .history-strip{
@@ -92,6 +108,19 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 .end-grid .eslot.miss{background:var(--red);color:#fff}
 .end-grid .eslot.bonus-slot{background:var(--gold);color:#000}
 
+/* Comparison section */
+.end-comparison{
+  background:var(--bg2);border-radius:var(--radius);padding:16px;
+  margin:16px auto;max-width:480px;text-align:left;
+}
+.end-comparison h3{font-size:0.95rem;margin-bottom:10px;color:var(--text);text-align:center}
+.comparison-row{display:flex;justify-content:space-between;padding:4px 0;font-size:0.85rem}
+.comparison-row .label{color:var(--text-dim)}
+.comparison-row .val{font-weight:700}
+.comparison-row .val.better{color:var(--green)}
+.comparison-row .val.worse{color:var(--red)}
+.comparison-row .val.same{color:var(--text-dim)}
+
 .share-block{
   background:var(--bg2);border-radius:var(--radius);padding:14px;
   margin:16px auto;max-width:400px;text-align:left;
@@ -114,9 +143,6 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 .loading-screen{text-align:center;padding:60px 16px}
 .loading-screen h2{font-size:1.2rem;margin-bottom:8px}
 .loading-screen p{color:var(--text-dim);font-size:0.85rem}
-
-/* ---- Sound indicator ---- */
-.sound-badge{display:inline-block;margin-left:6px;font-size:1.1em;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -132,6 +158,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
   <div class="header">
     <h1>Dr Lupo <span>Challenge</span></h1>
     <div class="subtitle" id="game-subtitle"></div>
+    <div class="game-meta" id="game-meta"></div>
   </div>
 
   <div class="score-bar">
@@ -163,6 +190,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
   <div class="end-score" id="end-score">0</div>
   <div class="end-max" id="end-max">out of 0 possible</div>
   <div class="end-grid" id="end-grid"></div>
+  <div class="end-comparison" id="end-comparison"></div>
   <div class="share-block" id="share-block"></div>
   <button class="btn btn-primary btn-copy" id="btn-copy" onclick="copyShare()">📋 Copy to clipboard</button>
   <a id="btn-lichess" class="btn btn-secondary" target="_blank" rel="noopener">♟ View on Lichess</a>
@@ -173,42 +201,83 @@ import { Chessground } from '/static/vendor/chessground/chessground.min.js';
 
 // ---- Globals ----
 let challengeData = null;
-let cg = null;          // chessground instance
-let posIdx = 0;         // current position index (0-based)
+let cg = null;
+let posIdx = 0;
 let score = 0;
 let maxPossible = 0;
-let moveHistory = [];   // [{points, isBest}]
+let moveHistory = [];   // [{points, isBest, bonusCount, isGameMove}]
 let inBonusRound = false;
 let bonusFoundCount = 0;
-let foundBestUCIs = new Set(); // best moves already found in current bonus round
+let foundBestUCIs = new Set();
+let waitingForInput = false; // prevent rapid double-moves
+let retryActive = false;     // retry mode after game-move detection
 
-// ---- Chess.js-lite: minimal move legality via FEN + chessground ----
-// We rely on pre-computed all_moves from the JSON. Build a map uci->data for fast lookup.
 let currentAllMoves = {};
 let currentBestMoves = {};
 
-// ---- Audio ----
-function beep(freq, dur, vol = 0.15) {
+// ---- Audio (lower-pitched, more discreet) ----
+function beep(freq, dur, vol = 0.08) {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = freq; gain.gain.value = vol;
-    osc.start(); osc.stop(ctx.currentTime + dur / 1000);
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.value = vol;
+    // Gentle fade-out
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur / 1000);
+    osc.start();
+    osc.stop(ctx.currentTime + dur / 1000);
   } catch {}
 }
 const sfx = {
-  move:  () => beep(440, 60, 0.08),
-  best:  () => beep(880, 120, 0.12),
-  bonus: () => { beep(660, 80, 0.1); setTimeout(() => beep(880, 80, 0.1), 100); setTimeout(() => beep(1100, 150, 0.12), 200); },
-  error: () => beep(220, 200, 0.12),
-  star:  () => { beep(880, 80, 0.1); setTimeout(() => beep(1320, 200, 0.15), 120); },
+  move:  () => beep(260, 80, 0.06),
+  best:  () => beep(520, 150, 0.08),
+  bonus: () => { beep(390, 100, 0.07); setTimeout(() => beep(520, 120, 0.08), 120); },
+  error: () => beep(165, 250, 0.08),
+  star:  () => { beep(520, 100, 0.07); setTimeout(() => beep(780, 200, 0.09), 140); },
 };
+
+// ---- Helpers ----
+function formatTimeControl(tc) {
+  if (!tc) return '';
+  const m = tc.match(/^(\d+)\+(\d+)$/);
+  if (!m) return tc;
+  const base = parseInt(m[1]);
+  const inc = parseInt(m[2]);
+  if (base < 30) return 'UltraBullet';
+  if (base < 180) return 'Bullet';
+  if (base < 480) return 'Blitz';
+  if (base < 1500) return 'Rapid';
+  return 'Classical';
+}
+
+function titledName(name, title) {
+  if (title) return `<span class="title-badge">${title}</span> ${name}`;
+  return name;
+}
+
+function playerDisplayName() {
+  const d = challengeData;
+  if (d.player_color === 'white') {
+    return { name: d.white, title: d.white_title || '', elo: d.white_elo || '' };
+  }
+  return { name: d.black, title: d.black_title || '', elo: d.black_elo || '' };
+}
+
+// Medal for best-move ranking
+function medalForRank(rank) {
+  if (rank === 1) return '🥇';
+  if (rank === 2) return '🥈';
+  if (rank === 3) return '🥉';
+  return '';
+}
 
 // ---- Load challenge ----
 async function loadChallenge() {
-  const path = window.location.pathname; // e.g. /play/mfJW36UO_ply14
+  const path = window.location.pathname;
   const id = path.split('/play/')[1];
   if (!id) { document.getElementById('loading-info').textContent = 'No challenge ID in URL'; return; }
 
@@ -223,14 +292,27 @@ async function loadChallenge() {
 
   document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('game-ui').style.display = '';
-  document.getElementById('game-subtitle').textContent =
-    `${challengeData.white} vs ${challengeData.black} — playing as ${challengeData.player_color}`;
-  document.getElementById('total-display').textContent = challengeData.num_moves;
+
+  // Build subtitle with titles
+  const d = challengeData;
+  const whiteDisplay = titledName(d.white, d.white_title);
+  const blackDisplay = titledName(d.black, d.black_title);
+  document.getElementById('game-subtitle').innerHTML =
+    `${whiteDisplay} vs ${blackDisplay} — playing as ${d.player_color}`;
+
+  // Game meta: time control + event
+  const tc = formatTimeControl(d.time_control);
+  const metaParts = [];
+  if (tc) metaParts.push(tc);
+  if (d.time_control) metaParts.push(d.time_control);
+  document.getElementById('game-meta').textContent = metaParts.join(' • ');
+
+  document.getElementById('total-display').textContent = d.num_moves;
 
   // Build history strip
   const strip = document.getElementById('history-strip');
   strip.innerHTML = '';
-  for (let i = 0; i < challengeData.num_moves; i++) {
+  for (let i = 0; i < d.num_moves; i++) {
     const slot = document.createElement('div');
     slot.className = 'history-slot' + (i === 0 ? ' current' : '');
     slot.id = `slot-${i}`;
@@ -249,8 +331,9 @@ function initBoard() {
     orientation: orientation,
     movable: { free: false, color: orientation, events: { after: onPlayerMove } },
     draggable: { showGhost: true },
-    animation: { enabled: true, duration: 200 },
+    animation: { enabled: true, duration: 250 },
     premovable: { enabled: false },
+    highlight: { lastMove: true },
   });
 }
 
@@ -259,7 +342,6 @@ function setPosition(fen, interactive = true) {
   const turnColor = parts[1] === 'w' ? 'white' : 'black';
   const isPlayerTurn = turnColor === challengeData.player_color;
 
-  // Build dests map from all_moves
   const dests = new Map();
   if (interactive && isPlayerTurn) {
     const pos = challengeData.positions[posIdx];
@@ -281,6 +363,8 @@ function setPosition(fen, interactive = true) {
     },
     lastMove: undefined,
   });
+
+  waitingForInput = interactive && isPlayerTurn;
 }
 
 // ---- Game flow ----
@@ -289,16 +373,16 @@ function startPosition() {
 
   const pos = challengeData.positions[posIdx];
   inBonusRound = false;
+  retryActive = false;
   bonusFoundCount = 0;
   foundBestUCIs.clear();
 
-  // Index moves
   currentAllMoves = {};
   for (const m of pos.all_moves) currentAllMoves[m.uci] = m;
   currentBestMoves = {};
   for (const m of pos.best_moves) currentBestMoves[m.uci] = m;
 
-  setPosition(pos.fen, true);
+  setPosition(pos.fen, false); // initially non-interactive
   updateScoreDisplay();
   document.getElementById('move-display').textContent = posIdx + 1;
 
@@ -321,22 +405,30 @@ function startPosition() {
     banner.innerHTML = `⭐ <strong>3 or more</strong> best moves`;
     sfx.star();
   }
+
+  // Enable interaction after a short delay to prevent accidental auto-play
+  setTimeout(() => setPosition(pos.fen, true), 350);
 }
 
 function onPlayerMove(from, to) {
+  if (!waitingForInput) return;
+  waitingForInput = false;
+
   const uci = from + to;
-  // Check for promotion (always queen for simplicity)
   const promoUci = uci + 'q';
   const moveData = currentAllMoves[uci] || currentAllMoves[promoUci];
   const actualUci = currentAllMoves[uci] ? uci : promoUci;
 
-  if (!moveData) return; // shouldn't happen with dests
+  if (!moveData) { waitingForInput = true; return; }
 
   const pos = challengeData.positions[posIdx];
   const bestEval = pos.best_moves[0].eval_cp;
   const isBest = actualUci in currentBestMoves && !foundBestUCIs.has(actualUci);
 
-  if (inBonusRound) {
+  if (retryActive) {
+    // This is a retry attempt after playing the game move
+    handleRetryMove(actualUci, moveData, isBest, pos, bestEval);
+  } else if (inBonusRound) {
     handleBonusMove(actualUci, moveData, isBest, pos);
   } else {
     handleMainMove(actualUci, moveData, isBest, pos, bestEval);
@@ -347,44 +439,107 @@ function handleMainMove(uci, moveData, isBest, pos, bestEval) {
   const banner = document.getElementById('info-banner');
 
   if (isBest) {
-    // +3 points
     score += 3;
     sfx.best();
+
+    // Determine rank of this best move (1 = best, 2 = second best, etc.)
+    const rank = pos.best_moves.findIndex(m => m.uci === uci) + 1;
+    const medal = medalForRank(rank);
     banner.className = 'info-banner result-good';
-    banner.innerHTML = `✅ Best move! <strong>+3</strong>`;
+    banner.innerHTML = `✅ Best move! ${medal} <strong>+3</strong>`;
 
     foundBestUCIs.add(uci);
-
-    // Record the +3 immediately
     recordMove(3, true);
 
-    // Check if there are more best moves to find (bonus round)
+    // Check for bonus round
     const remainingBest = pos.best_moves.filter(m => !foundBestUCIs.has(m.uci));
     if (remainingBest.length > 0 && foundBestUCIs.size < 3) {
-      // Enter bonus round
       inBonusRound = true;
       bonusFoundCount = 0;
       setTimeout(() => {
         banner.className = 'info-banner bonus';
         banner.innerHTML = `🎯 Find another best move for <strong>+1 bonus</strong> point!`;
-        // Reset board to same position for another attempt
         setPosition(pos.fen, true);
-      }, 800);
+      }, 900);
       updateScoreDisplay();
       return;
     }
 
-    // Advance
-    setTimeout(() => advanceToNext(pos), 900);
+    setTimeout(() => advanceToNext(pos), 1000);
   } else {
-    // Penalty
+    // Check if this was the actual game move
+    const isGameMove = uci === pos.game_move_uci;
+
+    const cpDiff = bestEval - moveData.eval_cp;
+    const penalty = Math.max(0, cpDiff) / 100;
+
+    if (isGameMove) {
+      // Special message: you found the game move, offer retry
+      sfx.move();
+      banner.className = 'info-banner result-game';
+      banner.innerHTML =
+        `♟ That's what ${playerDisplayName().name} played! ` +
+        `(−${penalty.toFixed(2)} pts) ` +
+        `<button class="retry-btn" id="retry-btn">🔄 Try again</button>`;
+
+      // Don't record yet — wait for retry decision
+      document.getElementById('retry-btn').addEventListener('click', () => {
+        retryActive = true;
+        banner.className = 'info-banner idle';
+        banner.innerHTML = '🔄 Retry — find a best move!';
+        setPosition(pos.fen, true);
+      }, { once: true });
+
+      // Auto-advance after 4 seconds if no retry
+      const autoTimer = setTimeout(() => {
+        if (!retryActive) {
+          score -= penalty;
+          recordMove(-penalty, false, 0, true);
+          updateScoreDisplay();
+          advanceToNext(pos);
+        }
+      }, 4000);
+
+      // Cancel auto-advance if retry clicked
+      document.getElementById('retry-btn').addEventListener('click', () => {
+        clearTimeout(autoTimer);
+      }, { once: true });
+
+      return;
+    }
+
+    // Regular wrong move
+    score -= penalty;
+    sfx.error();
+    banner.className = 'info-banner result-bad';
+    banner.innerHTML = `❌ Not a best move — <strong>−${penalty.toFixed(2)}</strong> pts`;
+
+    recordMove(-penalty, false);
+    setTimeout(() => advanceToNext(pos), 1200);
+  }
+  updateScoreDisplay();
+}
+
+function handleRetryMove(uci, moveData, isBest, pos, bestEval) {
+  const banner = document.getElementById('info-banner');
+  retryActive = false;
+
+  if (isBest) {
+    // No points for retry — just acknowledge
+    sfx.best();
+    const rank = pos.best_moves.findIndex(m => m.uci === uci) + 1;
+    const medal = medalForRank(rank);
+    banner.className = 'info-banner result-good';
+    banner.innerHTML = `✅ That's a best move! ${medal} (retry — no points)`;
+    recordMove(0, true);
+    setTimeout(() => advanceToNext(pos), 1000);
+  } else {
     const cpDiff = bestEval - moveData.eval_cp;
     const penalty = Math.max(0, cpDiff) / 100;
     score -= penalty;
     sfx.error();
     banner.className = 'info-banner result-bad';
     banner.innerHTML = `❌ Not a best move — <strong>−${penalty.toFixed(2)}</strong> pts`;
-
     recordMove(-penalty, false);
     setTimeout(() => advanceToNext(pos), 1200);
   }
@@ -399,34 +554,44 @@ function handleBonusMove(uci, moveData, isBest, pos) {
     score += 1;
     foundBestUCIs.add(uci);
     sfx.bonus();
-    banner.className = 'info-banner result-good';
-    banner.innerHTML = `🎯 Bonus! <strong>+1</strong>`;
 
-    // Check if more bonus attempts available (max 2 bonus = 3 total found)
+    const rank = pos.best_moves.findIndex(m => m.uci === uci) + 1;
+    const medal = medalForRank(rank);
+    banner.className = 'info-banner result-good';
+    banner.innerHTML = `🎯 Bonus! ${medal} <strong>+1</strong>`;
+
     const remainingBest = pos.best_moves.filter(m => !foundBestUCIs.has(m.uci));
     if (remainingBest.length > 0 && foundBestUCIs.size < 3) {
       setTimeout(() => {
         banner.className = 'info-banner bonus';
         banner.innerHTML = `🎯 Find another best move for <strong>+1 bonus</strong> point!`;
         setPosition(pos.fen, true);
-      }, 800);
+      }, 900);
       updateScoreDisplay();
       return;
     }
 
-    // All found or max reached
+    // Finished bonus round
     const totalPts = 3 + bonusFoundCount;
-    // Update the recorded move points and slot DOM
     moveHistory[moveHistory.length - 1] = { points: totalPts, isBest: true, bonusCount: bonusFoundCount };
     const slot = document.getElementById(`slot-${posIdx}`);
     if (slot) {
       slot.className = 'history-slot bonus-slot';
       slot.textContent = `+${totalPts}`;
     }
-    setTimeout(() => advanceToNext(pos), 900);
+    setTimeout(() => advanceToNext(pos), 1000);
   } else {
-    // Bonus miss — no extra penalty, just stop bonus round
-    // The +3 was already earned, keep it
+    // Bonus miss — no extra penalty, stop bonus round
+    // Update slot if any bonuses were found before this miss
+    if (bonusFoundCount > 0) {
+      const totalPts = 3 + bonusFoundCount;
+      moveHistory[moveHistory.length - 1] = { points: totalPts, isBest: true, bonusCount: bonusFoundCount };
+      const slot = document.getElementById(`slot-${posIdx}`);
+      if (slot) {
+        slot.className = 'history-slot bonus-slot';
+        slot.textContent = `+${totalPts}`;
+      }
+    }
     banner.className = 'info-banner result-bad';
     banner.innerHTML = `❌ Not a best move — bonus round over`;
     sfx.error();
@@ -435,59 +600,74 @@ function handleBonusMove(uci, moveData, isBest, pos) {
   updateScoreDisplay();
 }
 
-function recordMove(points, isBest) {
-  moveHistory.push({ points, isBest, bonusCount: 0 });
+function recordMove(points, isBest, bonusCount = 0, isGameMove = false) {
+  moveHistory.push({ points, isBest, bonusCount, isGameMove });
   const slot = document.getElementById(`slot-${posIdx}`);
   if (slot) {
     slot.className = 'history-slot ' + (isBest ? 'best' : 'miss');
-    if (isBest) {
+    if (isBest && points > 0) {
       slot.textContent = `+${Math.round(points)}`;
+    } else if (isBest) {
+      slot.textContent = '✓';
     } else {
-      slot.textContent = points.toFixed(1);
+      slot.textContent = points === 0 ? '0' : points.toFixed(1);
     }
   }
 }
 
 function advanceToNext(pos) {
-  // Animate opponent reply
+  waitingForInput = false;
+
   if (pos.opponent_reply_uci && pos.fen_after_opponent) {
     const from = pos.opponent_reply_uci.substring(0, 2);
     const to = pos.opponent_reply_uci.substring(2, 4);
-    
-    // Show the position after player's actual game move, then opponent replies
-    // We need the FEN after the game move but before opponent reply
-    // Use fen_after_opponent and show the opponent move animation
+
+    // Step 1: Show position after the game move (before opponent reply)
+    const fenAfterPlayer = pos.fen_after_game_move || pos.fen_after_opponent;
     cg.set({
-      fen: pos.fen_after_opponent,
-      lastMove: [from, to],
+      fen: fenAfterPlayer,
+      lastMove: undefined,
       movable: { free: false, color: undefined, dests: new Map() },
     });
-    sfx.move();
-  }
 
-  // Calculate max possible so far
-  maxPossible = 0;
-  for (let i = 0; i <= posIdx; i++) {
-    const p = challengeData.positions[i];
-    maxPossible += Math.min(3, p.best_move_count) >= 3 ? 5 : (p.best_move_count >= 2 ? 3 + Math.min(2, p.best_move_count - 1) : 3);
-  }
+    // Step 2: After a brief pause, animate opponent's reply
+    setTimeout(() => {
+      cg.set({
+        fen: pos.fen_after_opponent,
+        lastMove: [from, to],
+        movable: { free: false, color: undefined, dests: new Map() },
+      });
+      sfx.move();
 
-  posIdx++;
-  setTimeout(() => startPosition(), 600);
+      maxPossible = 0;
+      for (let i = 0; i <= posIdx; i++) {
+        maxPossible += calcMaxForPosition(challengeData.positions[i]);
+      }
+      posIdx++;
+      setTimeout(() => startPosition(), 600);
+    }, 400);
+  } else {
+    maxPossible = 0;
+    for (let i = 0; i <= posIdx; i++) {
+      maxPossible += calcMaxForPosition(challengeData.positions[i]);
+    }
+    posIdx++;
+    setTimeout(() => startPosition(), 600);
+  }
+}
+
+function calcMaxForPosition(pos) {
+  const bc = Math.min(3, pos.best_move_count);
+  return bc >= 3 ? 5 : (bc >= 2 ? 3 + (bc - 1) : 3);
 }
 
 function updateScoreDisplay() {
   const el = document.getElementById('score-display');
-  el.textContent = score >= 0 ? score.toFixed(1) : score.toFixed(1);
+  el.textContent = score.toFixed(1);
   el.className = 'value ' + (score >= 0 ? 'positive' : 'negative');
 
-  // Update max possible
   let mp = 0;
-  for (let i = 0; i < challengeData.num_moves; i++) {
-    const p = challengeData.positions[i];
-    const bc = Math.min(3, p.best_move_count);
-    mp += bc >= 3 ? 5 : (bc >= 2 ? 3 + (bc - 1) : 3);
-  }
+  for (const p of challengeData.positions) mp += calcMaxForPosition(p);
   document.getElementById('max-display').textContent = mp;
 }
 
@@ -497,12 +677,8 @@ function endGame() {
   const endScreen = document.getElementById('end-screen');
   endScreen.classList.add('visible');
 
-  // Calculate totals
   let mp = 0;
-  for (const p of challengeData.positions) {
-    const bc = Math.min(3, p.best_move_count);
-    mp += bc >= 3 ? 5 : (bc >= 2 ? 3 + (bc - 1) : 3);
-  }
+  for (const p of challengeData.positions) mp += calcMaxForPosition(p);
 
   document.getElementById('end-score').textContent = score.toFixed(1);
   document.getElementById('end-max').textContent = `out of ${mp} possible`;
@@ -510,21 +686,26 @@ function endGame() {
   // Build grid
   const gridEl = document.getElementById('end-grid');
   gridEl.innerHTML = '';
-  for (let i = 0; i < moveHistory.length; i++) {
-    const h = moveHistory[i];
+  for (const h of moveHistory) {
     const slot = document.createElement('div');
     if (h.isBest && h.bonusCount > 0) {
       slot.className = 'eslot bonus-slot';
       slot.textContent = `+${(3 + h.bonusCount)}`;
-    } else if (h.isBest) {
+    } else if (h.isBest && h.points > 0) {
       slot.className = 'eslot best';
       slot.textContent = '+3';
+    } else if (h.isBest) {
+      slot.className = 'eslot best';
+      slot.textContent = '✓';
     } else {
       slot.className = 'eslot miss';
-      slot.textContent = h.points.toFixed(1);
+      slot.textContent = h.points === 0 ? '0' : h.points.toFixed(1);
     }
     gridEl.appendChild(slot);
   }
+
+  // Comparison with real player
+  buildComparison(mp);
 
   // Build share text
   const emojis = moveHistory.map(h => {
@@ -537,19 +718,80 @@ function endGame() {
     lines.push(emojis.slice(i, i + 13).join(''));
   }
 
+  const rp = playerDisplayName();
+  const rpLabel = rp.title ? `${rp.title} ${rp.name}` : rp.name;
+  const tc = formatTimeControl(challengeData.time_control);
+
   const shareText =
     `Dr Lupo Challenge 🏆\n` +
-    `${challengeData.white} vs ${challengeData.black}\n` +
+    `${challengeData.white} vs ${challengeData.black}` + (tc ? ` (${tc})` : '') + `\n` +
     `Score: ${score.toFixed(1)} / ${mp}\n` +
+    (challengeData.real_player_score !== undefined
+      ? `vs ${rpLabel}: ${score.toFixed(1)} vs ${challengeData.real_player_score}\n`
+      : '') +
     lines.join('\n') + '\n' +
     challengeData.game_url;
 
   document.getElementById('share-block').textContent = shareText;
   window._shareText = shareText;
 
-  // Lichess link
   const lichessBtn = document.getElementById('btn-lichess');
   lichessBtn.href = `${challengeData.game_url}#${challengeData.start_ply}`;
+}
+
+function buildComparison(mp) {
+  const cmp = document.getElementById('end-comparison');
+  const d = challengeData;
+  const rp = playerDisplayName();
+  const rpLabel = rp.title ? `${rp.title} ${rp.name}` : rp.name;
+
+  const realScore = d.real_player_score ?? null;
+  const realBest = d.real_player_best_count ?? null;
+  if (realScore === null) { cmp.style.display = 'none'; return; }
+
+  // Count how many positions user improved on vs the real player
+  let userBestCount = 0;
+  let improvementCount = 0;
+  for (let i = 0; i < moveHistory.length; i++) {
+    if (moveHistory[i].isBest) userBestCount++;
+    // Check if real player missed this one but user got it
+    const pos = d.positions[i];
+    const realWasBest = pos.best_moves.some(m => m.uci === pos.game_move_uci);
+    if (moveHistory[i].isBest && !realWasBest) improvementCount++;
+  }
+
+  const scoreDiff = score - realScore;
+  const diffClass = scoreDiff > 0 ? 'better' : (scoreDiff < 0 ? 'worse' : 'same');
+  const diffSign = scoreDiff > 0 ? '+' : '';
+
+  cmp.innerHTML = `
+    <h3>You vs ${rpLabel}</h3>
+    <div class="comparison-row">
+      <span class="label">Your score</span>
+      <span class="val">${score.toFixed(1)}</span>
+    </div>
+    <div class="comparison-row">
+      <span class="label">${rpLabel}'s score</span>
+      <span class="val">${realScore.toFixed(1)}</span>
+    </div>
+    <div class="comparison-row">
+      <span class="label">Difference</span>
+      <span class="val ${diffClass}">${diffSign}${scoreDiff.toFixed(1)}</span>
+    </div>
+    <div class="comparison-row">
+      <span class="label">Your best moves found</span>
+      <span class="val">${userBestCount} / ${d.num_moves}</span>
+    </div>
+    <div class="comparison-row">
+      <span class="label">${rpLabel}'s best moves</span>
+      <span class="val">${realBest} / ${d.num_moves}</span>
+    </div>
+    ${improvementCount > 0 ? `
+    <div class="comparison-row">
+      <span class="label">Moves you improved on</span>
+      <span class="val better">${improvementCount}</span>
+    </div>` : ''}
+  `;
 }
 
 // ---- Copy ----

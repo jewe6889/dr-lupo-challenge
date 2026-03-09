@@ -3,11 +3,19 @@
   "game_url": "https://lichess.org/mfJW36UO",
   "white": "Arsen_Chess",
   "black": "VovanDeMort3000",
+  "white_title": "IM",
+  "black_title": "",
+  "white_elo": "3010",
+  "black_elo": "2920",
+  "event": "rated bullet game",
+  "time_control": "60+0",
   "start_ply": 14,
   "player_color": "white",
   "num_moves": 26,
   "engine_depth": 18,
   "margin_cp": 49,
+  "real_player_score": 19.84,
+  "real_player_best_count": 14,
   "positions": [
     {
       "move_number": 1,
@@ -194,6 +202,7 @@
           "eval_cp": -1272
         }
       ],
+      "fen_after_game_move": "rn1qk2r/pp2ppbp/2p1bnp1/6N1/Q1p5/N5P1/PP1PPPBP/R1B2RK1 b kq - 1 8",
       "opponent_reply_uci": "e8g8",
       "opponent_reply_san": "O-O",
       "fen_after_opponent": "rn1q1rk1/pp2ppbp/2p1bnp1/6N1/Q1p5/N5P1/PP1PPPBP/R1B2RK1 w - - 2 9"
@@ -418,6 +427,7 @@
           "eval_cp": -1158
         }
       ],
+      "fen_after_game_move": "rn1q1rk1/pp2ppbp/2p1Nnp1/8/Q1p5/N5P1/PP1PPPBP/R1B2RK1 b - - 0 9",
       "opponent_reply_uci": "f7e6",
       "opponent_reply_san": "fxe6",
       "fen_after_opponent": "rn1q1rk1/pp2p1bp/2p1pnp1/8/Q1p5/N5P1/PP1PPPBP/R1B2RK1 w - - 0 10"
@@ -617,6 +627,7 @@
           "eval_cp": -1140
         }
       ],
+      "fen_after_game_move": "rn1q1rk1/pp2p1bp/2p1pnp1/8/2Q5/N5P1/PP1PPPBP/R1B2RK1 b - - 0 10",
       "opponent_reply_uci": "f6d5",
       "opponent_reply_san": "Nd5",
       "fen_after_opponent": "rn1q1rk1/pp2p1bp/2p1p1p1/3n4/2Q5/N5P1/PP1PPPBP/R1B2RK1 w - - 1 11"
@@ -881,6 +892,7 @@
           "eval_cp": -1130
         }
       ],
+      "fen_after_game_move": "rn1q1rk1/pp2p1bp/2p1p1p1/3n4/2Q1P3/N5P1/PP1P1PBP/R1B2RK1 b - - 0 11",
       "opponent_reply_uci": "d5c7",
       "opponent_reply_san": "Nc7",
       "fen_after_opponent": "rn1q1rk1/ppn1p1bp/2p1p1p1/8/2Q1P3/N5P1/PP1P1PBP/R1B2RK1 w - - 1 12"
@@ -1070,6 +1082,7 @@
           "eval_cp": -1307
         }
       ],
+      "fen_after_game_move": "rn1q1rk1/ppn1p1bp/2p1p1p1/8/4P3/NQ4P1/PP1P1PBP/R1B2RK1 b - - 2 12",
       "opponent_reply_uci": "b7b6",
       "opponent_reply_san": "b6",
       "fen_after_opponent": "rn1q1rk1/p1n1p1bp/1pp1p1p1/8/4P3/NQ4P1/PP1P1PBP/R1B2RK1 w - - 0 13"
@@ -1249,6 +1262,7 @@
           "eval_cp": -1287
         }
       ],
+      "fen_after_game_move": "rn1q1rk1/p1n1p1bp/1pp1p1p1/8/4P3/NQ1P2P1/PP3PBP/R1B2RK1 b - - 0 13",
       "opponent_reply_uci": "b8d7",
       "opponent_reply_san": "Nd7",
       "fen_after_opponent": "r2q1rk1/p1nnp1bp/1pp1p1p1/8/4P3/NQ1P2P1/PP3PBP/R1B2RK1 w - - 1 14"
@@ -1448,6 +1462,7 @@
           "eval_cp": -1171
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p1nnp1bp/1pp1p1p1/8/4PB2/NQ1P2P1/PP3PBP/R4RK1 b - - 2 14",
       "opponent_reply_uci": "d7c5",
       "opponent_reply_san": "Nc5",
       "fen_after_opponent": "r2q1rk1/p1n1p1bp/1pp1p1p1/2n5/4PB2/NQ1P2P1/PP3PBP/R4RK1 w - - 3 15"
@@ -1667,6 +1682,7 @@
           "eval_cp": -1357
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p1n1p1bp/1pp1p1p1/2n5/4PB2/N2P2P1/PPQ2PBP/R4RK1 b - - 4 15",
       "opponent_reply_uci": "e6e5",
       "opponent_reply_san": "e5",
       "fen_after_opponent": "r2q1rk1/p1n1p1bp/1pp3p1/2n1p3/4PB2/N2P2P1/PPQ2PBP/R4RK1 w - - 0 16"
@@ -1876,6 +1892,7 @@
           "eval_cp": -1343
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p1n1p1bp/1pp3p1/2n1p1B1/4P3/N2P2P1/PPQ2PBP/R4RK1 b - - 1 16",
       "opponent_reply_uci": "c7e6",
       "opponent_reply_san": "N7e6",
       "fen_after_opponent": "r2q1rk1/p3p1bp/1pp1n1p1/2n1p1B1/4P3/N2P2P1/PPQ2PBP/R4RK1 w - - 2 17"
@@ -2110,6 +2127,7 @@
           "eval_cp": -1281
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p3p1bp/1pp1n1p1/2n1p3/4P3/N2PB1P1/PPQ2PBP/R4RK1 b - - 3 17",
       "opponent_reply_uci": "e6d4",
       "opponent_reply_san": "Nd4",
       "fen_after_opponent": "r2q1rk1/p3p1bp/1pp3p1/2n1p3/3nP3/N2PB1P1/PPQ2PBP/R4RK1 w - - 4 18"
@@ -2329,6 +2347,7 @@
           "eval_cp": -1421
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p3p1bp/1pp3p1/2n1p3/3BP3/N2P2P1/PPQ2PBP/R4RK1 b - - 0 18",
       "opponent_reply_uci": "e5d4",
       "opponent_reply_san": "exd4",
       "fen_after_opponent": "r2q1rk1/p3p1bp/1pp3p1/2n5/3pP3/N2P2P1/PPQ2PBP/R4RK1 w - - 0 19"
@@ -2523,6 +2542,7 @@
           "eval_cp": -1307
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p3p1bp/1pp3p1/2n5/2NpP3/3P2P1/PPQ2PBP/R4RK1 b - - 1 19",
       "opponent_reply_uci": "e7e5",
       "opponent_reply_san": "e5",
       "fen_after_opponent": "r2q1rk1/p5bp/1pp3p1/2n1p3/2NpP3/3P2P1/PPQ2PBP/R4RK1 w - - 0 20"
@@ -2762,6 +2782,7 @@
           "eval_cp": -1322
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p5bp/1pp3p1/2n1p3/1PNpP3/3P2P1/P1Q2PBP/R4RK1 b - - 0 20",
       "opponent_reply_uci": "c5a6",
       "opponent_reply_san": "Na6",
       "fen_after_opponent": "r2q1rk1/p5bp/npp3p1/4p3/1PNpP3/3P2P1/P1Q2PBP/R4RK1 w - - 1 21"
@@ -2966,6 +2987,7 @@
           "eval_cp": -1380
         }
       ],
+      "fen_after_game_move": "r2q1rk1/p5bp/npp3p1/4p3/1PNpP3/P2P2P1/2Q2PBP/R4RK1 b - - 0 21",
       "opponent_reply_uci": "a8c8",
       "opponent_reply_san": "Rc8",
       "fen_after_opponent": "2rq1rk1/p5bp/npp3p1/4p3/1PNpP3/P2P2P1/2Q2PBP/R4RK1 w - - 1 22"
@@ -3175,6 +3197,7 @@
           "eval_cp": -1231
         }
       ],
+      "fen_after_game_move": "2rq1rk1/p5bp/npp3p1/4N3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 b - - 0 22",
       "opponent_reply_uci": "g7e5",
       "opponent_reply_san": "Bxe5",
       "fen_after_opponent": "2rq1rk1/p6p/npp3p1/4b3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 w - - 0 23"
@@ -3359,6 +3382,7 @@
           "eval_cp": -1552
         }
       ],
+      "fen_after_game_move": "2rq1rk1/p6p/npp3p1/4b3/1PQpP3/P2P2P1/5PBP/R4RK1 b - - 1 23",
       "opponent_reply_uci": "g8g7",
       "opponent_reply_san": "Kg7",
       "fen_after_opponent": "2rq1r2/p5kp/npp3p1/4b3/1PQpP3/P2P2P1/5PBP/R4RK1 w - - 2 24"
@@ -3548,6 +3572,7 @@
           "eval_cp": -1606
         }
       ],
+      "fen_after_game_move": "2rq1r2/p5kp/Qpp3p1/4b3/1P1pP3/P2P2P1/5PBP/R4RK1 b - - 0 24",
       "opponent_reply_uci": "d8e7",
       "opponent_reply_san": "Qe7",
       "fen_after_opponent": "2r2r2/p3q1kp/Qpp3p1/4b3/1P1pP3/P2P2P1/5PBP/R4RK1 w - - 1 25"
@@ -3712,6 +3737,7 @@
           "eval_cp": -1044
         }
       ],
+      "fen_after_game_move": "2r2r2/p3q1kp/1pp3p1/4b3/1PQpP3/P2P2P1/5PBP/R4RK1 b - - 2 25",
       "opponent_reply_uci": "b6b5",
       "opponent_reply_san": "b5",
       "fen_after_opponent": "2r2r2/p3q1kp/2p3p1/1p2b3/1PQpP3/P2P2P1/5PBP/R4RK1 w - - 0 26"
@@ -3891,6 +3917,7 @@
           "eval_cp": -1442
         }
       ],
+      "fen_after_game_move": "2r2r2/p3q1kp/2p3p1/1p2b3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 b - - 1 26",
       "opponent_reply_uci": "c6c5",
       "opponent_reply_san": "c5",
       "fen_after_opponent": "2r2r2/p3q1kp/6p1/1pp1b3/1P1pP3/P2P2P1/2Q2PBP/R4RK1 w - - 0 27"
@@ -4095,6 +4122,7 @@
           "eval_cp": -1492
         }
       ],
+      "fen_after_game_move": "2r2r2/p3q1kp/6p1/1pp1b3/1P1pPP2/P2P2P1/2Q3BP/R4RK1 b - - 0 27",
       "opponent_reply_uci": "e5f6",
       "opponent_reply_san": "Bf6",
       "fen_after_opponent": "2r2r2/p3q1kp/5bp1/1pp5/1P1pPP2/P2P2P1/2Q3BP/R4RK1 w - - 1 28"
@@ -4294,6 +4322,7 @@
           "eval_cp": -1343
         }
       ],
+      "fen_after_game_move": "2r2r2/p3q1kp/5bp1/1pP5/3pPP2/P2P2P1/2Q3BP/R4RK1 b - - 0 28",
       "opponent_reply_uci": "e7c5",
       "opponent_reply_san": "Qxc5",
       "fen_after_opponent": "2r2r2/p5kp/5bp1/1pq5/3pPP2/P2P2P1/2Q3BP/R4RK1 w - - 0 29"
@@ -4503,6 +4532,7 @@
           "eval_cp": -1535
         }
       ],
+      "fen_after_game_move": "2r2r2/p5kp/5bp1/1pq5/3pPP2/P2P2P1/1Q4BP/R4RK1 b - - 1 29",
       "opponent_reply_uci": "c5b6",
       "opponent_reply_san": "Qb6",
       "fen_after_opponent": "2r2r2/p5kp/1q3bp1/1p6/3pPP2/P2P2P1/1Q4BP/R4RK1 w - - 2 30"
@@ -4692,6 +4722,7 @@
           "eval_cp": -2274
         }
       ],
+      "fen_after_game_move": "2r2r2/p5kp/1q3bp1/1p2P3/3p1P2/P2P2P1/1Q4BP/R4RK1 b - - 0 30",
       "opponent_reply_uci": "f6e7",
       "opponent_reply_san": "Be7",
       "fen_after_opponent": "2r2r2/p3b1kp/1q4p1/1p2P3/3p1P2/P2P2P1/1Q4BP/R4RK1 w - - 1 31"
@@ -4971,6 +5002,7 @@
           "eval_cp": -1513
         }
       ],
+      "fen_after_game_move": "2r2r2/p3b1kp/1q4p1/1p2P3/3p1P2/P2P2P1/1Q4BP/2R2RK1 b - - 2 31",
       "opponent_reply_uci": "c8c3",
       "opponent_reply_san": "Rc3",
       "fen_after_opponent": "5r2/p3b1kp/1q4p1/1p2P3/3p1P2/P1rP2P1/1Q4BP/2R2RK1 w - - 3 32"
@@ -5175,6 +5207,7 @@
           "eval_cp": -1196
         }
       ],
+      "fen_after_game_move": "5r2/p3b1kp/1q4p1/1p2P3/3pBP2/P1rP2P1/1Q5P/2R2RK1 b - - 4 32",
       "opponent_reply_uci": "f8c8",
       "opponent_reply_san": "Rfc8",
       "fen_after_opponent": "2r5/p3b1kp/1q4p1/1p2P3/3pBP2/P1rP2P1/1Q5P/2R2RK1 w - - 5 33"
@@ -5414,6 +5447,7 @@
           "eval_cp": -1138
         }
       ],
+      "fen_after_game_move": "2r5/p3b1kp/1q4p1/1p2P3/3pBP2/P1rP2P1/1Q4KP/2R2R2 b - - 6 33",
       "opponent_reply_uci": "e7a3",
       "opponent_reply_san": "Bxa3",
       "fen_after_opponent": "2r5/p5kp/1q4p1/1p2P3/3pBP2/b1rP2P1/1Q4KP/2R2R2 w - - 0 34"

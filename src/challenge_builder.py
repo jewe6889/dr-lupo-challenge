@@ -161,6 +161,7 @@ def build_challenge(game_id, game, start_ply, engine_path, depth, num_moves=26):
 
             # Push the actually-played move to advance the board
             board.push(played_move)
+            fen_after_game_move = board.fen()  # position after player's game move, before opponent reply
 
             if opp_reply_idx < len(remaining):
                 opp_move = remaining[opp_reply_idx]
@@ -179,6 +180,7 @@ def build_challenge(game_id, game, start_ply, engine_path, depth, num_moves=26):
                 "best_moves": [{"uci": m["uci"], "san": m["san"], "eval_cp": m["eval_cp"]} for m in best_moves],
                 "best_move_count": display_count,
                 "all_moves": all_moves,
+                "fen_after_game_move": fen_after_game_move,
                 "opponent_reply_uci": opponent_reply_uci,
                 "opponent_reply_san": opponent_reply_san,
                 "fen_after_opponent": fen_after_opponent,
@@ -191,16 +193,39 @@ def build_challenge(game_id, game, start_ply, engine_path, depth, num_moves=26):
     black_player = game.headers.get("Black", "?")
     game_url = f"https://lichess.org/{game_id}"
 
+    # Compute the real player's score using the same scoring rules
+    real_player_score = 0
+    real_player_best_count = 0
+    for pos in positions_data:
+        gm_uci = pos["game_move_uci"]
+        best_ucis = [m["uci"] for m in pos["best_moves"]]
+        best_eval = pos["best_moves"][0]["eval_cp"]
+        if gm_uci in best_ucis:
+            real_player_score += 3
+            real_player_best_count += 1
+        else:
+            gm_eval = next((m["eval_cp"] for m in pos["all_moves"] if m["uci"] == gm_uci), 0)
+            penalty = max(0, best_eval - gm_eval) / 100
+            real_player_score -= penalty
+
     challenge = {
         "game_id": game_id,
         "game_url": game_url,
         "white": white_player,
         "black": black_player,
+        "white_title": game.headers.get("WhiteTitle", ""),
+        "black_title": game.headers.get("BlackTitle", ""),
+        "white_elo": game.headers.get("WhiteElo", ""),
+        "black_elo": game.headers.get("BlackElo", ""),
+        "event": game.headers.get("Event", ""),
+        "time_control": game.headers.get("TimeControl", ""),
         "start_ply": start_ply,
         "player_color": color_name,
         "num_moves": num_moves,
         "engine_depth": depth,
         "margin_cp": BEST_MOVE_MARGIN_CP,
+        "real_player_score": round(real_player_score, 2),
+        "real_player_best_count": real_player_best_count,
         "positions": positions_data,
     }
     return challenge
