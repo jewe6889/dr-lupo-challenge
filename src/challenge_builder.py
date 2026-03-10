@@ -177,7 +177,7 @@ def build_challenge(game_id, game, start_ply, engine_path, depth, num_moves=26):
                 "fen": fen_before,
                 "game_move_san": played_san,
                 "game_move_uci": played_move.uci(),
-                "best_moves": [{"uci": m["uci"], "san": m["san"], "eval_cp": m["eval_cp"]} for m in best_moves],
+                "best_moves": [{"uci": m["uci"], "san": m["san"], "eval_cp": m["eval_cp"]} for m in best_moves[:3]],
                 "best_move_count": display_count,
                 "all_moves": all_moves,
                 "fen_after_game_move": fen_after_game_move,

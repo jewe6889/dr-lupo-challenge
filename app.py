@@ -3,6 +3,7 @@ import atexit
 import json
 import os
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -21,6 +22,7 @@ BEST_MOVE_MARGIN_CP = 49
 
 # ---- Stockfish engine lifecycle (singleton for Survival Mode) ----
 _engine = None
+_engine_lock = threading.Lock()
 
 def get_engine():
     global _engine
@@ -28,6 +30,17 @@ def get_engine():
         engine_path = find_stockfish()
         _engine = chess.engine.SimpleEngine.popen_uci(engine_path)
     return _engine
+
+def restart_engine():
+    """Kill and reopen the engine (call while holding _engine_lock)."""
+    global _engine
+    if _engine is not None:
+        try:
+            _engine.quit()
+        except Exception:
+            pass
+        _engine = None
+    return get_engine()
 
 def shutdown_engine():
     global _engine
@@ -144,74 +157,81 @@ def survival_analyze():
     if move not in board.legal_moves:
         return jsonify({"error": "Illegal move"}), 400
 
-    engine = get_engine()
+    with _engine_lock:
+      try:
+        engine = get_engine()
 
-    # 1. Push player's move
-    board.push(move)
-    fen_after_player = board.fen()
+        # 1. Push player's move
+        board.push(move)
+        fen_after_player = board.fen()
 
-    # 2. Get opponent's best reply
-    if board.is_game_over():
-        return jsonify({
-            "opponent_reply_uci": None,
-            "opponent_reply_san": None,
-            "fen_after_player": fen_after_player,
-            "fen_after_opponent": fen_after_player,
-            "game_over": True,
-            "position": None,
-        })
+        # 2. Get opponent's best reply
+        if board.is_game_over():
+            return jsonify({
+                "opponent_reply_uci": None,
+                "opponent_reply_san": None,
+                "fen_after_player": fen_after_player,
+                "fen_after_opponent": fen_after_player,
+                "game_over": True,
+                "position": None,
+            })
 
-    result = engine.play(board, chess.engine.Limit(depth=depth))
-    opp_move = result.move
-    opp_san = board.san(opp_move)
-    opp_uci = opp_move.uci()
-    board.push(opp_move)
-    fen_after_opponent = board.fen()
+        result = engine.play(board, chess.engine.Limit(depth=depth))
+        opp_move = result.move
+        opp_san = board.san(opp_move)
+        opp_uci = opp_move.uci()
+        board.push(opp_move)
+        fen_after_opponent = board.fen()
 
-    # 3. Analyze all legal moves in the resulting position
-    if board.is_game_over():
+        # 3. Analyze all legal moves in the resulting position
+        if board.is_game_over():
+            return jsonify({
+                "opponent_reply_uci": opp_uci,
+                "opponent_reply_san": opp_san,
+                "fen_after_player": fen_after_player,
+                "fen_after_opponent": fen_after_opponent,
+                "game_over": True,
+                "position": None,
+            })
+
+        # Use multipv for efficient single-call analysis
+        num_legal = len(list(board.legal_moves))
+        infos = engine.analyse(board, chess.engine.Limit(depth=depth), multipv=num_legal)
+
+        all_moves = []
+        for info in infos:
+            mv = info["pv"][0]
+            score_cp = info["score"].relative.score(mate_score=100000)
+            all_moves.append({
+                "uci": mv.uci(),
+                "san": board.san(mv),
+                "eval_cp": score_cp,
+            })
+
+        all_moves.sort(key=lambda x: x["eval_cp"], reverse=True)
+        best_eval = all_moves[0]["eval_cp"]
+        best_moves = [m for m in all_moves if (best_eval - m["eval_cp"]) <= BEST_MOVE_MARGIN_CP]
+
+        position = {
+            "fen": fen_after_opponent,
+            "best_moves": [{"uci": m["uci"], "san": m["san"], "eval_cp": m["eval_cp"]} for m in best_moves[:3]],
+            "all_moves": all_moves,
+            "best_move_count": min(len(best_moves), 3),
+        }
+
         return jsonify({
             "opponent_reply_uci": opp_uci,
             "opponent_reply_san": opp_san,
             "fen_after_player": fen_after_player,
             "fen_after_opponent": fen_after_opponent,
-            "game_over": True,
-            "position": None,
+            "game_over": False,
+            "position": position,
         })
-
-    player_color = chess.WHITE if board.turn == chess.WHITE else chess.BLACK
-    all_moves = []
-    for mv in board.legal_moves:
-        board.push(mv)
-        info = engine.analyse(board, chess.engine.Limit(depth=depth))
-        raw_score = info["score"].relative.score(mate_score=100000)
-        eval_cp = -raw_score  # positive = good for the player
-        board.pop()
-        all_moves.append({
-            "uci": mv.uci(),
-            "san": board.san(mv),
-            "eval_cp": eval_cp,
-        })
-
-    all_moves.sort(key=lambda x: x["eval_cp"], reverse=True)
-    best_eval = all_moves[0]["eval_cp"]
-    best_moves = [m for m in all_moves if (best_eval - m["eval_cp"]) <= BEST_MOVE_MARGIN_CP]
-
-    position = {
-        "fen": fen_after_opponent,
-        "best_moves": [{"uci": m["uci"], "san": m["san"], "eval_cp": m["eval_cp"]} for m in best_moves],
-        "all_moves": all_moves,
-        "best_move_count": min(len(best_moves), 3),
-    }
-
-    return jsonify({
-        "opponent_reply_uci": opp_uci,
-        "opponent_reply_san": opp_san,
-        "fen_after_player": fen_after_player,
-        "fen_after_opponent": fen_after_opponent,
-        "game_over": False,
-        "position": position,
-    })
+      except chess.engine.EngineTerminatedError:
+        engine = restart_engine()
+        return jsonify({"error": "Engine crashed, please retry"}), 503
+      except chess.engine.EngineError as e:
+        return jsonify({"error": f"Engine error: {e}"}), 500
 
 
 if __name__ == '__main__':
