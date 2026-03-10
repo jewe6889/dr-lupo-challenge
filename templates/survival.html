@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr Lupo Challenge — Survival Mode</title>
+<link rel="stylesheet" href="/static/vendor/chessground/assets/chessground.base.css">
+<link rel="stylesheet" href="/static/vendor/chessground/assets/chessground.brown.css">
+<link rel="stylesheet" href="/static/vendor/chessground/assets/chessground.cburnett.css">
+<style>
+/* ---- Reset & base ---- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a2e;--bg2:#16213e;--card:#0f3460;
+  --text:#e0e0e0;--text-dim:#8a8a9a;
+  --green:#00c853;--red:#ff1744;--gold:#ffd600;
+  --fire:#ff6d00;--blue:#448aff;
+  --radius:8px;
+}
+html{font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+/* ---- Header ---- */
+.header{width:100%;max-width:720px;padding:18px 16px 0;text-align:center}
+.header h1{font-size:1.3rem;font-weight:700;letter-spacing:1px}
+.header h1 span{color:var(--fire)}
+.header .subtitle{font-size:0.78rem;color:var(--text-dim);margin-top:2px}
+.header .game-meta{font-size:0.72rem;color:var(--text-dim);margin-top:2px}
+.header .game-meta .title-badge{
+  display:inline-block;background:var(--gold);color:#000;font-weight:700;
+  padding:0 4px;border-radius:3px;font-size:0.65rem;margin-right:2px;vertical-align:middle;
+}
+
+/* ---- Score bar ---- */
+.score-bar{
+  width:100%;max-width:720px;display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;margin-top:10px;
+  background:var(--bg2);border-radius:var(--radius);
+}
+.score-bar .label{font-size:0.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px}
+.score-bar .value{font-size:1.4rem;font-weight:700}
+.score-bar .value.green{color:var(--green)}
+.score-bar .value.fire{color:var(--fire)}
+.score-move{font-size:0.85rem;color:var(--text-dim)}
+.score-move strong{color:var(--text);font-size:1.1rem}
+
+/* ---- Info banner ---- */
+.info-banner{
+  width:100%;max-width:720px;margin-top:10px;padding:10px 16px;
+  border-radius:var(--radius);text-align:center;font-weight:600;font-size:0.95rem;
+  transition:all 0.3s ease;
+}
+.info-banner.critical{background:rgba(255,109,0,0.18);color:var(--fire);border:1px solid rgba(255,109,0,0.4)}
+.info-banner.multi{background:rgba(0,200,83,0.15);color:var(--green);border:1px solid rgba(0,200,83,0.3)}
+.info-banner.survive{background:rgba(0,200,83,0.2);color:var(--green);border:1px solid rgba(0,200,83,0.4)}
+.info-banner.dead{background:rgba(255,23,68,0.18);color:var(--red);border:1px solid rgba(255,23,68,0.4)}
+.info-banner.idle{background:rgba(255,255,255,0.04);color:var(--text-dim);border:1px solid rgba(255,255,255,0.08)}
+.info-banner.loading{background:rgba(68,138,255,0.12);color:var(--blue);border:1px solid rgba(68,138,255,0.3)}
+
+/* Action buttons inside banner */
+.action-btns{margin-top:8px;display:flex;gap:8px;justify-content:center}
+.action-btns button{
+  padding:6px 16px;border:none;border-radius:5px;font-weight:600;font-size:0.82rem;cursor:pointer;
+  transition:opacity 0.15s;
+}
+.action-btns button:hover{opacity:0.85}
+.btn-walk{background:var(--green);color:#000}
+.btn-explore{background:var(--blue);color:#fff}
+.btn-navigate{background:var(--fire);color:#fff}
+
+/* ---- Board container ---- */
+.board-zone{margin-top:14px;position:relative}
+.cg-wrap{width:min(94vw,720px);height:min(94vw,720px)}
+cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
+
+/* ---- Tree visualization ---- */
+.tree-container{
+  width:min(94vw,720px);margin-top:14px;padding:8px 0;
+  max-height:260px;overflow-y:auto;
+}
+.tree-row{
+  display:flex;gap:2px;margin-bottom:3px;align-items:center;
+}
+.tree-label{
+  width:52px;min-width:52px;font-size:0.55rem;font-weight:600;
+  color:var(--text-dim);text-align:right;padding-right:6px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.tree-slots{display:flex;gap:2px;flex:1}
+.tree-spacer{
+  width:22px;min-width:22px;height:22px;
+}
+.tree-slot{
+  width:22px;min-width:22px;height:22px;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.5rem;font-weight:700;cursor:pointer;
+  transition:all 0.2s ease;
+}
+.tree-slot.unexplored{background:rgba(255,255,255,0.06);color:var(--text-dim)}
+.tree-slot.survived{background:var(--green);color:#000}
+.tree-slot.dead{background:var(--red);color:#fff}
+.tree-slot.active{border:2px solid var(--gold);background:rgba(255,214,0,0.18);color:var(--gold)}
+.tree-slot.branching{box-shadow:0 0 0 1.5px rgba(255,255,255,0.5) inset}
+.tree-slot:hover{opacity:0.8}
+.tree-slot.disabled{cursor:default;opacity:0.4}
+
+/* ---- End screen ---- */
+.end-screen{
+  width:100%;max-width:720px;padding:24px 16px;text-align:center;display:none;
+}
+.end-screen.visible{display:block}
+.end-title{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.end-score{font-size:2.8rem;font-weight:800;color:var(--fire);margin:8px 0}
+.end-tier{font-size:1.3rem;margin:4px 0 16px}
+.end-summary{font-size:0.85rem;color:var(--text-dim);margin-bottom:20px;line-height:1.6}
+.share-block{
+  background:var(--bg2);border-radius:var(--radius);padding:14px;
+  margin:16px auto;max-width:400px;text-align:left;
+  font-family:'Courier New',monospace;font-size:0.78rem;
+  white-space:pre-wrap;word-break:break-word;color:var(--text);line-height:1.5;
+}
+.btn{
+  padding:10px 20px;border:none;border-radius:var(--radius);
+  font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.15s;margin:4px;
+}
+.btn-primary{background:var(--fire);color:#fff}
+.btn-primary:hover{opacity:0.85}
+.btn-secondary{background:rgba(255,255,255,0.1);color:var(--text)}
+.btn-secondary:hover{background:rgba(255,255,255,0.18)}
+.btn-copy.copied{background:var(--green);color:#000}
+
+/* ---- Loading screen ---- */
+.loading-screen{text-align:center;padding:60px 16px}
+.loading-screen h2{font-size:1.2rem;margin-bottom:8px}
+.loading-screen p{color:var(--text-dim);font-size:0.85rem}
+
+/* Back link */
+.back-link{
+  position:fixed;top:12px;left:16px;font-size:0.8rem;
+  color:var(--text-dim);text-decoration:none;
+}
+.back-link:hover{color:var(--text)}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="/">← Menu</a>
+
+<!-- Loading -->
+<div id="loading-screen" class="loading-screen">
+  <h2>Loading Survival Mode...</h2>
+  <p id="loading-info"></p>
+</div>
+
+<!-- Game UI (hidden until loaded) -->
+<div id="game-ui" style="display:none">
+  <div class="header">
+    <h1>Survival <span>Mode</span> ☠️</h1>
+    <div class="subtitle" id="game-subtitle"></div>
+    <div class="game-meta" id="game-meta"></div>
+  </div>
+
+  <div class="score-bar">
+    <div>
+      <div class="label">Depth</div>
+      <div class="value fire" id="depth-display">0</div>
+    </div>
+    <div class="score-move">
+      Position <strong id="current-move-display">1</strong>
+    </div>
+    <div style="text-align:right">
+      <div class="label">Open paths</div>
+      <div class="value green" id="open-paths-display">1</div>
+    </div>
+  </div>
+
+  <div class="info-banner idle" id="info-banner">Get ready...</div>
+
+  <div class="board-zone">
+    <div id="board" class="cg-wrap"></div>
+  </div>
+
+  <div class="tree-container" id="tree-container"></div>
+</div>
+
+<!-- End screen -->
+<div id="end-screen" class="end-screen">
+  <div class="end-title">☠️ Game Over</div>
+  <div class="end-score" id="end-score">0</div>
+  <div class="end-tier" id="end-tier"></div>
+  <div class="end-summary" id="end-summary"></div>
+  <div class="share-block" id="share-block"></div>
+  <button class="btn btn-primary btn-copy" id="btn-copy" onclick="copyShare()">📋 Copy to clipboard</button>
+  <a class="btn btn-secondary" href="/">← Back to menu</a>
+</div>
+
+<script type="module">
+import { Chessground } from '/static/vendor/chessground/chessground.min.js';
+
+// ============================================================
+//  GLOBALS
+// ============================================================
+let challengeData = null;
+let cg = null;
+
+// Tree model
+const nodes = new Map();   // nodeId → NodeData
+const branches = [];       // [{id, name, startMoveNumber, nodeIds:[]}]
+let currentNodeId = null;
+let maxDepthReached = 0;
+let branchCounter = 0;     // for naming branches A, B, C...
+
+let waitingForInput = false;
+let pendingWalkUci = null;  // UCI move waiting for "walk this path" confirmation
+
+// ============================================================
+//  AUDIO
+// ============================================================
+function beep(freq, dur, vol = 0.08) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine'; osc.frequency.value = freq;
+    gain.gain.value = vol;
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur / 1000);
+    osc.start(); osc.stop(ctx.currentTime + dur / 1000);
+  } catch {}
+}
+const sfx = {
+  move:  () => beep(260, 80, 0.06),
+  best:  () => beep(520, 150, 0.08),
+  error: () => beep(165, 250, 0.08),
+  flame: () => { beep(330, 100, 0.07); setTimeout(() => beep(440, 150, 0.08), 100); },
+  death: () => { beep(165, 300, 0.09); setTimeout(() => beep(130, 400, 0.1), 200); },
+};
+
+// ============================================================
+//  HELPERS
+// ============================================================
+function formatTimeControl(tc) {
+  if (!tc) return '';
+  const m = tc.match(/^(\d+)\+(\d+)$/);
+  if (!m) return tc;
+  const base = parseInt(m[1]);
+  if (base < 30) return 'UltraBullet';
+  if (base < 180) return 'Bullet';
+  if (base < 480) return 'Blitz';
+  if (base < 1500) return 'Rapid';
+  return 'Classical';
+}
+
+function rawTcToMinutes(tc) {
+  if (!tc) return tc;
+  const m = tc.match(/^(\d+)\+(\d+)$/);
+  if (!m) return tc;
+  return `${Math.floor(parseInt(m[1]) / 60)}+${m[2]}`;
+}
+
+function titledName(name, title) {
+  if (title) return `<span class="title-badge">${title}</span> ${name}`;
+  return name;
+}
+
+function tierForDepth(d) {
+  if (d >= 26) return { badge: '👑', name: 'Dr Lupo' };
+  if (d >= 20) return { badge: '🟠', name: 'Master Lupo' };
+  if (d >= 13) return { badge: '🟡', name: 'Half Lupo' };
+  if (d >= 7)  return { badge: '🟢', name: 'Prodigy Lupo' };
+  if (d >= 5)  return { badge: '🔵', name: 'Padawan Lupo' };
+  if (d >= 3)  return { badge: '🍼', name: 'Baby Lupo' };
+  return { badge: '💀', name: '' };
+}
+
+// ============================================================
+//  NODE MANAGEMENT
+// ============================================================
+function createNode(id, moveNumber, posData, isMainLine, branchName, parentId = null) {
+  const node = {
+    id,
+    moveNumber,
+    fen: posData.fen,
+    best_moves: posData.best_moves,
+    all_moves: posData.all_moves,
+    best_move_count: posData.best_move_count,
+    game_move_uci: posData.game_move_uci || null,
+    opponent_reply_uci: posData.opponent_reply_uci || null,
+    opponent_reply_san: posData.opponent_reply_san || null,
+    fen_after_game_move: posData.fen_after_game_move || null,
+    fen_after_opponent: posData.fen_after_opponent || null,
+    parentId,
+    children: new Map(),   // uci → childNodeId
+    status: 'open',        // 'open' | 'survived' | 'dead'
+    reached: false,        // true once the player has navigated here
+    discoveredBestMoves: new Set(),
+    chosenWalkUci: null,   // which move the player walked forward with
+    isMainLine,
+    branchName,
+  };
+  nodes.set(id, node);
+  return node;
+}
+
+// ============================================================
+//  LOAD CHALLENGE
+// ============================================================
+async function loadChallenge() {
+  const path = window.location.pathname;
+  const id = path.split('/survival/')[1];
+  if (!id) { document.getElementById('loading-info').textContent = 'No challenge ID in URL'; return; }
+
+  try {
+    const resp = await fetch(`/api/challenge/${id}`);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    challengeData = await resp.json();
+  } catch (e) {
+    document.getElementById('loading-info').textContent = `Failed to load: ${e.message}`;
+    return;
+  }
+
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('game-ui').style.display = '';
+
+  // Subtitle
+  const d = challengeData;
+  const whiteDisplay = titledName(d.white, d.white_title);
+  const blackDisplay = titledName(d.black, d.black_title);
+  const whiteElo = d.white_elo ? ` (${d.white_elo})` : '';
+  const blackElo = d.black_elo ? ` (${d.black_elo})` : '';
+  document.getElementById('game-subtitle').innerHTML =
+    `${whiteDisplay}${whiteElo} vs ${blackDisplay}${blackElo}`;
+  const tc = formatTimeControl(d.time_control);
+  const metaParts = [];
+  if (tc) metaParts.push(tc);
+  if (d.time_control) metaParts.push(rawTcToMinutes(d.time_control));
+  document.getElementById('game-meta').textContent = metaParts.join(' · ');
+
+  // Build main-line nodes from challenge JSON
+  const mainBranch = { id: 'main', name: 'Main', startMoveNumber: 1, nodeIds: [] };
+  for (let i = 0; i < d.positions.length; i++) {
+    const pos = d.positions[i];
+    const nodeId = `main-${i}`;
+    const parentId = i > 0 ? `main-${i - 1}` : null;
+    createNode(nodeId, pos.move_number, pos, true, 'Main', parentId);
+    mainBranch.nodeIds.push(nodeId);
+
+    // Link parent → child via game move
+    if (parentId) {
+      const parentNode = nodes.get(parentId);
+      if (parentNode && parentNode.game_move_uci) {
+        parentNode.children.set(parentNode.game_move_uci, nodeId);
+      }
+    }
+  }
+  branches.push(mainBranch);
+
+  initBoard();
+  navigateToNode('main-0');
+}
+
+// ============================================================
+//  BOARD
+// ============================================================
+function initBoard() {
+  const orientation = challengeData.player_color;
+  cg = Chessground(document.getElementById('board'), {
+    orientation,
+    movable: { free: false, color: orientation, events: { after: onPlayerMove } },
+    draggable: { showGhost: true },
+    animation: { enabled: true, duration: 250 },
+    premovable: { enabled: false },
+    highlight: { lastMove: true },
+  });
+}
+
+function setPosition(fen, dests, interactive = true) {
+  const parts = fen.split(' ');
+  const turnColor = parts[1] === 'w' ? 'white' : 'black';
+  const isPlayerTurn = turnColor === challengeData.player_color;
+
+  cg.set({
+    fen,
+    turnColor,
+    movable: {
+      free: false,
+      color: interactive && isPlayerTurn ? challengeData.player_color : undefined,
+      dests: interactive && isPlayerTurn ? dests : new Map(),
+    },
+    lastMove: undefined,
+  });
+  // Clear any drawn shapes
+  cg.setAutoShapes([]);
+  waitingForInput = interactive && isPlayerTurn;
+}
+
+function buildDests(node) {
+  const dests = new Map();
+  for (const m of node.all_moves) {
+    const from = m.uci.substring(0, 2);
+    const to = m.uci.substring(2, 4);
+    if (!dests.has(from)) dests.set(from, []);
+    dests.get(from).push(to);
+  }
+  return dests;
+}
+
+// ============================================================
+//  NAVIGATE TO NODE
+// ============================================================
+function navigateToNode(nodeId) {
+  const node = nodes.get(nodeId);
+  if (!node) return;
+
+  currentNodeId = nodeId;
+  node.reached = true;
+  pendingWalkUci = null;
+  const banner = document.getElementById('info-banner');
+
+  // Update displays
+  document.getElementById('current-move-display').textContent = node.moveNumber;
+  updateDepthDisplay();
+  updateOpenPathsDisplay();
+  renderTree();
+
+  // If node is already dead or fully explored with a walked child, show appropriate state
+  if (node.status === 'dead') {
+    setPosition(node.fen, new Map(), false);
+    showBestMovesOnBoard(node);
+    banner.className = 'info-banner dead';
+    banner.innerHTML = '💀 This path is dead';
+    showNavigateButton();
+    return;
+  }
+
+  // If node is survived and has been walked (chosenWalkUci set), show that
+  if (node.status === 'survived' && node.chosenWalkUci) {
+    // Check if there are undiscovered best moves to explore here
+    const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
+    if (undiscovered.length > 0) {
+      // Can still explore more moves here
+      setPosition(node.fen, buildDests(node), true);
+      banner.className = 'info-banner multi';
+      banner.innerHTML = `🔀 ${undiscovered.length} more best move${undiscovered.length > 1 ? 's' : ''} to discover here`;
+      return;
+    }
+    // Fully explored — show as info
+    setPosition(node.fen, new Map(), false);
+    banner.className = 'info-banner survive';
+    banner.innerHTML = `✅ Explored — walked with <strong>${moveToSan(node, node.chosenWalkUci)}</strong>`;
+    return;
+  }
+
+  // Fresh open node — start playing
+  startNode(node);
+}
+
+function startNode(node) {
+  const banner = document.getElementById('info-banner');
+  const count = node.best_move_count;
+
+  // Show best-move count hint
+  if (count === 1) {
+    banner.className = 'info-banner critical';
+    banner.innerHTML = '🔥 <strong>CRITICAL</strong> — only 1 best move! Find it to survive.';
+    sfx.flame();
+  } else if (count === 2) {
+    banner.className = 'info-banner multi';
+    banner.innerHTML = `✅ <strong>${count}</strong> best moves — find one to survive`;
+  } else {
+    banner.className = 'info-banner multi';
+    banner.innerHTML = `⭐ <strong>3+</strong> best moves — find one to survive`;
+  }
+
+  // Enable interaction after short delay
+  setTimeout(() => {
+    setPosition(node.fen, buildDests(node), true);
+  }, 300);
+}
+
+function moveToSan(node, uci) {
+  const m = node.all_moves.find(x => x.uci === uci);
+  return m ? m.san : uci;
+}
+
+// ============================================================
+//  PLAYER MOVE HANDLER
+// ============================================================
+function onPlayerMove(from, to) {
+  if (!waitingForInput) return;
+  waitingForInput = false;
+
+  const node = nodes.get(currentNodeId);
+  if (!node) return;
+
+  const uci = from + to;
+  const promoUci = uci + 'q';
+  const moveData = node.all_moves.find(m => m.uci === uci) || node.all_moves.find(m => m.uci === promoUci);
+  const actualUci = node.all_moves.find(m => m.uci === uci) ? uci : promoUci;
+
+  if (!moveData) { waitingForInput = true; return; }
+
+  const isBest = node.best_moves.some(m => m.uci === actualUci) && !node.discoveredBestMoves.has(actualUci);
+
+  if (isBest) {
+    handleSurvive(node, actualUci, moveData);
+  } else if (node.discoveredBestMoves.has(actualUci)) {
+    // Already discovered this best move — re-enable for another try
+    const banner = document.getElementById('info-banner');
+    banner.className = 'info-banner idle';
+    banner.innerHTML = `You already found <strong>${moveData.san}</strong> — try a different move!`;
+    setTimeout(() => setPosition(node.fen, buildDests(node), true), 600);
+  } else {
+    handleDeath(node, actualUci, moveData);
+  }
+}
+
+// ============================================================
+//  SURVIVE
+// ============================================================
+function handleSurvive(node, uci, moveData) {
+  node.discoveredBestMoves.add(uci);
+  node.status = 'survived';
+  maxDepthReached = Math.max(maxDepthReached, node.moveNumber);
+  sfx.best();
+
+  const banner = document.getElementById('info-banner');
+  const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
+  const isCritical = node.best_move_count === 1;
+
+  if (isCritical) {
+    // Single best move — auto-advance
+    banner.className = 'info-banner survive';
+    banner.innerHTML = `🔥 <strong>${moveData.san}</strong> — you survive! Auto-advancing...`;
+    renderTree();
+    setTimeout(() => walkPath(node, uci), 900);
+  } else if (undiscovered.length === 0) {
+    // All best moves found — auto-advance with last played
+    banner.className = 'info-banner survive';
+    banner.innerHTML = `✅ <strong>${moveData.san}</strong> — all best moves found! Advancing...`;
+    renderTree();
+    setTimeout(() => walkPath(node, uci), 900);
+  } else {
+    // More best moves to explore — offer choice
+    pendingWalkUci = uci;
+    banner.className = 'info-banner survive';
+    banner.innerHTML =
+      `✅ <strong>${moveData.san}</strong> is a best move! You survive!` +
+      `<div class="action-btns">` +
+        `<button class="btn-walk" id="btn-walk">🚶 Walk this path</button>` +
+        `<button class="btn-explore" id="btn-explore">🔀 Explore another (${undiscovered.length} left)</button>` +
+      `</div>`;
+
+    renderTree();
+
+    // Attach handlers after DOM update
+    setTimeout(() => {
+      const walkBtn = document.getElementById('btn-walk');
+      const exploreBtn = document.getElementById('btn-explore');
+      if (walkBtn) walkBtn.addEventListener('click', () => {
+        walkPath(node, pendingWalkUci);
+      }, { once: true });
+      if (exploreBtn) exploreBtn.addEventListener('click', () => {
+        pendingWalkUci = null;
+        banner.className = 'info-banner multi';
+        banner.innerHTML = `🔀 ${undiscovered.length} more best move${undiscovered.length > 1 ? 's' : ''} to discover`;
+        setPosition(node.fen, buildDests(node), true);
+      }, { once: true });
+    }, 0);
+  }
+
+  updateDepthDisplay();
+  updateOpenPathsDisplay();
+}
+
+// ============================================================
+//  WALK PATH — advance to next position
+// ============================================================
+async function walkPath(node, uci) {
+  node.chosenWalkUci = uci;
+  const banner = document.getElementById('info-banner');
+
+  // Check if child already exists (previously created)
+  if (node.children.has(uci)) {
+    const childId = node.children.get(uci);
+    navigateToNode(childId);
+    return;
+  }
+
+  // If this is the game move on the main line, use pre-loaded data
+  if (node.isMainLine && uci === node.game_move_uci) {
+    // Find the next main-line node
+    const mainBranch = branches[0];
+    const myIdx = mainBranch.nodeIds.indexOf(node.id);
+    if (myIdx >= 0 && myIdx + 1 < mainBranch.nodeIds.length) {
+      const nextNodeId = mainBranch.nodeIds[myIdx + 1];
+      node.children.set(uci, nextNodeId);
+
+      // Animate opponent reply
+      await animateOpponentReply(node);
+      navigateToNode(nextNodeId);
+      return;
+    }
+  }
+
+  // Otherwise: call server for analysis (branching off main line)
+  banner.className = 'info-banner loading';
+  banner.innerHTML = '⏳ Analyzing position... (Stockfish thinking)';
+  setPosition(node.fen, new Map(), false); // disable board
+
+  try {
+    const resp = await fetch('/api/survival/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fen: node.fen, player_move: uci }),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+
+    // Animate opponent reply
+    if (data.opponent_reply_uci) {
+      // Show position after player's move first
+      const fenAfterPlayer = data.fen_after_player;
+      if (fenAfterPlayer) {
+        cg.set({
+          fen: fenAfterPlayer,
+          lastMove: undefined,
+          movable: { free: false, color: undefined, dests: new Map() },
+        });
+      }
+      await new Promise(r => setTimeout(r, 350));
+      // Animate opponent move
+      const oFrom = data.opponent_reply_uci.substring(0, 2);
+      const oTo = data.opponent_reply_uci.substring(2, 4);
+      cg.set({
+        fen: data.position.fen,
+        lastMove: [oFrom, oTo],
+        movable: { free: false, color: undefined, dests: new Map() },
+      });
+      sfx.move();
+      await new Promise(r => setTimeout(r, 500));
+    }
+
+    // Determine branch name
+    let branchName;
+    let branchObj;
+    if (node.isMainLine && uci !== node.game_move_uci) {
+      // New branch off main line
+      branchCounter++;
+      branchName = String.fromCharCode(64 + branchCounter); // A, B, C...
+      branchObj = { id: `branch-${branchCounter}`, name: branchName, startMoveNumber: node.moveNumber + 1, nodeIds: [] };
+      branches.push(branchObj);
+    } else {
+      // Continue existing branch
+      branchName = node.branchName;
+      branchObj = branches.find(b => b.name === branchName);
+      if (!branchObj) {
+        branchCounter++;
+        branchName = String.fromCharCode(64 + branchCounter);
+        branchObj = { id: `branch-${branchCounter}`, name: branchName, startMoveNumber: node.moveNumber + 1, nodeIds: [] };
+        branches.push(branchObj);
+      }
+    }
+
+    // Create child node
+    const childNodeId = `${branchObj.id}-${node.moveNumber + 1}`;
+    const childNode = createNode(childNodeId, node.moveNumber + 1, data.position, false, branchName, node.id);
+    node.children.set(uci, childNodeId);
+    branchObj.nodeIds.push(childNodeId);
+
+    maxDepthReached = Math.max(maxDepthReached, childNode.moveNumber);
+    navigateToNode(childNodeId);
+  } catch (e) {
+    banner.className = 'info-banner dead';
+    banner.innerHTML = `❌ Analysis failed: ${e.message}. <button class="btn-navigate" onclick="window._retryWalk()">Retry</button>`;
+    window._retryWalk = () => walkPath(node, uci);
+  }
+}
+
+async function animateOpponentReply(node) {
+  if (!node.opponent_reply_uci || !node.fen_after_opponent) return;
+
+  // Show intermediate FEN (after player's game move)
+  const fenAfterPlayer = node.fen_after_game_move || node.fen_after_opponent;
+  cg.set({
+    fen: fenAfterPlayer,
+    lastMove: undefined,
+    movable: { free: false, color: undefined, dests: new Map() },
+  });
+
+  await new Promise(r => setTimeout(r, 350));
+
+  // Animate opponent reply
+  const oFrom = node.opponent_reply_uci.substring(0, 2);
+  const oTo = node.opponent_reply_uci.substring(2, 4);
+  cg.set({
+    fen: node.fen_after_opponent,
+    lastMove: [oFrom, oTo],
+    movable: { free: false, color: undefined, dests: new Map() },
+  });
+  sfx.move();
+
+  await new Promise(r => setTimeout(r, 500));
+}
+
+// ============================================================
+//  DEATH
+// ============================================================
+function handleDeath(node, uci, moveData) {
+  node.status = 'dead';
+  sfx.death();
+
+  const banner = document.getElementById('info-banner');
+  banner.className = 'info-banner dead';
+
+  const bestSans = node.best_moves.map(m => m.san).join(', ');
+  banner.innerHTML =
+    `💀 <strong>${moveData.san}</strong> is not a best move — this path is dead!` +
+    `<br><span style="font-size:0.8rem;opacity:0.8">Best: ${bestSans}</span>`;
+
+  // Highlight best moves on board
+  showBestMovesOnBoard(node);
+  renderTree();
+  updateOpenPathsDisplay();
+
+  // Check if any open paths remain
+  const openPaths = findOpenNodes();
+  if (openPaths.length === 0) {
+    setTimeout(() => endGame(), 1500);
+  } else {
+    showNavigateButton();
+  }
+}
+
+function showBestMovesOnBoard(node) {
+  const shapes = node.best_moves.map(m => ({
+    orig: m.uci.substring(0, 2),
+    dest: m.uci.substring(2, 4),
+    brush: 'green',
+  }));
+  cg.setAutoShapes(shapes);
+}
+
+function showNavigateButton() {
+  const banner = document.getElementById('info-banner');
+  const openPaths = findOpenNodes();
+  if (openPaths.length === 0) return;
+
+  banner.innerHTML += `<div class="action-btns"><button class="btn-navigate" id="btn-navigate-open">📍 Go to open path (${openPaths.length})</button></div>`;
+  setTimeout(() => {
+    const btn = document.getElementById('btn-navigate-open');
+    if (btn) btn.addEventListener('click', () => {
+      // Navigate to the first open node
+      navigateToNode(openPaths[0]);
+    }, { once: true });
+  }, 0);
+}
+
+// ============================================================
+//  FIND OPEN NODES
+// ============================================================
+function findOpenNodes() {
+  const open = [];
+  for (const [id, node] of nodes) {
+    if (!node.reached) continue; // only count nodes the player has visited
+    if (node.status === 'open') {
+      open.push(id);
+    } else if (node.status === 'survived') {
+      // Check if there are undiscovered best moves
+      const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
+      if (undiscovered.length > 0) {
+        open.push(id);
+      }
+    }
+  }
+  return open;
+}
+
+// ============================================================
+//  DISPLAY UPDATES
+// ============================================================
+function updateDepthDisplay() {
+  document.getElementById('depth-display').textContent = maxDepthReached;
+}
+
+function updateOpenPathsDisplay() {
+  const count = findOpenNodes().length;
+  document.getElementById('open-paths-display').textContent = count;
+}
+
+// ============================================================
+//  TREE RENDERING
+// ============================================================
+function renderTree() {
+  const container = document.getElementById('tree-container');
+  container.innerHTML = '';
+
+  for (const branch of branches) {
+    const row = document.createElement('div');
+    row.className = 'tree-row';
+
+    // Label
+    const label = document.createElement('div');
+    label.className = 'tree-label';
+    label.textContent = branch.name;
+    row.appendChild(label);
+
+    // Slots container
+    const slotsDiv = document.createElement('div');
+    slotsDiv.className = 'tree-slots';
+
+    // Add spacers for branch offset
+    for (let i = 1; i < branch.startMoveNumber; i++) {
+      const spacer = document.createElement('div');
+      spacer.className = 'tree-spacer';
+      slotsDiv.appendChild(spacer);
+    }
+
+    // Add node slots
+    for (const nodeId of branch.nodeIds) {
+      const node = nodes.get(nodeId);
+      if (!node) continue;
+
+      const slot = document.createElement('div');
+      slot.className = 'tree-slot';
+      slot.textContent = node.moveNumber;
+
+      // Apply state classes
+      if (nodeId === currentNodeId) {
+        slot.classList.add('active');
+      } else if (node.status === 'dead') {
+        slot.classList.add('dead');
+      } else if (node.status === 'survived') {
+        slot.classList.add('survived');
+        // Check if it can still branch (undiscovered best moves)
+        const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
+        if (undiscovered.length > 0) {
+          slot.classList.add('branching');
+        }
+      } else {
+        slot.classList.add('unexplored');
+      }
+
+      // Click handler
+      const canNavigate = node.status !== 'dead' || nodeId === currentNodeId;
+      if (canNavigate) {
+        slot.addEventListener('click', () => navigateToNode(nodeId));
+      } else {
+        slot.classList.add('disabled');
+      }
+
+      slotsDiv.appendChild(slot);
+    }
+
+    row.appendChild(slotsDiv);
+    container.appendChild(row);
+  }
+}
+
+// ============================================================
+//  END GAME
+// ============================================================
+function endGame() {
+  document.getElementById('game-ui').style.display = 'none';
+  const endScreen = document.getElementById('end-screen');
+  endScreen.classList.add('visible');
+
+  document.getElementById('end-score').textContent = maxDepthReached;
+
+  const tier = tierForDepth(maxDepthReached);
+  const tierEl = document.getElementById('end-tier');
+  if (tier.name) {
+    tierEl.textContent = `${tier.badge} ${tier.name}`;
+  } else {
+    tierEl.textContent = tier.badge;
+  }
+
+  // Summary stats
+  let survivedCount = 0;
+  let deadCount = 0;
+  let branchCount = branches.length - 1; // exclude main
+  for (const [, node] of nodes) {
+    if (node.status === 'survived') survivedCount++;
+    if (node.status === 'dead') deadCount++;
+  }
+  document.getElementById('end-summary').innerHTML =
+    `Depth reached: <strong>${maxDepthReached}</strong> / 26<br>` +
+    `Positions survived: <strong>${survivedCount}</strong><br>` +
+    `Paths explored: <strong>${deadCount}</strong> dead ends<br>` +
+    `Branches created: <strong>${branchCount}</strong>`;
+
+  // Share text
+  const d = challengeData;
+  const tc = formatTimeControl(d.time_control);
+  const shareText =
+    `Dr Lupo Survival ☠️\n` +
+    `${d.white} vs ${d.black}` + (tc ? ` (${tc})` : '') + `\n` +
+    `Depth: ${maxDepthReached} / 26 ${tier.badge}\n` +
+    `${survivedCount} survived · ${deadCount} dead ends · ${branchCount} branches\n` +
+    d.game_url;
+
+  document.getElementById('share-block').textContent = shareText;
+  window._shareText = shareText;
+}
+
+// ---- Copy ----
+window.copyShare = function() {
+  navigator.clipboard.writeText(window._shareText).then(() => {
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
+  });
+};
+
+// ---- Init ----
+loadChallenge();
+</script>
+</body>
+</html>

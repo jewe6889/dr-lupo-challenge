@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr Lupo Challenge</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a2e;--bg2:#16213e;--card:#0f3460;
+  --text:#e0e0e0;--text-dim:#8a8a9a;
+  --green:#00c853;--red:#ff1744;--gold:#ffd600;
+  --fire:#ff6d00;--blue:#448aff;
+  --radius:8px;
+}
+html{font-size:16px}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:24px;
+}
+.brand{text-align:center;margin-bottom:12px}
+.brand h1{font-size:2rem;font-weight:800;letter-spacing:1px}
+.brand h1 span{color:var(--gold)}
+.brand .tagline{font-size:0.9rem;color:var(--text-dim);margin-top:6px}
+
+.cards{
+  display:flex;gap:24px;margin-top:32px;flex-wrap:wrap;justify-content:center;
+}
+.card{
+  width:300px;padding:32px 24px;border-radius:12px;
+  text-align:center;cursor:pointer;
+  transition:transform 0.2s ease,box-shadow 0.2s ease;
+  text-decoration:none;color:inherit;display:block;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.4)}
+
+.card-challenge{
+  background:linear-gradient(135deg,#0f3460 0%,#1a1a5e 100%);
+  border:1px solid rgba(255,214,0,0.25);
+}
+.card-challenge:hover{border-color:rgba(255,214,0,0.5)}
+
+.card-survival{
+  background:linear-gradient(135deg,#2d1b00 0%,#1a1a2e 100%);
+  border:1px solid rgba(255,109,0,0.25);
+}
+.card-survival:hover{border-color:rgba(255,109,0,0.5)}
+
+.card .icon{font-size:3rem;margin-bottom:12px}
+.card h2{font-size:1.3rem;font-weight:700;margin-bottom:8px}
+.card p{font-size:0.82rem;color:var(--text-dim);line-height:1.5}
+
+.card-challenge h2{color:var(--gold)}
+.card-survival h2{color:var(--fire)}
+
+.footer{margin-top:48px;font-size:0.7rem;color:var(--text-dim);text-align:center}
+.footer a{color:var(--blue);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="brand">
+  <h1>Dr Lupo <span>Challenge</span></h1>
+  <div class="tagline">Can you find the best moves in a real titled-player game?</div>
+</div>
+
+<div class="cards">
+  <a class="card card-challenge" href="/play/mfJW36UO_ply14">
+    <div class="icon">🏆</div>
+    <h2>Challenge of the Day</h2>
+    <p>Play through 26 positions and score points by finding engine-approved best moves. Retry allowed — every move counts.</p>
+  </a>
+
+  <a class="card card-survival" href="/survival/mfJW36UO_ply14">
+    <div class="icon">☠️</div>
+    <h2>Survival Mode</h2>
+    <p>One mistake and the path is dead. Find best moves to branch forward — explore parallel worlds to go deeper.</p>
+  </a>
+</div>
+
+<div class="footer">
+  Powered by Stockfish 15 &middot; Games from <a href="https://lichess.org" target="_blank" rel="noopener">Lichess</a>
+</div>
+
+</body>
+</html>
