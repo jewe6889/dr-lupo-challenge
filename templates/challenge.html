@@ -67,7 +67,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 
 /* ---- Board container ---- */
 .board-zone{margin-top:14px;position:relative}
-.cg-wrap{width:min(88vw,420px);height:min(88vw,420px)}
+.cg-wrap{width:min(94vw,680px);height:min(94vw,680px)}
 
 /* Yellow last-move highlight for departure square */
 cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
@@ -525,13 +525,13 @@ function handleRetryMove(uci, moveData, isBest, pos, bestEval) {
   retryActive = false;
 
   if (isBest) {
-    // No points for retry — just acknowledge
+    score += 3;
     sfx.best();
     const rank = pos.best_moves.findIndex(m => m.uci === uci) + 1;
     const medal = medalForRank(rank);
     banner.className = 'info-banner result-good';
-    banner.innerHTML = `✅ That's a best move! ${medal} (retry — no points)`;
-    recordMove(0, true);
+    banner.innerHTML = `✅ Best move! ${medal} <strong>+3</strong>`;
+    recordMove(3, true);
     setTimeout(() => advanceToNext(pos), 1000);
   } else {
     const cpDiff = bestEval - moveData.eval_cp;
