@@ -67,18 +67,18 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 
 /* ---- Board container ---- */
 .board-zone{margin-top:14px;position:relative}
-.cg-wrap{width:min(94vw,680px);height:min(94vw,680px)}
+.cg-wrap{width:min(94vw,720px);height:min(94vw,720px)}
 
 /* Yellow last-move highlight for departure square */
 cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
 
 /* ---- Move history strip ---- */
 .history-strip{
-  width:100%;max-width:720px;display:flex;flex-wrap:wrap;gap:4px;
-  padding:12px 16px;margin-top:12px;justify-content:center;
+  width:min(94vw,720px);display:flex;flex-wrap:nowrap;gap:3px;
+  padding:12px 0;margin-top:12px;
 }
 .history-slot{
-  width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  flex:1;min-width:0;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;
   font-size:0.55rem;font-weight:700;
   background:rgba(255,255,255,0.06);color:var(--text-dim);
   transition:all 0.3s ease;
@@ -254,6 +254,15 @@ function formatTimeControl(tc) {
   return 'Classical';
 }
 
+function rawTcToMinutes(tc) {
+  if (!tc) return tc;
+  const m = tc.match(/^(\d+)\+(\d+)$/);
+  if (!m) return tc;
+  const mins = Math.floor(parseInt(m[1]) / 60);
+  const inc = parseInt(m[2]);
+  return `${mins}+${inc}`;
+}
+
 function titledName(name, title) {
   if (title) return `<span class="title-badge">${title}</span> ${name}`;
   return name;
@@ -297,14 +306,16 @@ async function loadChallenge() {
   const d = challengeData;
   const whiteDisplay = titledName(d.white, d.white_title);
   const blackDisplay = titledName(d.black, d.black_title);
+  const whiteElo = d.white_elo ? ` (${d.white_elo})` : '';
+  const blackElo = d.black_elo ? ` (${d.black_elo})` : '';
   document.getElementById('game-subtitle').innerHTML =
-    `${whiteDisplay} vs ${blackDisplay} — playing as ${d.player_color}`;
+    `${whiteDisplay}${whiteElo} vs ${blackDisplay}${blackElo} — playing as ${d.player_color}`;
 
   // Game meta: time control + event
   const tc = formatTimeControl(d.time_control);
   const metaParts = [];
   if (tc) metaParts.push(tc);
-  if (d.time_control) metaParts.push(d.time_control);
+  if (d.time_control) metaParts.push(rawTcToMinutes(d.time_control));
   document.getElementById('game-meta').textContent = metaParts.join(' • ');
 
   document.getElementById('total-display').textContent = d.num_moves;
