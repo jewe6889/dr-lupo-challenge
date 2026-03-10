@@ -73,36 +73,36 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-ap
 .cg-wrap{width:min(94vw,720px);height:min(94vw,720px)}
 cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
 
-/* ---- Tree visualization ---- */
+/* ---- Tree visualization (SVG) ---- */
 .tree-container{
-  width:min(94vw,720px);margin-top:14px;padding:8px 0;
-  max-height:260px;overflow-y:auto;
+  width:min(94vw,720px);margin-top:14px;padding:10px 6px 6px;
+  overflow-x:auto;overflow-y:hidden;
+  background:rgba(255,255,255,0.025);border-radius:var(--radius);
 }
-.tree-row{
-  display:flex;gap:2px;margin-bottom:3px;align-items:center;
+.tree-container svg{display:block}
+
+/* ---- Legend under tree ---- */
+.tree-legend{
+  width:min(94vw,720px);margin-top:5px;
+  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+  font-size:0.65rem;color:var(--text-dim);
 }
-.tree-label{
-  width:52px;min-width:52px;font-size:0.55rem;font-weight:600;
-  color:var(--text-dim);text-align:right;padding-right:6px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+.tree-legend span{display:flex;align-items:center;gap:4px}
+.tree-legend .dot{
+  width:9px;height:9px;border-radius:50%;display:inline-block;
 }
-.tree-slots{display:flex;gap:2px;flex:1}
-.tree-spacer{
-  width:22px;min-width:22px;height:22px;
+
+/* ---- Game Over overlay ---- */
+.gameover-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.82);display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius);z-index:20;animation:goFadeIn 0.3s ease;
 }
-.tree-slot{
-  width:22px;min-width:22px;height:22px;border-radius:3px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:0.5rem;font-weight:700;cursor:pointer;
-  transition:all 0.2s ease;
-}
-.tree-slot.unexplored{background:rgba(255,255,255,0.06);color:var(--text-dim)}
-.tree-slot.survived{background:var(--green);color:#000}
-.tree-slot.dead{background:var(--red);color:#fff}
-.tree-slot.active{border:2px solid var(--gold);background:rgba(255,214,0,0.18);color:var(--gold)}
-.tree-slot.branching{box-shadow:0 0 0 1.5px rgba(255,255,255,0.5) inset}
-.tree-slot:hover{opacity:0.8}
-.tree-slot.disabled{cursor:default;opacity:0.4}
+@keyframes goFadeIn{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
+.gameover-inner{text-align:center}
+.gameover-icon{font-size:3.5rem;line-height:1;margin-bottom:10px}
+.gameover-title{font-size:2.8rem;font-weight:800;color:var(--red);letter-spacing:4px;text-shadow:0 0 30px rgba(255,23,68,0.6)}
+.gameover-sub{font-size:0.88rem;color:var(--text-dim);margin-top:12px}
 
 /* ---- End screen ---- */
 .end-screen{
@@ -181,6 +181,14 @@ cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
   </div>
 
   <div class="tree-container" id="tree-container"></div>
+
+  <div class="tree-legend">
+    <span><span class="dot" style="background:rgba(0,200,83,0.28);border:1.5px solid #00c853"></span> Survived</span>
+    <span><span class="dot" style="background:rgba(0,200,83,0.16);border:1.5px dashed #00e676"></span> Survived (unexplored branches)</span>
+    <span><span class="dot" style="background:rgba(255,23,68,0.28);border:1.5px solid #ff1744"></span> Dead end</span>
+    <span><span class="dot" style="background:rgba(255,214,0,0.22);border:2px solid #ffd600"></span> Current</span>
+    <span><span class="dot" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.13)"></span> Not yet reached</span>
+  </div>
 </div>
 
 <!-- End screen -->
@@ -709,26 +717,74 @@ async function animateOpponentReply(node) {
 //  DEATH
 // ============================================================
 function handleDeath(node, uci, moveData) {
-  node.status = 'dead';
   sfx.death();
-
   const banner = document.getElementById('info-banner');
-  banner.className = 'info-banner dead';
-
   const bestSans = node.best_moves.map(m => m.san).join(', ');
+
+  // ── Failed exploration: node was already survived earlier ──
+  if (node.discoveredBestMoves.size > 0) {
+    // Keep status as 'survived' — this was just a bad attempt while exploring
+    const discoveredSans = [...node.discoveredBestMoves].map(u => {
+      const m = node.all_moves.find(x => x.uci === u);
+      return m ? m.san : u;
+    }).join(', ');
+    const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
+
+    banner.className = 'info-banner dead';
+    banner.innerHTML =
+      `💀 <strong>${moveData.san}</strong> fails — already found: <strong>${discoveredSans}</strong>` +
+      `<br><span style="font-size:0.8rem;opacity:0.8">Best: ${bestSans}</span>`;
+
+    showBestMovesOnBoard(node);
+    renderTree();
+    updateOpenPathsDisplay();
+
+    // Offer walk buttons for each discovered move + re-explore for any remaining
+    const btnHtml = [...node.discoveredBestMoves].map(u => {
+      const m = node.all_moves.find(x => x.uci === u);
+      const san = m ? m.san : u;
+      return `<button class="btn-walk" data-nid="${node.id}" data-uci="${u}">🚶 Walk with ${san}</button>`;
+    });
+    if (undiscovered.length > 0) {
+      btnHtml.push(`<button class="btn-explore" data-nid="${node.id}">🔀 Try again (${undiscovered.length} left)</button>`);
+    }
+    banner.innerHTML += `<div class="action-btns">${btnHtml.join('')}</div>`;
+
+    setTimeout(() => {
+      banner.querySelectorAll('.btn-walk[data-nid]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const n = nodes.get(btn.dataset.nid);
+          if (n) walkPath(n, btn.dataset.uci);
+        }, { once: true });
+      });
+      banner.querySelectorAll('.btn-explore[data-nid]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const n = nodes.get(btn.dataset.nid);
+          if (!n) return;
+          const ud = n.best_moves.filter(m => !n.discoveredBestMoves.has(m.uci));
+          banner.className = 'info-banner multi';
+          banner.innerHTML = `🔀 ${ud.length} more best move${ud.length > 1 ? 's' : ''} to discover here`;
+          setPosition(n.fen, buildDests(n), true);
+        }, { once: true });
+      });
+    }, 0);
+    return;
+  }
+
+  // ── Clean death — first attempt, no prior discoveries ──
+  node.status = 'dead';
+  banner.className = 'info-banner dead';
   banner.innerHTML =
     `💀 <strong>${moveData.san}</strong> is not a best move — this path is dead!` +
     `<br><span style="font-size:0.8rem;opacity:0.8">Best: ${bestSans}</span>`;
 
-  // Highlight best moves on board
   showBestMovesOnBoard(node);
   renderTree();
   updateOpenPathsDisplay();
 
-  // Check if any open paths remain
   const openPaths = findOpenNodes();
   if (openPaths.length === 0) {
-    setTimeout(() => endGame(), 1500);
+    showGameOverOverlay();
   } else {
     showNavigateButton();
   }
@@ -791,71 +847,178 @@ function updateOpenPathsDisplay() {
 }
 
 // ============================================================
-//  TREE RENDERING
+//  GAME OVER OVERLAY
+// ============================================================
+function showGameOverOverlay() {
+  const boardZone = document.querySelector('.board-zone');
+  const overlay = document.createElement('div');
+  overlay.className = 'gameover-overlay';
+  overlay.innerHTML =
+    `<div class="gameover-inner">` +
+    `<div class="gameover-icon">☠️</div>` +
+    `<div class="gameover-title">GAME OVER</div>` +
+    `<div class="gameover-sub">Calculating your score...</div>` +
+    `</div>`;
+  boardZone.appendChild(overlay);
+  setTimeout(() => { overlay.remove(); endGame(); }, 2000);
+}
+
+// ============================================================
+//  TREE RENDERING  (SVG branching graph)
 // ============================================================
 function renderTree() {
   const container = document.getElementById('tree-container');
+
+  const SLOT_W  = 26;
+  const ROW_H   = 44;
+  const NODE_R  = 11;
+  const LABEL_W = 50;
+  const PAD_X   = 8;
+  const PAD_Y   = 12;
+
+  const totalPos = challengeData ? challengeData.positions.length : 26;
+  const svgW = LABEL_W + PAD_X + totalPos * SLOT_W + PAD_X;
+  const svgH = branches.length * ROW_H + PAD_Y * 2;
+
+  const ns = 'http://www.w3.org/2000/svg';
+  function mk(tag, attrs) {
+    const el = document.createElementNS(ns, tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    return el;
+  }
+
+  const nodeX = mn => LABEL_W + PAD_X + (mn - 1) * SLOT_W + SLOT_W / 2;
+  const rowY  = ri => PAD_Y + ri * ROW_H + ROW_H / 2;
+  const bRow  = new Map(branches.map((b, i) => [b.name, i]));
+
+  function getColors(node, isPlaceholder) {
+    if (isPlaceholder)
+      return { fill:'rgba(255,255,255,0.04)', stroke:'rgba(255,255,255,0.13)', sw:'1',   text:'rgba(255,255,255,0.28)', dash:null };
+    if (node.id === currentNodeId)
+      return { fill:'rgba(255,214,0,0.22)',   stroke:'#ffd600',               sw:'2.5', text:'#ffd600',               dash:null };
+    if (node.status === 'dead')
+      return { fill:'rgba(255,23,68,0.28)',   stroke:'#ff1744',               sw:'1.5', text:'#ff6b81',               dash:null };
+    if (node.status === 'survived') {
+      const canBranch = node.best_moves.some(m => !node.discoveredBestMoves.has(m.uci));
+      return canBranch
+        ? { fill:'rgba(0,200,83,0.16)', stroke:'#00e676', sw:'1.5', text:'#69f0ae', dash:'4,3' }
+        : { fill:'rgba(0,200,83,0.28)', stroke:'#00c853', sw:'1.5', text:'#00e676', dash:null };
+    }
+    if (node.reached)
+      return { fill:'rgba(255,255,255,0.09)', stroke:'rgba(255,255,255,0.5)', sw:'1.5', text:'rgba(255,255,255,0.8)', dash:null };
+    return   { fill:'rgba(255,255,255,0.04)', stroke:'rgba(255,255,255,0.16)', sw:'1',  text:'rgba(255,255,255,0.35)', dash:null };
+  }
+
+  const svg = mk('svg', { width: svgW, height: svgH });
+
+  // Main-line faint horizontal track
+  svg.appendChild(mk('line', {
+    x1: nodeX(1), y1: rowY(0), x2: nodeX(totalPos), y2: rowY(0),
+    stroke:'rgba(255,255,255,0.07)', 'stroke-width':'1'
+  }));
+
+  // Branch connectors: bezier from parent node → first branch node
+  for (let bi = 1; bi < branches.length; bi++) {
+    const branch = branches[bi];
+    const first  = nodes.get(branch.nodeIds[0]);
+    if (!first || !first.parentId) continue;
+    const parent = nodes.get(first.parentId);
+    if (!parent) continue;
+    const ri = bRow.get(parent.branchName || 'Main') ?? 0;
+    const x1 = nodeX(parent.moveNumber), y1 = rowY(ri);
+    const x2 = nodeX(first.moveNumber),  y2 = rowY(bi);
+    const my = (y1 + y2) / 2;
+    svg.appendChild(mk('path', {
+      d: `M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`,
+      stroke:'rgba(255,255,255,0.3)', 'stroke-width':'1.5', fill:'none', 'stroke-dasharray':'5,3'
+    }));
+    // Horizontal track within this branch row
+    if (branch.nodeIds.length > 1) {
+      const last = nodes.get(branch.nodeIds[branch.nodeIds.length - 1]);
+      if (last) svg.appendChild(mk('line', {
+        x1: nodeX(first.moveNumber), y1: y2, x2: nodeX(last.moveNumber), y2: y2,
+        stroke:'rgba(255,255,255,0.07)', 'stroke-width':'1'
+      }));
+    }
+  }
+
+  // Draw all branch rows
+  for (let bi = 0; bi < branches.length; bi++) {
+    const branch = branches[bi];
+    const y = rowY(bi);
+
+    // Branch label
+    const lbl = mk('text', {
+      x: LABEL_W - 4, y: y + 4, 'text-anchor':'end', 'font-size':'11',
+      fill:'rgba(255,255,255,0.45)', 'font-family':"'Segoe UI',sans-serif", 'font-weight':'600'
+    });
+    lbl.textContent = branch.name;
+    svg.appendChild(lbl);
+
+    if (bi === 0) {
+      // Main line — show all positions (with placeholders for unreached ones)
+      const nMap = new Map();
+      for (const nid of branch.nodeIds) {
+        const n = nodes.get(nid);
+        if (n) nMap.set(n.moveNumber, { nid, n });
+      }
+      for (let pos = 1; pos <= totalPos; pos++) {
+        const entry = nMap.get(pos);
+        const col   = getColors(entry ? entry.n : null, !entry);
+        const x     = nodeX(pos);
+        const nid   = entry ? entry.nid : '';
+        const cAttrs = {
+          cx: x, cy: y, r: NODE_R, fill: col.fill, stroke: col.stroke,
+          'stroke-width': col.sw, 'data-nid': nid
+        };
+        if (col.dash) cAttrs['stroke-dasharray'] = col.dash;
+        if (nid)      cAttrs.style = 'cursor:pointer';
+        svg.appendChild(mk('circle', cAttrs));
+        const t = mk('text', {
+          x, y: y + 4, 'text-anchor':'middle', 'font-size':'8.5',
+          fill: col.text, 'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
+        });
+        t.textContent = pos;
+        svg.appendChild(t);
+      }
+    } else {
+      // Branch — show only nodes that exist
+      for (const nid of branch.nodeIds) {
+        const n = nodes.get(nid);
+        if (!n) continue;
+        const x   = nodeX(n.moveNumber);
+        const col = getColors(n, false);
+        const cAttrs = {
+          cx: x, cy: y, r: NODE_R, fill: col.fill, stroke: col.stroke,
+          'stroke-width': col.sw, style: 'cursor:pointer', 'data-nid': nid
+        };
+        if (col.dash) cAttrs['stroke-dasharray'] = col.dash;
+        svg.appendChild(mk('circle', cAttrs));
+        const t = mk('text', {
+          x, y: y + 4, 'text-anchor':'middle', 'font-size':'8.5',
+          fill: col.text, 'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
+        });
+        t.textContent = n.moveNumber;
+        svg.appendChild(t);
+      }
+    }
+  }
+
   container.innerHTML = '';
+  container.appendChild(svg);
 
-  for (const branch of branches) {
-    const row = document.createElement('div');
-    row.className = 'tree-row';
+  // Click delegation
+  container.onclick = e => {
+    const el = e.target.closest ? e.target.closest('[data-nid]') : null;
+    if (!el) return;
+    const nid = el.getAttribute('data-nid');
+    if (nid) navigateToNode(nid);
+  };
 
-    // Label
-    const label = document.createElement('div');
-    label.className = 'tree-label';
-    label.textContent = branch.name;
-    row.appendChild(label);
-
-    // Slots container
-    const slotsDiv = document.createElement('div');
-    slotsDiv.className = 'tree-slots';
-
-    // Add spacers for branch offset
-    for (let i = 1; i < branch.startMoveNumber; i++) {
-      const spacer = document.createElement('div');
-      spacer.className = 'tree-spacer';
-      slotsDiv.appendChild(spacer);
-    }
-
-    // Add node slots
-    for (const nodeId of branch.nodeIds) {
-      const node = nodes.get(nodeId);
-      if (!node) continue;
-
-      const slot = document.createElement('div');
-      slot.className = 'tree-slot';
-      slot.textContent = node.moveNumber;
-
-      // Apply state classes
-      if (nodeId === currentNodeId) {
-        slot.classList.add('active');
-      } else if (node.status === 'dead') {
-        slot.classList.add('dead');
-      } else if (node.status === 'survived') {
-        slot.classList.add('survived');
-        // Check if it can still branch (undiscovered best moves)
-        const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
-        if (undiscovered.length > 0) {
-          slot.classList.add('branching');
-        }
-      } else {
-        slot.classList.add('unexplored');
-      }
-
-      // Click handler
-      const canNavigate = node.status !== 'dead' || nodeId === currentNodeId;
-      if (canNavigate) {
-        slot.addEventListener('click', () => navigateToNode(nodeId));
-      } else {
-        slot.classList.add('disabled');
-      }
-
-      slotsDiv.appendChild(slot);
-    }
-
-    row.appendChild(slotsDiv);
-    container.appendChild(row);
+  // Scroll active node into view
+  if (currentNodeId) {
+    const cn = nodes.get(currentNodeId);
+    if (cn) container.scrollLeft = Math.max(0, nodeX(cn.moveNumber) - container.clientWidth / 2);
   }
 }
 
