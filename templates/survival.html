@@ -140,6 +140,10 @@ cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
   color:var(--text-dim);text-decoration:none;
 }
 .back-link:hover{color:var(--text)}
+
+/* Pulse animation for current node in tree */
+@keyframes nodePulse{0%,100%{filter:drop-shadow(0 0 3px rgba(255,214,0,0.4))}50%{filter:drop-shadow(0 0 8px rgba(255,214,0,0.8))}}
+.tree-container svg .node-current{animation:nodePulse 1.5s ease infinite}
 </style>
 </head>
 <body>
@@ -184,9 +188,11 @@ cg-board square.last-move{background-color:rgba(255,255,100,0.41) !important}
 
   <div class="tree-legend">
     <span><span class="dot" style="background:rgba(0,200,83,0.28);border:1.5px solid #00c853"></span> Survived</span>
-    <span><span class="dot" style="background:rgba(0,200,83,0.16);border:1.5px dashed #00e676"></span> Survived (unexplored branches)</span>
+    <span><span class="dot" style="background:rgba(0,200,83,0.16);border:1.5px dashed #00e676"></span> Open paths</span>
     <span><span class="dot" style="background:rgba(255,23,68,0.28);border:1.5px solid #ff1744"></span> Dead end</span>
     <span><span class="dot" style="background:rgba(255,214,0,0.22);border:2px solid #ffd600"></span> Current</span>
+    <span><span class="dot" style="background:rgba(255,214,0,0.08);border:1.5px dashed rgba(255,214,0,0.35)"></span> Available</span>
+    <span><span class="dot" style="background:rgba(255,152,0,0.2);border:1.5px solid #ff9800"></span> Locked</span>
     <span><span class="dot" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.13)"></span> Not yet reached</span>
   </div>
 </div>
@@ -220,6 +226,19 @@ let branchCounter = 0;     // for naming branches A, B, C...
 
 let waitingForInput = false;
 let pendingWalkUci = null;  // UCI move waiting for "walk this path" confirmation
+
+// Prefetch cache for background Stockfish analysis
+const prefetchCache = new Map(); // "fen:uci" → Promise<data>
+function prefetchAnalysis(fen, playerMoveUci) {
+  const key = `${fen}:${playerMoveUci}`;
+  if (prefetchCache.has(key)) return;
+  const promise = fetch('/api/survival/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fen, player_move: playerMoveUci }),
+  }).then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)));
+  prefetchCache.set(key, promise);
+}
 
 // ============================================================
 //  AUDIO
@@ -442,21 +461,78 @@ function navigateToNode(nodeId) {
     return;
   }
 
-  // If node is survived and has been walked (chosenWalkUci set), show that
-  if (node.status === 'survived' && node.chosenWalkUci) {
-    // Check if there are undiscovered best moves to explore here
-    const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
-    if (undiscovered.length > 0) {
-      // Can still explore more moves here
-      setPosition(node.fen, buildDests(node), true);
-      banner.className = 'info-banner multi';
-      banner.innerHTML = `🔀 ${undiscovered.length} more best move${undiscovered.length > 1 ? 's' : ''} to discover here`;
+  // Survived node — handle all sub-cases
+  if (node.status === 'survived') {
+    // Locked node — no more exploring after failed attempt
+    if (node.locked) {
+      setPosition(node.fen, new Map(), false);
+      showBestMovesOnBoard(node);
+      const discoveredSans = [...node.discoveredBestMoves].map(u => moveToSan(node, u));
+      const unwalked = [...node.discoveredBestMoves].filter(u => {
+        const childId = node.children.get(u);
+        if (!childId) return true;
+        const child = nodes.get(childId);
+        return !child || !child.reached;
+      });
+
+      if (unwalked.length > 0) {
+        banner.className = 'info-banner dead';
+        banner.innerHTML = `🔒 Locked — found: <strong>${discoveredSans.join(', ')}</strong>`;
+        const btnHtml = unwalked.map(u =>
+          `<button class="btn-walk" data-nid="${node.id}" data-uci="${u}">🚶 Walk with ${moveToSan(node, u)}</button>`
+        );
+        banner.innerHTML += `<div class="action-btns">${btnHtml.join('')}</div>`;
+        setTimeout(() => attachWalkHandlers(banner), 0);
+      } else {
+        banner.className = 'info-banner survive';
+        banner.innerHTML = `✅ All discovered paths walked — found: <strong>${discoveredSans.join(', ')}</strong>`;
+      }
+      showNavigateButton();
       return;
     }
-    // Fully explored — show as info
+
+    // Not locked — check what options remain
+    const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
+    const unwalked = [...node.discoveredBestMoves].filter(u => {
+      const childId = node.children.get(u);
+      if (!childId) return true;
+      const child = nodes.get(childId);
+      return !child || !child.reached;
+    });
+
+    if (undiscovered.length > 0) {
+      // Can still explore more moves — interactive board
+      setPosition(node.fen, buildDests(node), true);
+      banner.className = 'info-banner multi';
+      let html = `🔀 ${undiscovered.length} more best move${undiscovered.length > 1 ? 's' : ''} to discover`;
+      if (unwalked.length > 0) {
+        html += `<div class="action-btns">` +
+          unwalked.map(u => `<button class="btn-walk" data-nid="${node.id}" data-uci="${u}">🚶 Walk with ${moveToSan(node, u)}</button>`).join('') +
+          `</div>`;
+      }
+      banner.innerHTML = html;
+      if (unwalked.length > 0) setTimeout(() => attachWalkHandlers(banner), 0);
+      return;
+    }
+
+    if (unwalked.length > 0) {
+      // All moves discovered, some paths not yet walked
+      setPosition(node.fen, new Map(), false);
+      showBestMovesOnBoard(node);
+      const discoveredSans = [...node.discoveredBestMoves].map(u => moveToSan(node, u));
+      banner.className = 'info-banner survive';
+      banner.innerHTML = `✅ All found: <strong>${discoveredSans.join(', ')}</strong>` +
+        `<div class="action-btns">` +
+        unwalked.map(u => `<button class="btn-walk" data-nid="${node.id}" data-uci="${u}">🚶 Walk with ${moveToSan(node, u)}</button>`).join('') +
+        `</div>`;
+      setTimeout(() => attachWalkHandlers(banner), 0);
+      return;
+    }
+
+    // Fully explored — all discovered, all walked
     setPosition(node.fen, new Map(), false);
     banner.className = 'info-banner survive';
-    banner.innerHTML = `✅ Explored — walked with <strong>${moveToSan(node, node.chosenWalkUci)}</strong>`;
+    banner.innerHTML = `✅ Fully explored`;
     return;
   }
 
@@ -490,6 +566,27 @@ function startNode(node) {
 function moveToSan(node, uci) {
   const m = node.all_moves.find(x => x.uci === uci);
   return m ? m.san : uci;
+}
+
+function attachWalkHandlers(banner) {
+  banner.querySelectorAll('.btn-walk[data-nid]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const n = nodes.get(btn.dataset.nid);
+      if (n) walkPath(n, btn.dataset.uci);
+    }, { once: true });
+  });
+}
+
+function isNodeAvailable(nodeId) {
+  const node = nodes.get(nodeId);
+  if (!node || node.reached) return false;
+  if (!node.parentId) return false;
+  const parent = nodes.get(node.parentId);
+  if (!parent || parent.status !== 'survived') return false;
+  for (const [uci, childId] of parent.children) {
+    if (childId === nodeId && parent.discoveredBestMoves.has(uci)) return true;
+  }
+  return false;
 }
 
 // ============================================================
@@ -532,6 +629,11 @@ function handleSurvive(node, uci, moveData) {
   node.status = 'survived';
   maxDepthReached = Math.max(maxDepthReached, node.moveNumber);
   sfx.best();
+
+  // Prefetch opponent reply in background (skip main-line game moves — data is pre-loaded)
+  if (!(node.isMainLine && uci === node.game_move_uci)) {
+    prefetchAnalysis(node.fen, uci);
+  }
 
   const banner = document.getElementById('info-banner');
   const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
@@ -589,57 +691,64 @@ async function walkPath(node, uci) {
   node.chosenWalkUci = uci;
   const banner = document.getElementById('info-banner');
 
-  // Check if child already exists (previously created)
-  if (node.children.has(uci)) {
-    const childId = node.children.get(uci);
-    navigateToNode(childId);
+  // Check if child already exists (previously created or pre-linked from JSON)
+  const existingChildId = node.children.get(uci);
+  if (existingChildId) {
+    const child = nodes.get(existingChildId);
+    if (child && child.reached) {
+      // Already visited — just navigate
+      navigateToNode(existingChildId);
+      return;
+    }
+    // First visit to pre-linked child — animate opponent reply
+    if (node.opponent_reply_uci && node.fen_after_opponent) {
+      banner.className = 'info-banner survive';
+      banner.innerHTML = `✅ <strong>${moveToSan(node, uci)}</strong> — opponent replying...`;
+      await animateOpponentReply(node, uci);
+    }
+    navigateToNode(existingChildId);
     return;
   }
 
-  // If this is the game move on the main line, use pre-loaded data
-  if (node.isMainLine && uci === node.game_move_uci) {
-    // Find the next main-line node
-    const mainBranch = branches[0];
-    const myIdx = mainBranch.nodeIds.indexOf(node.id);
-    if (myIdx >= 0 && myIdx + 1 < mainBranch.nodeIds.length) {
-      const nextNodeId = mainBranch.nodeIds[myIdx + 1];
-      node.children.set(uci, nextNodeId);
-
-      // Animate opponent reply
-      await animateOpponentReply(node);
-      navigateToNode(nextNodeId);
-      return;
-    }
-  }
-
-  // Otherwise: call server for analysis (branching off main line)
+  // Branch analysis — call server (or use prefetch cache)
+  const cacheKey = `${node.fen}:${uci}`;
+  const cachedPromise = prefetchCache.get(cacheKey);
   banner.className = 'info-banner loading';
-  banner.innerHTML = '⏳ Analyzing position... (Stockfish thinking)';
-  setPosition(node.fen, new Map(), false); // disable board
+  banner.innerHTML = cachedPromise ? '⏳ Preparing position...' : '⏳ Analyzing position... (Stockfish thinking)';
+
+  // Disable board without changing position (keep player's move visible)
+  cg.set({ movable: { free: false, color: undefined, dests: new Map() } });
+  cg.setAutoShapes([]);
+  waitingForInput = false;
 
   try {
-    const resp = await fetch('/api/survival/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fen: node.fen, player_move: uci }),
-    });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
+    let data;
+    if (cachedPromise) {
+      data = await cachedPromise;
+      prefetchCache.delete(cacheKey);
+    } else {
+      const resp = await fetch('/api/survival/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fen: node.fen, player_move: uci }),
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      data = await resp.json();
+    }
     if (data.error) throw new Error(data.error);
 
-    // Animate opponent reply
+    // Animate opponent reply (without rewinding player's move)
     if (data.opponent_reply_uci) {
-      // Show position after player's move first
-      const fenAfterPlayer = data.fen_after_player;
-      if (fenAfterPlayer) {
+      const pFrom = uci.substring(0, 2);
+      const pTo = uci.substring(2, 4);
+      if (data.fen_after_player) {
         cg.set({
-          fen: fenAfterPlayer,
-          lastMove: undefined,
+          fen: data.fen_after_player,
+          lastMove: [pFrom, pTo],
           movable: { free: false, color: undefined, dests: new Map() },
         });
       }
-      await new Promise(r => setTimeout(r, 350));
-      // Animate opponent move
+      await new Promise(r => setTimeout(r, 400));
       const oFrom = data.opponent_reply_uci.substring(0, 2);
       const oTo = data.opponent_reply_uci.substring(2, 4);
       cg.set({
@@ -651,28 +760,29 @@ async function walkPath(node, uci) {
       await new Promise(r => setTimeout(r, 500));
     }
 
-    // Determine branch name
+    // Determine branch
     let branchName;
     let branchObj;
-    if (node.isMainLine && uci !== node.game_move_uci) {
-      // New branch off main line
+    const needsNewBranch =
+      (node.isMainLine && uci !== node.game_move_uci) ||
+      (!node.isMainLine && node.children.size > 0);
+
+    if (needsNewBranch) {
       branchCounter++;
-      branchName = String.fromCharCode(64 + branchCounter); // A, B, C...
-      branchObj = { id: `branch-${branchCounter}`, name: branchName, startMoveNumber: node.moveNumber + 1, nodeIds: [] };
+      branchName = String.fromCharCode(64 + branchCounter);
+      branchObj = { id: `branch-${branchCounter}`, name: branchName, startMoveNumber: node.moveNumber + 1, nodeIds: [], branchMoveSan: moveToSan(node, uci), parentNodeId: node.id };
       branches.push(branchObj);
     } else {
-      // Continue existing branch
       branchName = node.branchName;
       branchObj = branches.find(b => b.name === branchName);
       if (!branchObj) {
         branchCounter++;
         branchName = String.fromCharCode(64 + branchCounter);
-        branchObj = { id: `branch-${branchCounter}`, name: branchName, startMoveNumber: node.moveNumber + 1, nodeIds: [] };
+        branchObj = { id: `branch-${branchCounter}`, name: branchName, startMoveNumber: node.moveNumber + 1, nodeIds: [], branchMoveSan: moveToSan(node, uci), parentNodeId: node.id };
         branches.push(branchObj);
       }
     }
 
-    // Create child node
     const childNodeId = `${branchObj.id}-${node.moveNumber + 1}`;
     const childNode = createNode(childNodeId, node.moveNumber + 1, data.position, false, branchName, node.id);
     node.children.set(uci, childNodeId);
@@ -687,18 +797,20 @@ async function walkPath(node, uci) {
   }
 }
 
-async function animateOpponentReply(node) {
+async function animateOpponentReply(node, playerUci) {
   if (!node.opponent_reply_uci || !node.fen_after_opponent) return;
 
-  // Show intermediate FEN (after player's game move)
+  // Show position after player's move (keep their move highlighted)
   const fenAfterPlayer = node.fen_after_game_move || node.fen_after_opponent;
+  const pFrom = playerUci ? playerUci.substring(0, 2) : undefined;
+  const pTo = playerUci ? playerUci.substring(2, 4) : undefined;
   cg.set({
     fen: fenAfterPlayer,
-    lastMove: undefined,
+    lastMove: pFrom && pTo ? [pFrom, pTo] : undefined,
     movable: { free: false, color: undefined, dests: new Map() },
   });
 
-  await new Promise(r => setTimeout(r, 350));
+  await new Promise(r => setTimeout(r, 400));
 
   // Animate opponent reply
   const oFrom = node.opponent_reply_uci.substring(0, 2);
@@ -723,51 +835,54 @@ function handleDeath(node, uci, moveData) {
 
   // ── Failed exploration: node was already survived earlier ──
   if (node.discoveredBestMoves.size > 0) {
-    // Keep status as 'survived' — this was just a bad attempt while exploring
+    // Lock this position — no more exploring after a failed attempt
+    node.locked = true;
     const discoveredSans = [...node.discoveredBestMoves].map(u => {
       const m = node.all_moves.find(x => x.uci === u);
       return m ? m.san : u;
     }).join(', ');
-    const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
 
     banner.className = 'info-banner dead';
     banner.innerHTML =
-      `💀 <strong>${moveData.san}</strong> fails — already found: <strong>${discoveredSans}</strong>` +
+      `💀 <strong>${moveData.san}</strong> fails — position locked! Found: <strong>${discoveredSans}</strong>` +
       `<br><span style="font-size:0.8rem;opacity:0.8">Best: ${bestSans}</span>`;
 
     showBestMovesOnBoard(node);
     renderTree();
     updateOpenPathsDisplay();
 
-    // Offer walk buttons for each discovered move + re-explore for any remaining
-    const btnHtml = [...node.discoveredBestMoves].map(u => {
-      const m = node.all_moves.find(x => x.uci === u);
-      const san = m ? m.san : u;
-      return `<button class="btn-walk" data-nid="${node.id}" data-uci="${u}">🚶 Walk with ${san}</button>`;
+    // Offer walk buttons ONLY for already-discovered moves (no retry)
+    const unwalked = [...node.discoveredBestMoves].filter(u => {
+      const childId = node.children.get(u);
+      if (!childId) return true; // no child created yet
+      const child = nodes.get(childId);
+      return !child || !child.reached; // child exists but hasn't been visited
     });
-    if (undiscovered.length > 0) {
-      btnHtml.push(`<button class="btn-explore" data-nid="${node.id}">🔀 Try again (${undiscovered.length} left)</button>`);
-    }
-    banner.innerHTML += `<div class="action-btns">${btnHtml.join('')}</div>`;
+    if (unwalked.length > 0) {
+      const btnHtml = unwalked.map(u => {
+        const m = node.all_moves.find(x => x.uci === u);
+        const san = m ? m.san : u;
+        return `<button class="btn-walk" data-nid="${node.id}" data-uci="${u}">🚶 Walk with ${san}</button>`;
+      });
+      banner.innerHTML += `<div class="action-btns">${btnHtml.join('')}</div>`;
 
-    setTimeout(() => {
-      banner.querySelectorAll('.btn-walk[data-nid]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const n = nodes.get(btn.dataset.nid);
-          if (n) walkPath(n, btn.dataset.uci);
-        }, { once: true });
-      });
-      banner.querySelectorAll('.btn-explore[data-nid]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const n = nodes.get(btn.dataset.nid);
-          if (!n) return;
-          const ud = n.best_moves.filter(m => !n.discoveredBestMoves.has(m.uci));
-          banner.className = 'info-banner multi';
-          banner.innerHTML = `🔀 ${ud.length} more best move${ud.length > 1 ? 's' : ''} to discover here`;
-          setPosition(n.fen, buildDests(n), true);
-        }, { once: true });
-      });
-    }, 0);
+      setTimeout(() => {
+        banner.querySelectorAll('.btn-walk[data-nid]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const n = nodes.get(btn.dataset.nid);
+            if (n) walkPath(n, btn.dataset.uci);
+          }, { once: true });
+        });
+      }, 0);
+    }
+
+    // Also show open-path navigation if available
+    const openPaths = findOpenNodes();
+    if (openPaths.length === 0 && unwalked.length === 0) {
+      showGameOverOverlay();
+    } else if (openPaths.length > 0) {
+      showNavigateButton();
+    }
     return;
   }
 
@@ -823,10 +938,21 @@ function findOpenNodes() {
     if (!node.reached) continue; // only count nodes the player has visited
     if (node.status === 'open') {
       open.push(id);
-    } else if (node.status === 'survived') {
-      // Check if there are undiscovered best moves
+    } else if (node.status === 'survived' && !node.locked) {
+      // Check undiscovered best moves
       const undiscovered = node.best_moves.filter(m => !node.discoveredBestMoves.has(m.uci));
       if (undiscovered.length > 0) {
+        open.push(id);
+        continue;
+      }
+      // Check discovered but unwalked paths
+      const hasUnwalked = [...node.discoveredBestMoves].some(u => {
+        const childId = node.children.get(u);
+        if (!childId) return true;
+        const child = nodes.get(childId);
+        return !child || !child.reached;
+      });
+      if (hasUnwalked) {
         open.push(id);
       }
     }
@@ -869,10 +995,10 @@ function showGameOverOverlay() {
 function renderTree() {
   const container = document.getElementById('tree-container');
 
-  const SLOT_W  = 26;
-  const ROW_H   = 44;
-  const NODE_R  = 11;
-  const LABEL_W = 50;
+  const SLOT_W  = 28;
+  const ROW_H   = 48;
+  const NODE_R  = 12;
+  const LABEL_W = 70;
   const PAD_X   = 8;
   const PAD_Y   = 12;
 
@@ -891,22 +1017,41 @@ function renderTree() {
   const rowY  = ri => PAD_Y + ri * ROW_H + ROW_H / 2;
   const bRow  = new Map(branches.map((b, i) => [b.name, i]));
 
+  // Build current path (from current node to root)
+  const currentPath = new Set();
+  let pathId = currentNodeId;
+  while (pathId) {
+    currentPath.add(pathId);
+    const pn = nodes.get(pathId);
+    pathId = pn ? pn.parentId : null;
+  }
+
   function getColors(node, isPlaceholder) {
     if (isPlaceholder)
-      return { fill:'rgba(255,255,255,0.04)', stroke:'rgba(255,255,255,0.13)', sw:'1',   text:'rgba(255,255,255,0.28)', dash:null };
+      return { fill:'rgba(255,255,255,0.04)', stroke:'rgba(255,255,255,0.13)', sw:'1', text:'rgba(255,255,255,0.28)', dash:null };
     if (node.id === currentNodeId)
-      return { fill:'rgba(255,214,0,0.22)',   stroke:'#ffd600',               sw:'2.5', text:'#ffd600',               dash:null };
+      return { fill:'rgba(255,214,0,0.22)', stroke:'#ffd600', sw:'2.5', text:'#ffd600', dash:null };
     if (node.status === 'dead')
-      return { fill:'rgba(255,23,68,0.28)',   stroke:'#ff1744',               sw:'1.5', text:'#ff6b81',               dash:null };
+      return { fill:'rgba(255,23,68,0.28)', stroke:'#ff1744', sw:'1.5', text:'#ff6b81', dash:null };
     if (node.status === 'survived') {
-      const canBranch = node.best_moves.some(m => !node.discoveredBestMoves.has(m.uci));
-      return canBranch
-        ? { fill:'rgba(0,200,83,0.16)', stroke:'#00e676', sw:'1.5', text:'#69f0ae', dash:'4,3' }
-        : { fill:'rgba(0,200,83,0.28)', stroke:'#00c853', sw:'1.5', text:'#00e676', dash:null };
+      if (node.locked)
+        return { fill:'rgba(255,152,0,0.2)', stroke:'#ff9800', sw:'1.5', text:'#ffb74d', dash:null };
+      const canExplore = node.best_moves.some(m => !node.discoveredBestMoves.has(m.uci));
+      const hasUnwalked = [...node.discoveredBestMoves].some(u => {
+        const cid = node.children.get(u);
+        if (!cid) return true;
+        const c = nodes.get(cid);
+        return !c || !c.reached;
+      });
+      if (canExplore || hasUnwalked)
+        return { fill:'rgba(0,200,83,0.16)', stroke:'#00e676', sw:'1.5', text:'#69f0ae', dash:'4,3' };
+      return { fill:'rgba(0,200,83,0.28)', stroke:'#00c853', sw:'1.5', text:'#00e676', dash:null };
     }
+    if (!node.reached && isNodeAvailable(node.id))
+      return { fill:'rgba(255,214,0,0.08)', stroke:'rgba(255,214,0,0.35)', sw:'1.5', text:'rgba(255,214,0,0.55)', dash:'3,2' };
     if (node.reached)
       return { fill:'rgba(255,255,255,0.09)', stroke:'rgba(255,255,255,0.5)', sw:'1.5', text:'rgba(255,255,255,0.8)', dash:null };
-    return   { fill:'rgba(255,255,255,0.04)', stroke:'rgba(255,255,255,0.16)', sw:'1',  text:'rgba(255,255,255,0.35)', dash:null };
+    return { fill:'rgba(255,255,255,0.04)', stroke:'rgba(255,255,255,0.16)', sw:'1', text:'rgba(255,255,255,0.35)', dash:null };
   }
 
   const svg = mk('svg', { width: svgW, height: svgH });
@@ -928,10 +1073,32 @@ function renderTree() {
     const x1 = nodeX(parent.moveNumber), y1 = rowY(ri);
     const x2 = nodeX(first.moveNumber),  y2 = rowY(bi);
     const my = (y1 + y2) / 2;
+
+    // Color based on branch status
+    const branchHasDead = branch.nodeIds.some(nid => {
+      const n = nodes.get(nid);
+      return n && n.status === 'dead';
+    });
+    const connColor = branchHasDead ? 'rgba(255,23,68,0.35)' : 'rgba(0,200,83,0.35)';
+
     svg.appendChild(mk('path', {
       d: `M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`,
-      stroke:'rgba(255,255,255,0.3)', 'stroke-width':'1.5', fill:'none', 'stroke-dasharray':'5,3'
+      stroke: connColor, 'stroke-width':'1.5', fill:'none', 'stroke-dasharray':'5,3'
     }));
+
+    // Move label on branch connector
+    if (branch.branchMoveSan) {
+      const labelX = (x1 + x2) / 2;
+      const labelY = (y1 + y2) / 2 - 3;
+      const lbl = mk('text', {
+        x: labelX, y: labelY, 'text-anchor':'middle', 'font-size':'7.5',
+        fill: connColor, 'font-family':"'Segoe UI',sans-serif", 'font-weight':'600',
+        'pointer-events':'none'
+      });
+      lbl.textContent = branch.branchMoveSan;
+      svg.appendChild(lbl);
+    }
+
     // Horizontal track within this branch row
     if (branch.nodeIds.length > 1) {
       const last = nodes.get(branch.nodeIds[branch.nodeIds.length - 1]);
@@ -942,21 +1109,55 @@ function renderTree() {
     }
   }
 
-  // Draw all branch rows
+  // Draw current path gold highlights (thick line segments connecting path nodes)
+  if (currentPath.size > 1) {
+    const pathNodes = [];
+    let pid = currentNodeId;
+    while (pid) {
+      const pn = nodes.get(pid);
+      if (!pn) break;
+      pathNodes.unshift(pn);
+      pid = pn.parentId;
+    }
+    for (let i = 0; i < pathNodes.length - 1; i++) {
+      const a = pathNodes[i];
+      const b = pathNodes[i + 1];
+      const ri1 = bRow.get(a.branchName || 'Main') ?? 0;
+      const ri2 = bRow.get(b.branchName || 'Main') ?? 0;
+      const x1 = nodeX(a.moveNumber), y1 = rowY(ri1);
+      const x2 = nodeX(b.moveNumber), y2 = rowY(ri2);
+      if (ri1 === ri2) {
+        svg.appendChild(mk('line', {
+          x1, y1, x2, y2,
+          stroke:'rgba(255,214,0,0.25)', 'stroke-width':'3', 'stroke-linecap':'round'
+        }));
+      } else {
+        const my = (y1 + y2) / 2;
+        svg.appendChild(mk('path', {
+          d: `M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`,
+          stroke:'rgba(255,214,0,0.25)', 'stroke-width':'3', fill:'none', 'stroke-linecap':'round'
+        }));
+      }
+    }
+  }
+
+  // Draw all branch rows (nodes)
   for (let bi = 0; bi < branches.length; bi++) {
     const branch = branches[bi];
     const y = rowY(bi);
 
-    // Branch label
+    // Branch label (with move SAN for non-main branches)
+    const labelText = bi === 0 ? 'Main'
+      : (branch.branchMoveSan ? `${branch.name} · ${branch.branchMoveSan}` : branch.name);
     const lbl = mk('text', {
-      x: LABEL_W - 4, y: y + 4, 'text-anchor':'end', 'font-size':'11',
+      x: LABEL_W - 4, y: y + 4, 'text-anchor':'end', 'font-size':'10',
       fill:'rgba(255,255,255,0.45)', 'font-family':"'Segoe UI',sans-serif", 'font-weight':'600'
     });
-    lbl.textContent = branch.name;
+    lbl.textContent = labelText;
     svg.appendChild(lbl);
 
     if (bi === 0) {
-      // Main line — show all positions (with placeholders for unreached ones)
+      // Main line — show all positions (with placeholders for unreached)
       const nMap = new Map();
       for (const nid of branch.nodeIds) {
         const n = nodes.get(nid);
@@ -964,22 +1165,43 @@ function renderTree() {
       }
       for (let pos = 1; pos <= totalPos; pos++) {
         const entry = nMap.get(pos);
-        const col   = getColors(entry ? entry.n : null, !entry);
+        const n     = entry ? entry.n : null;
+        const col   = getColors(n, !entry);
         const x     = nodeX(pos);
+        const isReached = n && n.reached;
+        const isAvail   = n && isNodeAvailable(n.id);
         const nid   = entry ? entry.nid : '';
         const cAttrs = {
           cx: x, cy: y, r: NODE_R, fill: col.fill, stroke: col.stroke,
           'stroke-width': col.sw, 'data-nid': nid
         };
         if (col.dash) cAttrs['stroke-dasharray'] = col.dash;
-        if (nid)      cAttrs.style = 'cursor:pointer';
+        if (isReached || isAvail) cAttrs.style = 'cursor:pointer';
+        if (n && n.id === currentNodeId) cAttrs.class = 'node-current';
         svg.appendChild(mk('circle', cAttrs));
-        const t = mk('text', {
-          x, y: y + 4, 'text-anchor':'middle', 'font-size':'8.5',
-          fill: col.text, 'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
-        });
-        t.textContent = pos;
-        svg.appendChild(t);
+
+        // Status icon overlay for survived/dead/locked nodes
+        let icon = '';
+        if (n && n.locked) icon = '🔒';
+        else if (n && n.status === 'dead') icon = '✗';
+        else if (n && n.status === 'survived' && n.discoveredBestMoves.size >= n.best_move_count) icon = '✓';
+
+        if (icon && n.id !== currentNodeId) {
+          const it = mk('text', {
+            x, y: y + 4, 'text-anchor':'middle', 'font-size': icon === '🔒' ? '8' : '9',
+            fill: n.status === 'dead' ? '#ff6b81' : (n.locked ? '#ffb74d' : '#00e676'),
+            'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
+          });
+          it.textContent = icon;
+          svg.appendChild(it);
+        } else {
+          const t = mk('text', {
+            x, y: y + 4, 'text-anchor':'middle', 'font-size':'9',
+            fill: col.text, 'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
+          });
+          t.textContent = pos;
+          svg.appendChild(t);
+        }
       }
     } else {
       // Branch — show only nodes that exist
@@ -988,18 +1210,37 @@ function renderTree() {
         if (!n) continue;
         const x   = nodeX(n.moveNumber);
         const col = getColors(n, false);
+        const isAvail = isNodeAvailable(n.id);
         const cAttrs = {
           cx: x, cy: y, r: NODE_R, fill: col.fill, stroke: col.stroke,
-          'stroke-width': col.sw, style: 'cursor:pointer', 'data-nid': nid
+          'stroke-width': col.sw, 'data-nid': nid
         };
+        if (n.reached || isAvail) cAttrs.style = 'cursor:pointer';
         if (col.dash) cAttrs['stroke-dasharray'] = col.dash;
+        if (n.id === currentNodeId) cAttrs.class = 'node-current';
         svg.appendChild(mk('circle', cAttrs));
-        const t = mk('text', {
-          x, y: y + 4, 'text-anchor':'middle', 'font-size':'8.5',
-          fill: col.text, 'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
-        });
-        t.textContent = n.moveNumber;
-        svg.appendChild(t);
+
+        let icon = '';
+        if (n.locked) icon = '🔒';
+        else if (n.status === 'dead') icon = '✗';
+        else if (n.status === 'survived' && n.discoveredBestMoves.size >= n.best_move_count) icon = '✓';
+
+        if (icon && n.id !== currentNodeId) {
+          const it = mk('text', {
+            x, y: y + 4, 'text-anchor':'middle', 'font-size': icon === '🔒' ? '8' : '9',
+            fill: n.status === 'dead' ? '#ff6b81' : (n.locked ? '#ffb74d' : '#00e676'),
+            'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
+          });
+          it.textContent = icon;
+          svg.appendChild(it);
+        } else {
+          const t = mk('text', {
+            x, y: y + 4, 'text-anchor':'middle', 'font-size':'9',
+            fill: col.text, 'font-family':"'Segoe UI',sans-serif", 'font-weight':'700', 'pointer-events':'none'
+          });
+          t.textContent = n.moveNumber;
+          svg.appendChild(t);
+        }
       }
     }
   }
@@ -1007,12 +1248,16 @@ function renderTree() {
   container.innerHTML = '';
   container.appendChild(svg);
 
-  // Click delegation
+  // Click delegation — reached nodes + available nodes are clickable
   container.onclick = e => {
     const el = e.target.closest ? e.target.closest('[data-nid]') : null;
     if (!el) return;
     const nid = el.getAttribute('data-nid');
-    if (nid) navigateToNode(nid);
+    if (!nid) return;
+    const node = nodes.get(nid);
+    if (!node) return;
+    if (!node.reached && !isNodeAvailable(node.id)) return;
+    navigateToNode(nid);
   };
 
   // Scroll active node into view
